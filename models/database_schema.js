@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
     bio: String,
     profilePicture: String
   },
+  skills:[{ type: String, ref: 'Tag' }],
   projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
   coursesCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
   chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]
@@ -24,10 +25,10 @@ const projectSchema = new mongoose.Schema({
     projectLink: String
   },
   creators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  endorsments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  endorsements: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   tags: [{ type: String, ref: 'Tag' }],
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  completedAt: { type: Date, default: Date.now },
   feedbacks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }],
   ongoing: Boolean,
   chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat' },
@@ -43,7 +44,7 @@ const courseSchema = new mongoose.Schema({
   tags: [{ type: String, ref: 'Tag' }],
   enrolledUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now },
-  feedbacks: [[{ type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }]],
+  feedbacks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }],
   issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }]
 });
 
@@ -70,7 +71,7 @@ const chatSchema = new mongoose.Schema({
 });
 
 const issueSchema = new mongoose.Schema({
-  user: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   problem: String,
   responses: [{
     sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -87,12 +88,12 @@ const issueSchema = new mongoose.Schema({
 const Issue = mongoose.model('Issue', issueSchema);
 
 const feedbackSchema = new mongoose.Schema({
-  project: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
-  course: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
+  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
+  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  messages: {
+  message: {
     rating: {type: Number, enum:[1,2,3,4,5]},
-    message: String,
+    text: String,
     timestamp: { type: Date, default: Date.now }
   }
 });
