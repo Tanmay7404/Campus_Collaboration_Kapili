@@ -4,7 +4,7 @@
   "description": "Kriti 2024 PS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon server.js"
   },
   "author": "Tanmay Mittal",
   "license": "ISC",
