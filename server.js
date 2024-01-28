@@ -13,7 +13,7 @@ app.set("view engine", "ejs");
 
 
 const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/?retryWrites=true&w=majority/sample_mflix";
-mongoose.connect(url, {useNewUrlParser:true});
+mongoose.connect(url);
 
 
 const PORT = process.env.PORT || 3000;
