@@ -29,8 +29,16 @@ const projectSchema = new mongoose.Schema({
   tags: [{ type: String, ref: 'Tag' }],
   createdAt: { type: Date, default: Date.now },
   completedAt: { type: Date, default: Date.now },
-  feedbacks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }],
   ongoing: Boolean,
+  feedbacks: [{
+    reviewer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    message: {
+      rating: {type: Number, enum:[1,2,3,4,5]},
+      text: String,
+      timestamp: { type: Date, default: Date.now }
+    }
+  }],
+  rating: {type: mongoose.Schema.Types.Decimal128},
   chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat' },
   issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }]
 });
@@ -44,8 +52,17 @@ const courseSchema = new mongoose.Schema({
   tags: [{ type: String, ref: 'Tag' }],
   enrolledUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now },
-  feedbacks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Feedback' }],
-  issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }]
+  feedbacks: [{
+    reviewer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    message: {
+      rating: {type: Number, enum:[1,2,3,4,5]},
+      text: String,
+      timestamp: { type: Date, default: Date.now }
+    }
+  }],
+  rating: {type: mongoose.Schema.Types.Decimal128},
+  issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }],
+  helpful: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
 const Course = mongoose.model('Course', courseSchema);
@@ -70,6 +87,8 @@ const chatSchema = new mongoose.Schema({
   projectName: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' }
 });
 
+const Chat = mongoose.model('Chat', chatSchema);
+
 const issueSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   problem: String,
@@ -87,18 +106,4 @@ const issueSchema = new mongoose.Schema({
   
 const Issue = mongoose.model('Issue', issueSchema);
 
-const feedbackSchema = new mongoose.Schema({
-  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
-  courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  message: {
-    rating: {type: Number, enum:[1,2,3,4,5]},
-    text: String,
-    timestamp: { type: Date, default: Date.now }
-  }
-});
-
-const Feedback = mongoose.model('Feedback', feedbackSchema);
-
-
-module.exports = {User:User, Project:Project, Course:Course, Tag:Tag, Chat:Chat, Feedback:Feedback};
+module.exports = {User:User, Project:Project, Course:Course, Tag:Tag, Chat:Chat};

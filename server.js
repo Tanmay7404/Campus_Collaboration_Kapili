@@ -28,7 +28,7 @@ function sortProjectsAccToUser(currUser,projectList){
     });
     return projectList;
 }
-
+//NOT USER
 function getOngoingProjects(currUser){
     Models.Project.find({ongoing: true}).exec(function(err,data){
         if(!err){
@@ -37,7 +37,7 @@ function getOngoingProjects(currUser){
         }
     });
 }
-
+//NOT USER
 function getLatestProjects(currUser){
     Models.Project.find({ongoing: false}).sort((a,b)=>{
         if(a.completedAt===b.completedAt){
@@ -52,7 +52,23 @@ function getLatestProjects(currUser){
     });
 }
 
-const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/?retryWrites=true&w=majority/sample_mflix";
+function addNewUser(user_details){
+    const user = new Models.User({
+        username: user_details.username,
+        email: user_details.email,
+        profileInfo: {
+            bio: user_details.bio,
+            profilePicture: user_details.profilePictureLink
+        },
+        skills: user_details.skills,
+        projects: [],
+        coursesCompleted: [],
+        chats: []
+    });
+    user.save();
+}
+
+const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
 mongoose.connect(url);
 
 
