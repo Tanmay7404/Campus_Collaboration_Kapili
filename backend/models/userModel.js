@@ -1,0 +1,19 @@
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true },
+  email: { type: String, required: true },
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  profileInfo: {
+    bio: String,
+    profilePicture: String
+  },
+  skills:[{ type: String, ref: 'Tag' }],
+  projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
+  coursesCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
+  chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]
+});
+
+const User = mongoose.model('User', userSchema);
+
+module.exports.default = User;

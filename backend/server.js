@@ -1,14 +1,16 @@
+//IMPORT MODULES
+
 const express = require("express");
-const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const http = require("http");
-var _ = require('lodash');
-const Models= require("./models/database_schema.js");
+const _ = require('lodash');
+const cors = require("cors");
 
 
 const app = express();
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json());
 app.use(express.static("public"));
+app.use(cors());
 app.set("view engine", "ejs"); 
 
 //SHOULD WE INCLUDE INTERESTED IN FIELD FOR EACH USER
@@ -67,13 +69,19 @@ function addNewUser(user_details){
     });
     user.save();
 }
-
+//DATABASE CONNECT
 const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
-mongoose.connect(url);
+mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
+
+//ROUTES IMPORT
+const route = require("./routes/test.js");
+app.use("/",route);
+
+//PORT
+const port = process.env.port || 8080;
 
 
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT,function(){
-    console.log("Server Started on Port 3000");
+//LISTENER
+app.listen(port,function(){
+    console.log(`Server Started on Port ${port}`);
 });

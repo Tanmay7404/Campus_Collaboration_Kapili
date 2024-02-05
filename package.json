@@ -1,20 +1,18 @@
 {
   "name": "campus_collaboration_kapili",
   "version": "1.0.0",
-  "description": "Kriti 2024 PS",
+  "description": "Kapili 2024 Kriti Development PS submission",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "frontend": "cd frontend && npm start",
+    "backend": "cd backend && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run frontend\" \"npm run backend\""
   },
-  "author": "Tanmay Mittal",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2",
-    "lodash": "^4.17.21",
-    "mongodb": "^6.3.0",
-    "mongoose": "^8.1.1",
-    "nodemon": "^3.0.3"
+    "concurrently": "^8.2.2"
   }
 }
