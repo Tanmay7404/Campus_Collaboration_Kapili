@@ -54,21 +54,6 @@ app.set("view engine", "ejs");
 //     });
 // }
 
-// function addNewUser(user_details){
-//     const user = new Models.User({
-//         username: user_details.username,
-//         email: user_details.email,
-//         profileInfo: {
-//             bio: user_details.bio,
-//             profilePicture: user_details.profilePictureLink
-//         },
-//         skills: user_details.skills,
-//         projects: [],
-//         coursesCompleted: [],
-//         chats: []
-//     });
-//     user.save();
-// }
 //DATABASE CONNECT
 const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
 mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));

@@ -11,13 +11,12 @@ class ProjectController {
                     photoLink: project_details.photoLink,
                     projectLink: project_details.projectLink
                 },
-                creators: project_details.creators, // Assuming creators is an array of user IDs
+                creators: [], // Assuming creators is an array of user IDs
                 endorsements: [],
-                tags: project_details.tags, // Assuming tags is an array of strings
+                tags: [], // Assuming tags is an array of strings
                 ongoing: project_details.ongoing || false,
                 feedbacks: [],
-                rating: project_details.rating,
-                chat: project_details.chat, // Assuming chat is a chat ID
+                rating: 0,
                 issues: []
             });
 
