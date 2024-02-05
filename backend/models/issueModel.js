@@ -12,9 +12,10 @@ const issueSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   projectName: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   courseName: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+  tags: [{ type: String, ref: 'Tag' }],
   solved: Boolean
 });
   
 const Issue = mongoose.model('Issue', issueSchema);
 
-module.exports.default = Issue;
+module.exports = Issue;
