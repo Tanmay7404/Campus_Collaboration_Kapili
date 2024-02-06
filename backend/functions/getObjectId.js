@@ -3,7 +3,7 @@ const UserModel = require("../models/userModel.js");
 async function userNameToId(user_name) {
     var user = await UserModel.findOne({ username: user_name });
     if (user == null) {
-        return -1;
+        throw new Error("User Not Found");
     }
     return user._id;
 }
@@ -17,7 +17,7 @@ async function userNameToIdList(userNameList) {
         });
         return userIdList;
     } else {
-        return "Invalid Request";
+        throw new Error("User Not Found");
     }
 }
 
@@ -26,7 +26,7 @@ const ProjectModel = require("../models/projectModel.js");
 async function projectNameToId(project_name){
     var project = await ProjectModel.findOne({name: project_name});
     if(project==null){
-        return -1;
+        throw new Error("Project Not Found");
     }
     return project._id;
 }
@@ -41,7 +41,7 @@ async function projectNameToIdList(projectNameList){
         return projectIdList;
     }
     else{
-        return "Invalid Request";
+        throw new Error("Project Not Found");
     }
     
 }
@@ -51,7 +51,7 @@ const CourseModel = require("../models/courseModel.js");
 async function courseNameToId(course_name) {
     var course = await CourseModel.findOne({ title: course_name });
     if (course == null) {
-        return -1;
+        throw new Error("Course Not Found");
     }
     return course._id;
 }
@@ -65,7 +65,7 @@ async function courseNameToIdList(courseNameList) {
         });
         return courseIdList;
     } else {
-        return "Invalid Request";
+        throw new Error("Course Not Found");
     }
 }
 
@@ -74,7 +74,7 @@ const TagModel = require("../models/tagModel.js");
 async function tagNameToId(tag_name) {
     var tag = await TagModel.findOne({ name: tag_name });
     if (tag == null) {
-        return -1;
+        throw new Error("Tag Not Found");
     }
     return tag._id;
 }
@@ -88,7 +88,7 @@ async function tagNameToIdList(tagNameList) {
         });
         return tagIdList;
     } else {
-        return "Invalid Request";
+        throw new Error("Tag Not Found");
     }
 }
 
