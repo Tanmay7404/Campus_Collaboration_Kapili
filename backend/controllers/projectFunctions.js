@@ -80,8 +80,6 @@ class ProjectController {
         } catch(err){
             throw new Error(err);
         }
-
-        
     }
     async changeCompleted(project_id,ongoingStatus){
         Project.findByIdAndUpdate(project_id,{ongoing: ongoingStatus}, (err)=>{
@@ -127,14 +125,44 @@ class ProjectController {
     }
     sortProjectByTime(projectList){
         projectList.sort((a,b)=>{
-            const n3 = (a.createdAt);
-            const n4 = (b.createdAt);
+            if(a.ongoing){
+                var n3 = (a.createdAt);
+            }
+            else{
+                var n3 = a.completedAt
+            }
+            if(b.ongoing){
+                var n4 = (b.createdAt);
+            }
+            else{
+                var n4 = b.completedAt
+            }
             if(n3===n4){
                 return 0;
             }
             return n3 < n4 ? -1 : 1;
         })
         return projectList;
+    }
+    async sortProjectsByFriends(currUser,projectList){
+        try{
+            var user = await User.findOne({username: currUser});
+            projectList.sort((a, b) => {
+                const n1 = _.intersection(user.friends,a.creators).length;
+                const n2 = _.intersection(user.friends,a.creators).length;
+                if (n1 === n2) {
+                    const n3 = _.intersection(user.skills,a.tags).length;
+                    const n4 = _.intersection(user.skills,b.tags).length;
+                    if(n3===n4){
+                        return 0;
+                    }
+                    return n3 < n4 ? -1 : 1;
+                }
+                return n1 < n2 ? -1 : 1;
+            });
+        }catch(err){
+            throw new Error(err);
+        }
     }
 }
 

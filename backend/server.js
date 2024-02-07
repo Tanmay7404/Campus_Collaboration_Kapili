@@ -63,13 +63,13 @@ const userRoutes = require("./routes/userRoutes.js");
 app.use("/",userRoutes);
 
 const projectRoutes=require("./routes/projectRoutes.js");
-app.use('/',projectRoutes)
+app.use('/',projectRoutes);
 
 const courseRoutes=require("./routes/courseRoutes.js");
-app.use('/',courseRoutes)
+app.use('/',courseRoutes);
 
 const chatRoutes=require("./routes/chatRoutes.js");
-app.use('/',chatRoutes)
+app.use('/',chatRoutes);
 //PORT
 const port = process.env.port || 8080;
 
