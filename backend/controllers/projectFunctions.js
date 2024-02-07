@@ -1,5 +1,6 @@
 const Project = require("../models/projectModel.js"); // Assuming the correct path to your projectModel file
 const getObjectId = require("../functions/getObjectId.js");
+const User = require("../models/userModel.js");
 
 class ProjectController {
     async addProject(project_details) {
@@ -20,15 +21,23 @@ class ProjectController {
                 rating: 0,
                 issues: []
             });
-
             await project.save();
             return project_details._id;
         } catch (err) {
-            console.error(err);
-            return 0;
+            throw new Error(err);
         }
     }
 
+    async addCreators(project_id,creators){
+        try{
+            var project = await Project.findById(project_id);
+            var creatorsId = await getObjectId.userNameToIdList(creators);
+            project.creators = project.creators.concat(creatorsId);
+            project.save();
+        } catch(err){
+            throw new Error(err);
+        }
+    }
     async addCreators(project_id, creators) {
         try {
             const project = await Project.findById(project_id);
@@ -45,6 +54,26 @@ class ProjectController {
         }
     }
 
+    async addEndorsements(project_id,endorsements){
+        try{
+            var project = await Project.findById(project_id);
+            var endorsementsId = await getObjectId.userNameToIdList(endorsements);
+            project.endorsements = project.endorsements.concat(endorsementsId);
+            project.save();
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+    async addTags(project_id,tags){
+        try{
+            var project = await Project.findById(project_id);
+            var tagsId = await getObjectId.tagNameToIdList(tags);
+            project.tags = project.tags.concat(tagsId);
+            project.save();
+        } catch(err){
+            throw new Error(err);
+        }
+    }
     async addEndorsements(project_id, endorsements) {
         try {
             const project = await Project.findById(project_id);
@@ -77,6 +106,10 @@ class ProjectController {
         }
     }
 
+    async addFeedback(project_id,feedback){
+        try{
+            var userId = await getObjectId.userNameToId(feedback.reviewer);
+            var newFeedback = {
     async addFeedback(project_id, feedback) {
         try {
             const userId = await getObjectId.userNameToId(feedback.reviewer);
@@ -90,6 +123,8 @@ class ProjectController {
                     text: feedback.text,
                     timestamp: feedback.timestamp
                 }
+            }  
+            var project = Project.findById(project_id);
             };
             const project = await Project.findById(project_id);
             if (!project) {
@@ -100,6 +135,14 @@ class ProjectController {
             project.rating = (project.rating * (n - 1) + newFeedback.message.rating) / n;
             await project.save();
             return 1;
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+    async changeCompleted(project_id,ongoingStatus){
+        Project.findByIdAndUpdate(project_id,{ongoing: ongoingStatus}, (err)=>{
+            if(err){
+                throw new Error(err);
         } catch (error) {
             console.error(error);
             return 0;
@@ -119,6 +162,81 @@ class ProjectController {
         }
     }
         
+    async getUserProjects(currUserId){
+        try{
+            var user = User.findById(currUserId);
+            var projectIDs = user.projects;
+            var projects = [];
+            projectIDs.forEach(id => {
+                var project = Project.findById(id);
+                projects.push(project);
+            });
+            return projects;
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+    async getOthersProjects(currUserId){
+        try{
+            var projects = Project.find({creators: {$ne: { $elemMatch: currUserId }}});
+            return projects;
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+
+    sortProjectByPopularity(projectList){
+        projectList.sort((a,b)=>{
+            const n3 = (a.rating)* (a.endorsements.length);
+            const n4 = (b.rating)*(b.endorsements.length);
+            if(n3===n4){
+                return 0;
+            }
+            return n3 < n4 ? -1 : 1;
+        })
+        return projectList;
+    }
+    sortProjectByTime(projectList){
+        projectList.sort((a,b)=>{
+            if(a.ongoing){
+                var n3 = (a.createdAt);
+            }
+            else{
+                var n3 = a.completedAt
+            }
+            if(b.ongoing){
+                var n4 = (b.createdAt);
+            }
+            else{
+                var n4 = b.completedAt
+            }
+            if(n3===n4){
+                return 0;
+            }
+            return n3 < n4 ? -1 : 1;
+        })
+        return projectList;
+    }
+    async sortProjectsByFriends(currUser,projectList){
+        try{
+            var user = await User.findOne({username: currUser});
+            projectList.sort((a, b) => {
+                const n1 = _.intersection(user.friends,a.creators).length;
+                const n2 = _.intersection(user.friends,a.creators).length;
+                if (n1 === n2) {
+                    const n3 = _.intersection(user.skills,a.tags).length;
+                    const n4 = _.intersection(user.skills,b.tags).length;
+                    if(n3===n4){
+                        return 0;
+                    }
+                    return n3 < n4 ? -1 : 1;
+                }
+                return n1 < n2 ? -1 : 1;
+            });
+        }catch(err){
+            throw new Error(err);
+        }
+    }
 }
 
 module.exports = ProjectController;
