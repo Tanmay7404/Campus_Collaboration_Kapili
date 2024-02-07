@@ -18,7 +18,31 @@ class ChatController {
             return 0;
         }
     }
- 
+
+  async addMessage(chatId, messageDetails) {
+        try {
+            const chat = await Chat.findById(chatId);
+            if (!chat) {
+                console.error("Chat not found");
+                return 0;
+            }
+
+            chat.messages.push({
+                sender: messageDetails.sender,
+                message: messageDetails.message,
+                timestamp: Date.now()
+            });
+
+            chat.lastMessage = messageDetails.message;
+            chat.lastMessageTime = Date.now();
+
+            await chat.save();
+            return 1;
+        } catch (err) {
+            console.error(err);
+            return 0;
+        }
+    }
 
 }
 

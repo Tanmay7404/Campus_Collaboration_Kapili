@@ -69,7 +69,7 @@ async function courseNameToIdList(courseNameList) {
     }
 }
 
-const TagModel = require("../models/tagModel.js");
+const TagModel = require("../models/tagModels.js");
 
 async function tagNameToId(tag_name) {
     var tag = await TagModel.findOne({ name: tag_name });

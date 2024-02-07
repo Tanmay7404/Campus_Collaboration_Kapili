@@ -13,7 +13,7 @@ class UserController {
                     bio: user_details.bio,
                     profilePicture: user_details.profilePictureLink
                 },
-                skills: user_details.skills,
+                skills:[],
                 projects: [],
                 coursesCompleted: [],
                 chats: []
@@ -222,6 +222,24 @@ class UserController {
         } catch (error) {
             console.error(error);
             return null;
+        }
+    }
+
+    async addParticipants(chatId, participantIds) {
+        try {
+            const chat = await Chat.findById(chatId);
+            if (!chat) {
+                console.error("Chat not found");
+                return 0;
+            }
+
+            chat.participants.push(...participantIds);
+
+            await chat.save();
+            return 1;
+        } catch (err) {
+            console.error(err);
+            return 0;
         }
     }
     
