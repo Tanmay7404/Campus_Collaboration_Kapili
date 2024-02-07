@@ -11,7 +11,7 @@ const projectSchema = new mongoose.Schema({
   },
   creators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   endorsements: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  tags: [{ type: String, ref: 'Tag' }],
+  tags: [{ type:mongoose.Schema.Types.ObjectId, ref: 'Tag' , }],
   createdAt: { type: Date, default: Date.now },
   completedAt: { type: Date, default: Date.now },
   ongoing: Boolean,

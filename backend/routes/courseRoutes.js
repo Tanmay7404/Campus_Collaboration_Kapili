@@ -3,14 +3,16 @@ const courseRouter = express.Router();
 
 const CourseController = require("../controllers/courseFunctions.js");
 const Course = require("../models/courseModel.js");
-
+const getObjectId = require("../functions/getObjectId.js");
 
 courseRouter.post("/addCourse", async (req, res) => {
     try {
-        var course_details = req.body;
+        let course_details = req.body;
         console.log(course_details);
         const data = await new CourseController().addCourse(course_details);
-
+        let course_title = await Course.find({title : req.body.title});
+        let course_id = await getObjectId.courseNameToId(course_title);
+        await new CourseController().addTags(course_id ,req.body.tags);
         if (data === 1) {
             res.send("Updated");
         } else {

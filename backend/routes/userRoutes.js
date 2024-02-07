@@ -1,6 +1,12 @@
 const express = require("express");
 const userRouter = express.Router();
 
+require('dotenv').config();
+const path = require("path");
+const multer  = require('multer');
+const {storage} = require("../functions/imageVideo/cloudconfig.js");
+const upload = multer({ storage });
+
 //Import Controllers
 const UserController = require("../controllers/userFunctions.js");
 //Api Routes Declare
@@ -9,8 +15,9 @@ userRouter.post("/addNewUser", async (req,res)=>{
     try {
         var user_details = req.body;
         console.log(user_details);
-        const data = await new UserController().addNewUser(user_details);
-
+        var UC = new UserController();
+        const username = await UC.addNewUser(user_details);
+        var data = UC.updateProfilePicture(username,{url: req.files.path,filename: req.file.fieldname});    
         if (data === 1) {
             res.send("Updated");
         } else {
@@ -174,3 +181,17 @@ userRouter.get('/getUser/:username', async (req, res) => {
     }
 });
 module.exports = userRouter;
+
+
+//     let urls = [];
+//     let filenames = [];
+//     for (let file of req.files) {
+//         console.log(req.files)
+//         urls.push(file.path);
+//         filenames.push(file.fieldname);
+//     }
+//     let { username } = req.body;
+//     let newUser = new User({
+//         username: username,
+//     });
+//     newUser.images = urls.map((url, index) => ({ url, filename: filenames[index] }));

@@ -4,7 +4,7 @@ const courseSchema = new mongoose.Schema({
   title: { type: String, required: true, unique:true},
   description: String,
   lessons: [{ title: String, content: String }],
-  tags: [{ type: String, ref: 'Tag' }],
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
   enrolledUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now },
   feedbacks: [{

@@ -7,12 +7,12 @@ const userSchema = new mongoose.Schema({
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   profileInfo: {
     bio: String,
-    profilePicture: String
+    profilePicture: {url :String, filename: String}
   },
   skills:[{ type: String, ref: 'Tag' }],
   projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
   coursesCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
-  chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]
+  chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }]  // this chat is renundant 
 });
 
 const User = mongoose.model('User', userSchema);

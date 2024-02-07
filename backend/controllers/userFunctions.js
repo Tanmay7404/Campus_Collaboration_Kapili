@@ -8,10 +8,10 @@ class UserController {
                 username: user_details.username,
                 fullname:user_details.fullname,
                 email: user_details.email,
-                friends: user_details.friends,
+                friends: [],
                 profileInfo: {
                     bio: user_details.bio,
-                    profilePicture: user_details.profilePictureLink
+                    profilePicture: {url: "", filename: ""}
                 },
                 skills:[],
                 projects: [],
@@ -20,10 +20,9 @@ class UserController {
             });
 
             await user.save();
-            return 1;
+            return user.username;
         } catch (err) {
-            console.error(err);
-            return 0;
+            throw new Error(error);
         }
     }
 
@@ -55,8 +54,7 @@ class UserController {
                 return 0; // Return 0 if the friend is already added
             }
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -78,8 +76,7 @@ class UserController {
             console.log("Skills added successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -100,8 +97,7 @@ class UserController {
             console.log("Skills removed successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -122,8 +118,7 @@ class UserController {
             console.log("Bio updated successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -138,14 +133,13 @@ class UserController {
             }
 
             // Step 2: Update the profile picture in the user's profileInfo
-            user.profileInfo.profilePicture = newProfilePicture;
+            user.profileInfo.profilePicture  = newProfilePicture;
             await user.save();
 
             console.log("Profile picture updated successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error); // Return 0 for any error
         }
     }
     async addChatToUser(username, chatId) {
@@ -165,8 +159,7 @@ class UserController {
             console.log("Chat added to user successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -187,8 +180,7 @@ class UserController {
             console.log("Chat removed from user successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -209,8 +201,7 @@ class UserController {
             console.log("Completed course added to user successfully");
             return 1; // Return 1 for success
         } catch (error) {
-            console.error(error);
-            return 0; // Return 0 for any error
+            throw new Error(error);
         }
     }
 
@@ -220,8 +211,7 @@ class UserController {
             console.log(user)
             return user;
         } catch (error) {
-            console.error(error);
-            return null;
+            throw new Error(error);
         }
     }
 
@@ -238,8 +228,7 @@ class UserController {
             await chat.save();
             return 1;
         } catch (err) {
-            console.error(err);
-            return 0;
+            throw new Error(error);
         }
     }
     
