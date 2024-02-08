@@ -228,7 +228,7 @@ class UserController {
             await chat.save();
             return 1;
         } catch (err) {
-            throw new Error(error);
+            throw new Error(err);
         }
     }
     

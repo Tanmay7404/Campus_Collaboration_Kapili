@@ -3,6 +3,7 @@ const chatRouter = express.Router();
 
 // Import Controllers
 const ChatController = require("../controllers/chatFunctions.js");
+const ProjectController = require("../controllers/projectFunctions.js");
 // Api Routes Declare
 
 chatRouter.post("/addNewChat", async (req, res) => {
@@ -58,4 +59,30 @@ chatRouter.post("/addParticipants/:chatId", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+chatRouter.post("/collaborateProject", async(req,res)=>{
+    var projectId = req.body.projectId;
+    var currUserId = req.body.currUserId;
+    var CC = new ChatController()
+    var chatId = await new ProjectController().chatIdFromProjectId(projectId);
+    await CC.joiningUserToChatId(chatId,currUserId);
+
+    //SEE WHAT TO RETURN
+    var chats = CC.getAllChatsOfUser(currUserId);
+    res.send(chats);
+})
+
+chatRouter.post("/getInTouch", async(req,res)=>{
+    var userId = req.body.projectId;
+    var currUserId = req.body.currUserId;
+    //Add User to project;
+    var CC = new ChatController()
+    var chatId = await CC.findChatFromUsers([userId,currUserId]);
+    await CC.joiningUserToChatId(chatId,currUserId);
+
+    //SEE WHAT TO RETURN
+    var chats = CC.getAllChatsOfUser(currUserId);
+    res.send(chats); 
+})
+
 module.exports = chatRouter;

@@ -1,8 +1,10 @@
- const Project = require("../models/projectModel.js"); // Assuming the correct path to your projectModel file
+const Project = require("../models/projectModel.js"); // Assuming the correct path to your projectModel file
 const getObjectId = require("../functions/getObjectId.js");
 const User = require("../models/userModel.js");
 const ChatController = require("./chatFunctions.js");
 const Chat = require("../models/chatModel.js");
+const {createRoom} = require("../functions/Chats_Socket/socket.js");
+
 
 class ProjectController {
     async addProject(project_details) {
@@ -265,13 +267,19 @@ class ProjectController {
             throw new Error("Project not Found");
         }
         const projectUser = project.creators;
-        const participants = projectUser.map(userId => userId)
+        var participants = projectUser.map(async (userId) =>{
+            var user = User.findById(userId);
+            return user.username;
+        })
         const chat = new Chat({
-            participants : participants,
+            participants : projectUser,
             message : [],
             projectName : projectid,
         })
         await chat.save();
+
+        createRoom(chat._id,participants);
+
         return chat._id;
         } catch (error) {
             throw new Error(error);

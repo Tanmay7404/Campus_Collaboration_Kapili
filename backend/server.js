@@ -61,7 +61,17 @@ hashlist = loadHashList();
 const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
 mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
 
-//ROUTEsS IMPORT
+//ROOMS FIND
+const ROOMS = require("./models/roomModel.js");
+var document = await ROOMS.findOne({});
+if(document==null){
+    document = new ROOMS({
+        rooms: {}
+    });
+}
+var Rooms= document.rooms;
+
+//ROUTES IMPORT
 const userRoutes = require("./routes/userRoutes.js");
 app.use("/",userRoutes);
 
@@ -84,4 +94,4 @@ app.listen(port,function(){
 
 });
 
-module.exports = hashlist;
+module.exports = {hashlist,Rooms};
