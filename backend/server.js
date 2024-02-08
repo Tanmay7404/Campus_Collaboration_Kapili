@@ -13,6 +13,9 @@ app.use(express.static("public"));
 app.use(cors());
 app.set("view engine", "ejs"); 
 
+const loadHashList = require("./functions/spam detection/loadHashList");
+hashlist = loadHashList();
+
 //SHOULD WE INCLUDE INTERESTED IN FIELD FOR EACH USER
 // function sortProjectsAccToUser(currUser,projectList){
 //     projectList.sort((a, b) => {
@@ -58,7 +61,7 @@ app.set("view engine", "ejs");
 const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
 mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
 
-//ROUTES IMPORT
+//ROUTEsS IMPORT
 const userRoutes = require("./routes/userRoutes.js");
 app.use("/",userRoutes);
 
@@ -80,3 +83,5 @@ app.listen(port,function(){
 
 
 });
+
+module.exports = hashlist;
