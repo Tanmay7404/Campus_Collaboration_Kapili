@@ -4,16 +4,20 @@ const courseRouter = express.Router();
 const CourseController = require("../controllers/courseFunctions.js");
 const Course = require("../models/courseModel.js");
 const getObjectId = require("../functions/getObjectId.js");
+const Tag = require("../models/tagModels.js");
 
+//WORKING
 courseRouter.post("/addCourse", async (req, res) => {
     try {
         let course_details = req.body;
         console.log(course_details);
         const data = await new CourseController().addCourse(course_details);
-        let course_title = await Course.find({title : req.body.title});
-        let course_id = await getObjectId.courseNameToId(course_title);
+        let course_title = await Course.findOne({title : req.body.title});
+        console.log(course_title);
+        let course_id = await getObjectId.courseNameToId(course_title.title);
         await new CourseController().addTags(course_id ,req.body.tags);
-        if (data === 1) {
+        console.log(data);
+        if (data) {
             res.send("Updated");
         } else {
             res.send("Can't add course");
@@ -23,12 +27,12 @@ courseRouter.post("/addCourse", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-// get request for all courses
+// WORKING
 courseRouter.get("/all" , async (req,res) => {
     try {
         let allCourses = await new CourseController().getCoursesAll()
         if(allCourses){
-            res.send(allCourses);
+            res.json(allCourses);
         }
         else{
             res.send("ERROR");
@@ -37,7 +41,7 @@ courseRouter.get("/all" , async (req,res) => {
         console.log(error);
     }    
 })
-
+// WORKING
 courseRouter.get("/popularcourses" ,async (req,res)=>{
     try {
         let allCourses = await Course.find({});
@@ -53,27 +57,27 @@ courseRouter.get("/popularcourses" ,async (req,res)=>{
     }
     
 })
-
-courseRouter.delete("/deleteall" , async (req,res) =>{
-    try {
-        let res = await CourseController().removeAllCourses();
-        if(res == 1){
-            res.send("SUCCESS");
-        }
-        else {
-            res.send("ERROR");
-        }
-    } catch (error) {
-        console.log(error);
-    }
-})
+//WORKING
+// courseRouter.delete("/deleteall" , async (req,res) =>{
+//     try {
+//         let data = await CourseController().removeAllCourses();
+//         if(data == 1){
+//             res.send("SUCCESS");
+//         }
+//         else {
+//             res.send("ERROR");
+//         }
+//     } catch (error) {
+//         console.log(error);
+//     }
+// })
 
 courseRouter.post("/:courseid" , async (req,res)=>{
     try {
         let {courseid} = req.params;
         let {feedback} = req.body;
-        let res = await CourseController().addFeedback(feedback , courseid);
-        if(res == 1) {
+        let data = await CourseController().addFeedback(feedback , courseid);
+        if(data == 1) {
         console.log("SUCCESS");
         }
         else{
@@ -83,25 +87,26 @@ courseRouter.post("/:courseid" , async (req,res)=>{
         console.log(error);
     }  
 })
-// single course deletion request
-courseRouter.delete("/deletecourse/:courseid" ,async (req,res)=>{
-    try {
-        let {courseid} = req.params;
-        let res = await new CourseController().removeCourse(courseid);
-        if(res == 1){
-            res.send("Success");
-        }
-        else{
-            res.send("error");
-        }
-    } catch (error) {
-        console.log(error);
-    }
-})
 
-courseRouter.get("/users/:id",async (req,res)=>{
-    const {id} = req.params;
-    const userCompletedCourses = await CourseController().ourCompletedCourses(id);
+// courseRouter.delete("/deletecourse" ,async (req,res)=>{
+//     try {
+//         let course_title = req.params.title;
+//         let data = await new CourseController().removeCourse(course_title);
+//         if(data){
+//             res.send(data);
+//         }
+//         else{
+//             res.send("error");
+//         }
+//     } catch (error) {
+//         console.log(error);
+//     }
+// })
+
+// WORKING
+courseRouter.get("/:username",async (req,res)=>{
+    const {username} = req.params;
+    const userCompletedCourses = await new CourseController().ourCompletedCourses(username);
     if(userCompletedCourses){
         res.send(userCompletedCourses);
     }
@@ -109,5 +114,5 @@ courseRouter.get("/users/:id",async (req,res)=>{
         res.send("ERROR");
     }
 })
- 
+
 module.exports = courseRouter;

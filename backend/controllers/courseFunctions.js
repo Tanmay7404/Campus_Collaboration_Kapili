@@ -19,19 +19,21 @@ class CourseController {
                 helpful: []
             });
             await course.save();
-            return course_details._id;
+            return course._id;
         } catch (err) {
             console.error(err);
             return 0;
         }
     }
     
-    async removeCourse(courseId) {
-        const course = await Course.findByIdAndDelete(courseId);
-        if(course){
+    async removeCourse(courseTitle) {
+        const course = await Course.findOne(courseTitle);
+        const course_id = await getObjectId.courseNameToId(course);
+        const removedCourse = await Course.findByIdAndDelete(course_id);
+        if(removedCourse){
             try {
-                console.log(`deleted course : ${course}`);
-                return 1;
+                console.log(`deleted course : ${removedCourse}`);
+                return course;
             } catch (error) {
                 console.log(error);
                 return 0;   
@@ -53,7 +55,7 @@ class CourseController {
     }
 
     async searchCourse(courseTitle){
-        const course = await Course.find({title : courseTitle});
+        const course = await Course.findOne({title : courseTitle});
         if(course){
             try {
                 return course;
@@ -79,7 +81,9 @@ class CourseController {
         console.log("NO COURSES TO REMOVE");
     }
 
-    async ourCompletedCourses(userId){
+    async ourCompletedCourses(username){
+        
+        const userId = await getObjectId.userNameToId(username);
         const user = await User.findById(userId);
         if(user.coursesCompleted.length){
             try {
@@ -92,20 +96,20 @@ class CourseController {
         console.log("NO COMPLETED COURSES");
     }
 
-    async addTags(course_id , tags){
+    async addTags(course_title , tags){
         try {
-            let course = await Course.findById(course_id);
-        let tagId = await getObjectId.tagNameToIdList(tags);
-        course.tags = course.tags.concat(tagId);
-        await course.save();
+            const course = await Course.findOne({title : course_title});
+            let tagId = await getObjectId.tagNameToIdList(tags);
+            course.tags = course.tags.concat(tagId);
+            await course.save();
         } catch (error) {
            console.log(error); 
         }
         
     }
-    async addEnrolledUsers(course_id , users){
+    async addEnrolledUsers(course_title , users){
         try {
-            let course  = await Course.findById(course_id);
+            const course = await Course.findOne({title : course_title});
         let userIds = await getObjectId.userNameToIdList(users);
         course.enrolledUsers = course.enrolledUsers.concat(userIds);
         await course.save();
@@ -115,7 +119,7 @@ class CourseController {
         
     }
 
-    async addFeedback(course_id,feedback){
+    async addFeedback(course_title,feedback){
         try {
             var userId = await getObjectId.userNameToId(feedback.reviewer);
             var newFeedback = {
@@ -126,7 +130,7 @@ class CourseController {
                     timestamp: feedback.timestamp
                 }
             }
-            var course = await Course.findById(course_id);
+            var course = await Course.findById(course_title);
             course.feedbacks.push(newFeedback);
             var n = course.feedbacks.length;
             course.rating = (course.rating*(n-1) +newFeedback.message.rating)/n;
@@ -137,10 +141,10 @@ class CourseController {
         }
         
     }
-    async addIssues(issue_id , course_id){
+    async addIssues(issue_id , course_title ){
         try {
             const issue = await Issue.findById(issue_id);
-        const course  = await Course.findById(course_id);
+        const course  = await Course.findById(course_title);
         course.issues.push(issue);
         await course.save();
         } catch (error) {
@@ -150,8 +154,8 @@ class CourseController {
     }
     coursesByPopularity(courseList){
         courseList.sort((a,b)=>{
-            const n3 = (a.rating) * (a.enrolledUsers.length);
-            const n4 = (b.rating) * (b.enrolledUsers.length);
+            const n3 = (a.rating) * (a.helpful.length);
+            const n4 = (b.rating) * (b.helpful.length);
             if(n3 == n4){
                 return 0;
             }

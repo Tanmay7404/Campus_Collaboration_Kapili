@@ -1,12 +1,15 @@
  const Project = require("../models/projectModel.js"); // Assuming the correct path to your projectModel file
 const getObjectId = require("../functions/getObjectId.js");
 const User = require("../models/userModel.js");
+const ChatController = require("./chatFunctions.js");
+const Chat = require("../models/chatModel.js");
 
 class ProjectController {
     async addProject(project_details) {
         try {
             var project = new Project({
                 title: project_details.title,
+                name : project_details.name,
                 projectInfo: {
                     description: project_details.description,
                     imgVideoLinks: [],
@@ -20,14 +23,33 @@ class ProjectController {
                 rating: 0,
                 issues: []
             });
+
             await project.save();
-            return project_details._id;
+            project.chat = await addChat(project.name);
+            return project._id;
         } catch (err) {
             throw new Error(err);
         }
     }
 
-
+    async editProjects(projectId , project_details){
+        try {
+            const updatedProject = await Project.findByIdAndUpdate(projectId ,{
+                title : project_details.title,
+                name : project_details.name,
+                projectInfo : {
+                    description: project_details.description,
+                    $push : {imageVideolinks : project_details.imageVideolinks},
+                    projectLink: project_details.projectLinks
+                },
+                ongoing : project_details.ongoing,
+                $push : {tags : project_details.tags}
+            })
+            return updatedProject;
+        } catch (error) {
+            throw new Error(error);
+        }    
+    }
 
     async addCreators(project_id, creators) {
         try {
@@ -35,12 +57,23 @@ class ProjectController {
             if (!project) {
                 throw new Error("Project not found");
             }
-            var creatorsId = await getObjectId.userNameToIdList(creators);
-            project.creators = project.creators.concat(creatorsId);
-            await project.save();
-            return 1;
+            if(!creators.length) {
+                console.log("creators empty")
+                return 0;
+            }
+            else if(creators.length){
+                var creatorsId = await getObjectId.userNameToIdList(creators);
+                project.creators = project.creators.concat(creatorsId);
+                let chat = project.chat;
+                let newChat = await Chat.findById(chat);
+                newChat.participants.push(...creatorsId);
+                await project.save();
+                await newChat.save();
+                return 1;
+            }
+            
         } catch (error) {
-            throw new Error(error);
+            throw error;
         }
     }
 
@@ -50,9 +83,16 @@ class ProjectController {
             if (!project) {
                 throw new Error("Project not found");
             }
-            var endorsementsId = await getObjectId.userNameToIdList(endorsements);
-            project.endorsements = project.endorsements.concat(endorsementsId);
-            project.save();
+            if(!endorsements.length){
+                console.log("endorsment empty")
+                return ;
+            }
+            else if(endorsements.length){
+                var endorsementsId = await getObjectId.userNameToIdList(endorsements);
+                project.endorsements = project.endorsements.concat(endorsementsId);
+                project.save();
+                return 1;
+            }        
         } catch(err){
             throw new Error(err);
         }
@@ -63,9 +103,15 @@ class ProjectController {
             if (!project) {
                 throw new Error("Project not found");
             }
-            var tagsId = await getObjectId.tagNameToIdList(tags);
-            project.tags = project.tags.concat(tagsId);
-            project.save();
+            if(!tags.length){
+                console.log("tags are empty");
+                return;
+            }
+            else if(tags.length){
+                var tagsId = await getObjectId.tagNameToIdList(tags);
+                project.tags = project.tags.concat(tagsId);
+                project.save();
+            }
         } catch(err){
             throw new Error(err);
         }
@@ -149,6 +195,15 @@ class ProjectController {
         }
     }
 
+    async delProjects(project_id){
+        try {
+            const project = await Project.findByIdAndDelete(project_id);
+            return project;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+
     sortProjectByPopularity(projectList){
         projectList.sort((a,b)=>{
             const n3 = (a.rating)* (a.endorsements.length);
@@ -200,6 +255,39 @@ class ProjectController {
         }catch(err){
             throw new Error(err);
         }
+    }
+
+    async addChat(projectname){
+        try {
+            const projectid = await getObjectId.projectNameToId(projectname);
+            const project = await Project.findById(projectid);
+            if(!project){
+            throw new Error("Project not Found");
+        }
+        const projectUser = project.creators;
+        const participants = projectUser.map(userId => userId)
+        const chat = new Chat({
+            participants : participants,
+            message : [],
+            projectName : projectid,
+        })
+        await chat.save();
+        return chat._id;
+        } catch (error) {
+            throw new Error(error);
+        }    
+    }
+    async chatIdFromProjectId(projectId){
+        try {
+            const project = await Project.findById(projectId);
+            if(!project){
+            throw new Error("Project Not found");
+            }
+            const projectChat = project.chat;
+            return projectChat;
+        } catch (error) {
+            throw new Error(error);
+        }    
     }
 }
 
