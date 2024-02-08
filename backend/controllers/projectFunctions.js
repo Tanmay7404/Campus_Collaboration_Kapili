@@ -1,4 +1,4 @@
-const Project = require("../models/projectModel.js"); // Assuming the correct path to your projectModel file
+ const Project = require("../models/projectModel.js"); // Assuming the correct path to your projectModel file
 const getObjectId = require("../functions/getObjectId.js");
 const User = require("../models/userModel.js");
 
@@ -9,9 +9,8 @@ class ProjectController {
                 title: project_details.title,
                 projectInfo: {
                     description: project_details.description,
-                    videoLink: project_details.videoLink,
-                    photoLink: project_details.photoLink,
-                    projectLink: project_details.projectLink
+                    imgVideoLinks: [],
+                    projectLink: project_details.projectLinks
                 },
                 creators: [], // Assuming creators is an array of user IDs
                 endorsements: [],
@@ -111,7 +110,22 @@ class ProjectController {
             throw new WebTransportError(err);
         }
     }
-        
+
+    async addDemolinks (project_id, files){
+        let urls = [];
+        let filenames = [];
+        for (let file of files) {
+            urls.push(file.path);
+            filenames.push(file.fieldname);
+        }
+        var project = await Project.findById(project_id);
+        if(project ==NULL){
+            throw new Error("Project Not Found!!");
+        }
+
+        project.projectInfo.imageVideolinks = project.projectInfo.imageVideolinks.concat(urls.map((ur, index) => ({url: ur, filename: filenames[index] })));
+    }
+            
     async getUserProjects(currUserId){
         try{
             var user = User.findById(currUserId);

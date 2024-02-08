@@ -181,17 +181,3 @@ userRouter.get('/getUser/:username', async (req, res) => {
     }
 });
 module.exports = userRouter;
-
-
-//     let urls = [];
-//     let filenames = [];
-//     for (let file of req.files) {
-//         console.log(req.files)
-//         urls.push(file.path);
-//         filenames.push(file.fieldname);
-//     }
-//     let { username } = req.body;
-//     let newUser = new User({
-//         username: username,
-//     });
-//     newUser.images = urls.map((url, index) => ({ url, filename: filenames[index] }));

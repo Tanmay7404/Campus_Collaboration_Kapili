@@ -5,9 +5,8 @@ const projectSchema = new mongoose.Schema({
   name:{ type: String, required: true,unique:true },
   projectInfo: {
     description: String,
-    videoLink: String,
-    photoLink: String,
-    projectLink: String
+    imageVideolinks: [{url :String, filename: String}],
+    projectLink: [String]
   },
   creators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   endorsements: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

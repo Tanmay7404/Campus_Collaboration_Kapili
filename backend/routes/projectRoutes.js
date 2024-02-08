@@ -7,19 +7,22 @@ const ProjectController = require("../controllers/projectFunctions.js");
 
 projectRouter.post("/addProject", async (req,res)=>{
     try {
-        var project_details = req.body;
-        console.log(project_details);
-        const data = await new ProjectController().addProject(project_details);
-
-        if (data === 1) {
-            res.send("Updated");
-        } else {
-            res.send("Can't add project");
-        }
+        var project_details = {
+            title: req.body.title,
+            description: req.body.description,
+            projectlinks: req.body.projectlinks,
+            ongoing: req.body.ongoing
+        };
+        var PC = new ProjectController();
+        var project_id = await PC.addProject(project_details);
+        PC.addCreators(project_id,req.body.creators);
+        PC.addTags(project_id,req.body.tags);
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
+
+
 
 module.exports = projectRouter;
