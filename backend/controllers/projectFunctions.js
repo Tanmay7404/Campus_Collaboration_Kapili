@@ -24,10 +24,14 @@ class ProjectController {
                 feedbacks: [],
                 rating: 0,
                 issues: []
+                
+                
             });
 
+            
+            project.chat = await new ChatController().addChat({projectName:project._id });
             await project.save();
-            project.chat = await addChat(project.name);
+
             return project._id;
         } catch (err) {
             throw new Error(err);
@@ -69,10 +73,21 @@ class ProjectController {
                 var creatorsId = await getObjectId.userNameToIdList(creators);
                 project.creators = project.creators.concat(creatorsId);
                 let chat = project.chat;
-                let newChat = await Chat.findById(chat);
-                newChat.participants.push(...creatorsId);
+                console.log("chat: " +chat)
+                if (chat) {
+                    let newChat = await Chat.findById(chat);
+                    if (newChat) {
+                        newChat.participants.push(...creatorsId);
+                        await newChat.save();
+                        var x = await new ChatController().addMessage(newChat._id ,{sender: "System", message: " Users Added"});
+                    } else {
+                        console.log("Chat not found");
+                    }
+                } else {
+                    console.log("Chat not initialized");
+                }
                 await project.save();
-                await newChat.save();
+
                 return 1;
             }
             

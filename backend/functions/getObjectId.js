@@ -15,6 +15,7 @@ async function userNameToIdList(userNameList) {
         users.forEach(user => {
             userIdList.push(user._id);
         });
+
         return userIdList;
     } else {
         throw new Error("User Not Found");

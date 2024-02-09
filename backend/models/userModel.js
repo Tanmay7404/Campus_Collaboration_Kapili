@@ -8,7 +8,11 @@ const userSchema = new mongoose.Schema({
   profileInfo: {
     bio: String,
     profilePicture: {url :String, filename: String}
-  },
+    },
+    githubLink:{type: String},
+    instagramLink: {type: String},
+    linkedinLink:{type: String} ,
+  department:{type: String},
   skills:[{ type: String, ref: 'Tag' }],
   projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
   coursesCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],

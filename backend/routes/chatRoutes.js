@@ -5,6 +5,8 @@ const chatRouter = express.Router();
 const ChatController = require("../controllers/chatFunctions.js");
 const ProjectController = require("../controllers/projectFunctions.js");
 // Api Routes Declare
+const getObjectId = require("../functions/getObjectId.js");
+
 
 chatRouter.post("/addNewChat", async (req, res) => {
     try {
@@ -62,14 +64,15 @@ chatRouter.post("/addParticipants/:chatId", async (req, res) => {
 
 chatRouter.post("/collaborateProject", async(req,res)=>{
     var projectId = req.body.projectId;
-    var currUserId = req.body.currUserId;
+    var currUserName = req.body.currUserId;
+
     var CC = new ChatController()
     var chatId = await new ProjectController().chatIdFromProjectId(projectId);
-    await CC.joiningUserToChatId(chatId,currUserId);
+    var x = await new ChatController().addMessage(newChat._id,{sender: currUserName, message: ("I Want To Collaborate!!")});
 
     //SEE WHAT TO RETURN
-    var chats = CC.getAllChatsOfUser(currUserId);
-    res.send(chats);
+    // var chats = CC.getAllChatsOfUser(currUserId);
+    res.send(1);
 })
 
 chatRouter.post("/getInTouch", async(req,res)=>{
@@ -84,5 +87,34 @@ chatRouter.post("/getInTouch", async(req,res)=>{
     var chats = CC.getAllChatsOfUser(currUserId);
     res.send(chats); 
 })
+
+chatRouter.post("/personalChat", async (req, res) => {
+    try {
+        var friendUsername = req.body.friendId;
+        var currUsername = req.body.currUserId;
+        
+        // Instantiate ChatController
+        var CC = new ChatController();
+       
+        // Find chat between users
+        var chatId = await CC.findChatFromUsers([friendUsername, currUsername]);
+        var userId= await getObjectId.userNameToId(currUsername)
+        var friendId= await getObjectId.userNameToId(friendUsername)
+
+        console.log(123)
+        // Join users to chat
+        await CC.joiningUserToChatId(chatId,userId);
+        await CC.joiningUserToChatId(chatId,friendId);
+
+        // Get all chats of current user
+      //  var chats = await CC.getAllChatsOfUser();
+
+        // Send response with chats
+        res.send("done");
+    } catch (error) {
+        console.error('Error in /personalChat:', error);
+        res.status(500).send({ error: 'Internal server error' }); // Send a generic error response
+    }
+});
 
 module.exports = chatRouter;

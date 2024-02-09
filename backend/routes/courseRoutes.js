@@ -15,7 +15,8 @@ courseRouter.post("/addCourse", async (req, res) => {
         let course_title = await Course.findOne({title : req.body.title});
         console.log(course_title);
         let course_id = await getObjectId.courseNameToId(course_title.title);
-        await new CourseController().addTags(course_id ,req.body.tags);
+        if(req.body.tags!=null){
+        await new CourseController().addTags(course_id ,req.body.tags);}
         console.log(data);
         if (data) {
             res.send("Updated");

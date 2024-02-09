@@ -11,18 +11,18 @@ const upload = multer({ storage });
 const UserController = require("../controllers/userFunctions.js");
 //Api Routes Declare
 
-userRouter.post("/addNewUser", async (req,res)=>{
+userRouter.post("/addNewUser", upload.array("images",1), async (req,res)=>{
     try {
         var user_details = req.body;
         console.log(user_details);
         var UC = new UserController();
         const username = await UC.addNewUser(user_details);
-        var data = UC.updateProfilePicture(username,{url: req.files.path,filename: req.file.fieldname});    
-        if (data === 1) {
-            res.send("Updated");
-        } else {
-            res.send("Can't add user");
-        }
+       // var data = UC.updateProfilePicture(username,{url: req.files.path,filename: req.file.fieldname});    
+        // if (data === 1) {
+        //     res.send("Updated");
+        // } else {
+        //     res.send("Can't add user");
+        // }
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");

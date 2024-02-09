@@ -14,9 +14,9 @@ class ChatController {
                 lastMessageTime: chat_details.lastMessageTime || Date.now(),
                 projectName: chat_details.projectName // Assuming projectName is a project ID
             });
-
+            
             await chat.save();
-            return 1;
+            return chat._id;
         } catch (err) {
             console.error(err);
             return 0;
@@ -50,17 +50,21 @@ class ChatController {
 
     async findChatFromUsers(users){
         try{
-            var userIds = getObjectId.userNameToIdList(users);
-            var chat = await Chat.findOne({users: {$all: userIds,$size: userIds.length}});
+            var userIds =await getObjectId.userNameToIdList(users);
+       //    var newUserIds = userIds.map(user => user._id);
+
+            var chat = await Chat.findOne({ participants: { $all: userIds, $size: userIds.length } });
             if(chat==null){
+                console.log(122222);
                 chat = new Chat({
-                    participants: userIds,
+                    participants: [],
                     messages: []
                     
                 });
                 chat.save();
-                createRoom(chat._id,users);
+                //createRoom(chat._id,users);
             }
+            console.log(1111);
             return chat._id;
         }catch(err){
             throw new Error(err);
@@ -70,15 +74,19 @@ class ChatController {
     async joiningUserToChatId(chatId,currUserId){
         try{
             var chat = await Chat.findById(chatId);
-            if(currUserId in chat.participants){
+            console.log(currUserId);
+            console.log(chat.participants);
+            if (chat.participants.some(participant => participant.toString() === currUserId.toString())) {
+                console.log(10);
                 return;
             }
             else{
                 var user = await User.findById(currUserId);
                 user.chats.push(chatId);
                 chat.participants.push(currUserId);
+                console.log(11);
                 await chat.save();
-                await user.save()
+                await user.save();
                 return;
             }
         } catch(err){
