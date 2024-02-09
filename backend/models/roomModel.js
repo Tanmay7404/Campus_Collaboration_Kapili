@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose; // Import Schema from mongoose
 
-const roomsSchema = new mongoose.Schema({
+const roomsSchema = new Schema({  // Use Schema instead of undefined Schema
   rooms: {
     type: Map,
     of: new Schema({
@@ -12,4 +13,4 @@ const roomsSchema = new mongoose.Schema({
 
 const Rooms = mongoose.model('Room', roomsSchema);
 
-module.exports = Chat;
+module.exports = Rooms; // Export Rooms, not Chat

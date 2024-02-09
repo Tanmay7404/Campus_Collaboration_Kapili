@@ -6,6 +6,9 @@ const http = require("http");
 const _ = require('lodash');
 const cors = require("cors");
 
+const socketIo = require("socket.io");
+const { Server } = require("socket.io"); 
+
 
 const app = express();
 app.use(express.json());
@@ -13,8 +16,17 @@ app.use(express.static("public"));
 app.use(cors());
 app.set("view engine", "ejs"); 
 
-const loadHashList = require("./functions/spam detection/loadHashList");
-hashlist = loadHashList();
+
+
+const server = http.createServer(app);
+// const io = socketIo(server);
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:8080",
+        methods: ["GET", "POST"],
+    },
+});
+
 
 //SHOULD WE INCLUDE INTERESTED IN FIELD FOR EACH USER
 // function sortProjectsAccToUser(currUser,projectList){
@@ -58,40 +70,105 @@ hashlist = loadHashList();
 // }
 
 //DATABASE CONNECT
-const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
-mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
 
-//ROOMS FIND
+
+// //ROOMS FIND
 const ROOMS = require("./models/roomModel.js");
-var document = await ROOMS.findOne({});
-if(document==null){
-    document = new ROOMS({
-        rooms: {}
-    });
+// var document = await ROOMS.findOne({});
+// if(document==null){
+//     document = new ROOMS({
+//         rooms: {}
+//     });
+// }
+ //var Rooms= document.rooms;
+// Async function to ensure the database connection and document retrieval
+async function initialize() {
+    try {
+        const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
+        mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
+
+
+        const loadHashList = require("./functions/spam_detection/loadHashList.js");
+        hashlist = loadHashList();
+
+
+        // Find or create document
+        let document = await ROOMS.findOne({});
+        if (document == null) {
+            document = new ROOMS({
+            });
+            await document.save();
+        }
+        // Export variables
+       module.exports = { hashlist, Rooms: document.rooms };
+       
+    } catch (error) {
+        console.error("Database connection error:", error);
+    }
 }
-var Rooms= document.rooms;
+
+io.on('connection', socket => {
+    console.log('New client connected');
+
+    // Send previous messages to the client
+    Message.find().then(messages => {
+        socket.emit('messages', messages);
+    }).catch(error => {
+        console.error('Error fetching messages:', error);
+    });
+
+    // Handle new messages from the client
+    socket.on('message', data => {
+        const message = new Message({
+            text: data.text,
+            user: data.user,
+            timestamp: new Date()
+        });
+        message.save().then(savedMessage => {
+            io.emit('message', savedMessage);
+        }).catch(error => {
+            console.error('Error saving message:', error);
+        });
+    });
+
+    // Handle disconnection
+    socket.on('disconnect', () => {
+        console.log('Client disconnected');
+    });
+});
+
+
+
+
 
 //ROUTES IMPORT
 const userRoutes = require("./routes/userRoutes.js");
 app.use("/",userRoutes);
 
 const projectRoutes=require("./routes/projectRoutes.js");
-app.use('/',projectRoutes);
+app.use('/projects',projectRoutes);
 
 const courseRoutes=require("./routes/courseRoutes.js");
-app.use('/',courseRoutes);
+app.use('/courses',courseRoutes);
 
 const chatRoutes=require("./routes/chatRoutes.js");
-app.use('/',chatRoutes);
+app.use('/chats',chatRoutes);
 //PORT
 const port = process.env.port || 8080;
 
-
-//LISTENER
-app.listen(port,function(){
-    console.log(`Server Started on Port ${port}`);
-
-
+initialize().then(() => {
+    // Start the server after the database initialization
+    app.listen(port, function () {
+        console.log(`Server Started on Port ${port}`);
+    });
+}).catch(error => {
+    console.error("Initialization error:", error);
 });
+//LISTENER
+// app.listen(port,function(){
+//     console.log(`Server Started on Port ${port}`);
 
-module.exports = {hashlist,Rooms};
+
+// });
+
+//module.exports = {hashlist,Rooms};
