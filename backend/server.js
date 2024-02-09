@@ -22,7 +22,7 @@ const server = http.createServer(app);
 // const io = socketIo(server);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:8080",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"],
     },
 });
@@ -109,32 +109,37 @@ async function initialize() {
 
 io.on('connection', socket => {
     console.log('New client connected');
+    socket.on('new-user',  (room, name) => {
+    
+        socket.join(room)
+      })
+
 
     // Send previous messages to the client
-    Message.find().then(messages => {
-        socket.emit('messages', messages);
-    }).catch(error => {
-        console.error('Error fetching messages:', error);
-    });
+    
 
     // Handle new messages from the client
-    socket.on('message', data => {
-        const message = new Message({
-            text: data.text,
-            user: data.user,
-            timestamp: new Date()
-        });
-        message.save().then(savedMessage => {
-            io.emit('message', savedMessage);
-        }).catch(error => {
-            console.error('Error saving message:', error);
-        });
-    });
+    
 
     // Handle disconnection
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });
+    socket.on('send-chat-message',  async(room, message,username) => {
+        const senderId='rgvdgv'
+        // console.log(message)
+        const messageData={
+          sender:senderId,
+          message:message,
+          timestamp:new Date().toLocaleString()
+        };
+        await login.findOneAndUpdate({projectName:room},
+         { $push: { messages: messageData },
+          $set:{ lastMessage: message, lastMessageTime: new Date().toLocaleString }
+        },{ new: true }
+          );
+        socket.broadcast.to(room).emit('chat-message', { message: message, name: username })
+      })
 });
 
 
@@ -158,7 +163,7 @@ const port = process.env.port || 8080;
 
 initialize().then(() => {
     // Start the server after the database initialization
-    app.listen(port, function () {
+  server.listen(port, function () {
         console.log(`Server Started on Port ${port}`);
     });
 }).catch(error => {

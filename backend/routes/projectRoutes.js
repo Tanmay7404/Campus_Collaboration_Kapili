@@ -7,7 +7,7 @@ const Project = require("../models/projectModel.js");
 //Api Routes Declare
 
 // WORKING
-projectRouter.post("/addProject", async (req,res)=>{
+projectRouter.post("/addNewProject", async (req,res)=>{
     try {
         var project_details = {
             title: req.body.title,
@@ -19,10 +19,10 @@ projectRouter.post("/addProject", async (req,res)=>{
         var PC = new ProjectController();
         var project_id = await PC.addProject(project_details);
         if(req.body.creators){
-            PC.addCreators(project_id,req.body.creators);
+          await PC.addCreators(project_id,req.body.creators);
         }
         if(req.body.tags){
-            PC.addTags(project_id,req.body.tags);
+         await  PC.addTags(project_id,req.body.tags);
         }
         res.send(project_id);
     } catch (error) {

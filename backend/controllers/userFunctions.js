@@ -4,16 +4,22 @@ class UserController {
     
     async addNewUser(user_details){
         try {
+            const { username, fullname, email, bio, githubLink, instagramLink, linkedinLink } = user_details;
+
             const user = new Model({
-                username: user_details.username,
-                fullname:user_details.fullname,
-                email: user_details.email,
+               username: username,
+               fullname: fullname,
+                email:email,
                 friends: [],
                 profileInfo: {
-                    bio: user_details.bio,
-                    profilePicture: {url: "", filename: ""}
+                    bio,
+                    profilePicture: { url: "", filename: "" }
                 },
-                skills:[],
+                githubLink: githubLink,
+                  instagramLink:  instagramLink,
+                   linkedinLink: linkedinLink,
+                department: user_details.department,
+                skills: [],
                 projects: [],
                 coursesCompleted: [],
                 chats: []
@@ -21,7 +27,7 @@ class UserController {
 
             await user.save();
             return user.username;
-        } catch (err) {
+        } catch (error) {
             throw new Error(error);
         }
     }

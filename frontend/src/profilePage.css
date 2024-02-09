@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300&display=swap');
+
+* {
+  font-family: 'Lexend', sans-serif;
+}
+
+:root {
+    --button-color: rgb(0, 51, 255); /* Define a CSS variable for button color */
+    --button-border-color: rgb(0, 51, 255); /* Define a CSS variable for button border color */
+  
+  }
+  .containerPP {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    background-color: black; }
+  
+  .contentPP {
+    width: 55%; /* 80% of the width */
+    height: 100%; 
+    background-color: #272727;
+    /* Fills the whole height */
+  }
+ 
+  .buttonHover:hover {
+    background-color: white !important; /* Change hover color */
+    color:black !important; 
+  }
+  .close-icon {
+margin-left: auto; 
+
+/* Adjust right position as needed */
+  }
+  .close-icon:hover{
+    color:black
+  }
+  .fillWidthDiv {
+    display: flex;
+    flex: 1;
+
+    height: 6%;
+    /* background-color: green; */
+    padding: 10px;
+    /* This makes the div fill the remaining width */
+    
+  }
+  .fillWidthDiv2{
+    height: 6%;
+    /* background-color: blue; */
+    padding-left: 64px;
+  }
+
+  .fillWidthDiv3{
+    display: flex;
+  
+    flex:content;
+    height: 15%;
+    /* background-color: red; */
+    padding-left: 64px;
+  }
+  .profile-image {
+     /* Ensure the image fills the circular div */
+     width: 100px;
+    height: 100px; /* Ensure the image fills the circular div */
+    border-radius: 50%;
+  }
+  .imageContainer{
+display: flex;
+align-items: center;
+margin:0;
+    width:100px;
+    height:100%;
+    /* background-color: aquamarine; */
+  }
+  .buttonContainer{
+    display: flex;
+    align-items: center;
+    margin-Left:0;
+    margin-right: 0;
+        width:200px;
+        height:100%;
+        /* background-color: aquamarine; */
+      }
+.name{
+    display: flex;
+    flex: 1;
+    
+    height: fit-content;
+    /* background-color: rgb(247, 0, 255); */
+    padding-left: 64px;
+}
+.space
+{
+    display: flex;
+    flex: 1;
+    
+    height: 1%;
+    /* background-color: rgb(255, 0, 85); */
+    padding-left: 64px;
+}
+.E-mail{
+    display: flex;
+    flex: 1;
+    height: 4%;
+    
+    /* background-color: rgb(200, 255, 0); */
+    padding-left: 64px;
+}
+.email1{
+    width:35%;
+    height: fit-content;
+}
+.box {
+    background-color: black ;
+    transition: background-color 0.3s ease;
+  }
+  
+  .box:hover {
+    background-color: white ;
+    color:black
+    /* Change to the desired color on hover */
+  }
+.email2{
+    width:100%;
+    height: fit-content;
+
+    padding-left: 15px;
+    padding-right: 64px
+}
+.textfield{
+    display: flex;
+    flex: 1;
+    height: fit-content;
+
+    padding-left: 64px;
+    padding-right: 64px;
+}
+
+.customButton {
+  /* Your default button styles here */
+  color: var(--button-color)  !important;;
+  border-color: var(--button-border-color)  !important;;
+}
+.blackbg{
+  display: flex;
+  flex: 1;
+  height: 8%;
+  
+  /* background-color: rgb(200, 255, 0); */
+  padding-left: 64px;
+  padding-right: 64px;
+}
+
+.customButton:hover {
+  /* Your styles for hover state here */
+  filter: brightness(150%); /* Increase brightness for contrast */
+  background-color: transparent;
+}
+
+.customButton:active {
+  /* Styles for active state */
+  color: var(--button-color); /* Ensure text color remains consistent */
+  border-color: var(--button-border-color); /* Ensure border color remains consistent */
+  background-color: transparent; /* Ensure background color remains consistent */
+}
+
+/* Remove default focus outline and ensure consistency */
+.customButton:focus-visible {
+  outline: none;
+}
+
+/* Remove color change on hover and focus for outline buttons */
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover,
+.btn-outline-primary:focus,
+.btn-outline-secondary:focus,
+.btn-outline-primary:active,
+.btn-outline-secondary:active {
+  color: var(--button-color);
+  border-color: var(--button-border-color);
+  background-color: transparent;
+}
+
+  
