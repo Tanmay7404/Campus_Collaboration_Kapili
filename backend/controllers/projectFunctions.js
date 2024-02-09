@@ -34,24 +34,26 @@ class ProjectController {
         }
     }
 
-    async editProjects(projectId , project_details){
+    async editProjects(projectId, project_details) {
         try {
-            const updatedProject = await Project.findByIdAndUpdate(projectId ,{
-                title : project_details.title,
-                name : project_details.name,
-                projectInfo : {
-                    description: project_details.description,
-                    $push : {imageVideolinks : project_details.imageVideolinks},
-                    projectLink: project_details.projectLinks
+            const updatedProject = await Project.findByIdAndUpdate(projectId, {
+                $set: {
+                    title: project_details.title,
+                    name: project_details.name,
+                    'projectInfo.description': project_details.description,
+                    'projectInfo.imgVideoLinks': { $push: project_details.imageVideolinks },
+                    projectLink: project_details.projectLinks,
+                    ongoing: project_details.ongoing,
                 },
-                ongoing : project_details.ongoing,
-                $push : {tags : project_details.tags}
-            })
+                $push: { tags: { $each: project_details.tags } }
+            }, { new: true });
+    
             return updatedProject;
         } catch (error) {
             throw new Error(error);
-        }    
+        }
     }
+    
 
     async addCreators(project_id, creators) {
         try {
