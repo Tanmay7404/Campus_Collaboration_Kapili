@@ -56,7 +56,15 @@ Armed with these insights, our platform's ideation phase has been refined to add
 
 As we move forward, these insights will guide the development of a collaborative platform that exceeds the expectations of college students, providing them with a vibrant and supportive space to showcase projects and connect with like-minded individuals.
 
+## Future Updates
 
+We will consider exploring the following features to enhance the functionality and user experience of Campus Collaboration in the future:
+
+1. **Project Analytics:**
+   - Provide insights into project analytics, including views, engagement metrics, and trends, to help users understand the impact of their projects.
+
+2. **Collaborative Tools:**
+   - Integrate collaborative tools such as real-time document editing, code collaboration, and discussion forums to enhance project collaboration
 
 ## Design of Pages
 
