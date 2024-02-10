@@ -11,7 +11,6 @@ const getObjectId = require("../functions/getObjectId.js");
 chatRouter.post("/addNewChat", async (req, res) => {
     try {
         var chat_details = req.body;
-        console.log(chat_details);
         const data = await new ChatController().addChat(chat_details);
 
         if (data === 1) {
@@ -92,7 +91,6 @@ chatRouter.post("/personalChat", async (req, res) => {
     try {
         var friendUsername = req.body.friendId;
         var currUsername = req.body.currUserId;
-        
         // Instantiate ChatController
         var CC = new ChatController();
        
@@ -101,7 +99,6 @@ chatRouter.post("/personalChat", async (req, res) => {
         var userId= await getObjectId.userNameToId(currUsername)
         var friendId= await getObjectId.userNameToId(friendUsername)
 
-        console.log(123)
         // Join users to chat
         await CC.joiningUserToChatId(chatId,userId);
         await CC.joiningUserToChatId(chatId,friendId);
@@ -110,11 +107,39 @@ chatRouter.post("/personalChat", async (req, res) => {
       //  var chats = await CC.getAllChatsOfUser();
 
         // Send response with chats
-        res.send("done");
+        res.send(chatId);
     } catch (error) {
         console.error('Error in /personalChat:', error);
         res.status(500).send({ error: 'Internal server error' }); // Send a generic error response
     }
 });
+
+chatRouter.get("/getAllMessages/:chatId", async (req, res) => {
+    try {
+      const chatId = req.params.chatId;
+      var CC = new ChatController();
+  
+      const chats = await CC.getMessagesByChatId(chatId);
+      res.json(chats);
+    } catch (error) {
+      console.error('Error in /getAllMessages', error);
+      res.status(500).send({ error: 'Internal server error' });
+    }
+  });
+
+  chatRouter.get("/getTotalChats/:chatId", async (req, res) => {
+    try {
+      const chatId = req.params.chatId;
+      var CC = new ChatController();
+     console.log(chatId)
+      const chats = await CC.getAllChatsOfUser(chatId);
+      
+
+      res.json(chats);
+    } catch (error) {
+      console.error('Error in /getAllMessages', error);
+      res.status(500).send({ error: 'Internal server error' });
+    }
+  });
 
 module.exports = chatRouter;

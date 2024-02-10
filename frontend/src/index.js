@@ -9,6 +9,7 @@ import CreateProjectPage from './createProject';
 import CreateCoursePage from './createCourse';
 import EditCoursePage from './editCourse';
 import App2 from './App2';
+import Global  from './Global.js';
 
 // import reportWebVitals from './reportWebVitals';
 

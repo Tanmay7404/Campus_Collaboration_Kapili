@@ -30,7 +30,6 @@ class ChatController {
                 console.error("Chat not found");
                 return 0;
             }
-
             chat.messages.push({
                 sender: messageDetails.sender,
                 message: messageDetails.message,
@@ -55,7 +54,6 @@ class ChatController {
 
             var chat = await Chat.findOne({ participants: { $all: userIds, $size: userIds.length } });
             if(chat==null){
-                console.log(122222);
                 chat = new Chat({
                     participants: [],
                     messages: []
@@ -64,7 +62,6 @@ class ChatController {
                 chat.save();
                 //createRoom(chat._id,users);
             }
-            console.log(1111);
             return chat._id;
         }catch(err){
             throw new Error(err);
@@ -74,17 +71,14 @@ class ChatController {
     async joiningUserToChatId(chatId,currUserId){
         try{
             var chat = await Chat.findById(chatId);
-            console.log(currUserId);
-            console.log(chat.participants);
+         
             if (chat.participants.some(participant => participant.toString() === currUserId.toString())) {
-                console.log(10);
                 return;
             }
             else{
                 var user = await User.findById(currUserId);
                 user.chats.push(chatId);
                 chat.participants.push(currUserId);
-                console.log(11);
                 await chat.save();
                 await user.save();
                 return;
@@ -93,20 +87,56 @@ class ChatController {
             throw new Error(err);
         }
     }
-
+    async getMessagesByChatId(chatId) {
+        try {
+          const chat = await Chat.findById(chatId).populate('messages.sender', 'username');
+          return chat ? chat.messages : [];
+        } catch (error) {
+          console.error("Error getting messages by chat ID:", error);
+          throw error; // Rethrow to handle it outside
+        }
+      }
+    
     async getAllChatsOfUser(currUserId){
         try{
-            var user = await User.findById(currUserId);
+            var user = await User.findOne({ username:currUserId });
             if(user == null){
                 throw new Error("User Not Found");
             }
+           
+
             var chatIds = user.chats;
             var chats = [];
             chatIds.forEach((chatId)=>{
                 var chat = Chat.findById(chatId);
                 chats.push(chat);
             })
-            return chats;
+          
+            chats.sort((a,b)=>{
+                const n3 = a.lastMessageTimet;
+                const n4 = b.lastMessage;
+                if(n3===n4){
+                    return 0;
+                }
+                return n3 < n4 ? -1 : 1;
+            })
+            console.log(1232)
+            console.log(chats)
+            console.log(1232)
+            
+            var data =[];
+            chats.forEach((chat)=>{
+                // var d1={};
+                chats.participants.forEach((userId)=>{
+                    var user = User.findById(userId);
+                    d1[profilePic]=user.profilePic;
+                    // d1[userNaem]=
+                });
+                data.push(d1);
+            })
+
+            //return chats;
+            return 1
         }catch(err){
             throw new Error(err);
         }

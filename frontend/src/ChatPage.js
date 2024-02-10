@@ -8,39 +8,105 @@ import logo from './images/logo.svg';
 import search from './images/search.svg';
 import green from './images/green.jpg'
 import io from 'socket.io-client';
-
+import  { useEffect } from 'react';
+// const socket=io('http://localhost:8080')
 const ChatPage = ({ people, currentUser,current }) => {
   const [selectedPerson, setSelectedPerson] = useState(people[1]); // Initialize with the first person
-  const [currentDate, setCurrentDate] = useState(new Date()); // Track the current date
-  const handlePersonClick = (person) => {
+  const [currentDate, setCurrentDate] = useState(new Date());
+   // Track the current date
+ const [userObjectId,setUserObjectId]=useState()
+ const [chatList,setChatList]=useState([])
+ const [userFriends, setUserFriends] = useState([]);
+
+
+const fetchUserFriends = async () => {
+  try {
+    const response = await fetch('http://localhost:8080/getuserfriends/'+currentUser.name, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+      // You can include additional headers or body if needed
+    });
+
+  
+    const data = await response.json();
+    setUserFriends(data);
+  } catch (error) {
+    console.error('Error fetching user friends:', error);
+  }
+};
+  const handlePersonClick = async(person) => {
   
     setSelectedPerson(person);
-  };
+    const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        currUserId:selectedPerson.name,
+         friendId: currentUser.name,
+      }),
+    });
+    const userData = await firstResponse.json();
 
-  useEffect(() => {
-    console.log('connected to localhost')
-    const newSocket = io('http://localhost:8080'); // Replace with your server URL
+    const UserResponse = await fetch('http://localhost:8080/getUser/'+currentUser.name, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+     
+    });
     
-    setSocket(newSocket);
-    return () => newSocket.close();
-}, []);
-
-useEffect(() => {
-  if (!socket) return;
-
-  socket.on('message', message => {
-      setMessages(prevMessages => [...prevMessages, message]);
-  });
-
-  socket.on('messages', messages => {
-      setMessages(messages);
-  });
-
-  return () => {
-      socket.off('message');
-      socket.off('messages');
+    
+    setCurrChatId(userData)
+    
+    
+    const userId = (await UserResponse.json())._id;
+    const UserResponseasd = await fetch('http://localhost:8080/chats/getTotalChats/'+currentUser.name, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+     
+    });
+    setUserObjectId(userId)
+    const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${userData}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }); 
+    var a=await ChatResponse.json()
+     await fetchUserFriends()
+  // setChatList(a)
   };
-}, [socket]);
+
+//   useEffect(() => {
+//     console.log('connected to localhost')
+//     const newSocket = io('http://localhost:8080'); // Replace with your server URL
+    
+//     setSocket(newSocket);
+//     return () => newSocket.close();
+// }, []);
+
+// useEffect(() => {
+//   if (!socket) return;
+
+//   socket.on('message', message => {
+//       setMessages(prevMessages => [...prevMessages, message]);
+//   });
+
+//   socket.on('messages', messages => {
+//       setMessages(messages);
+//   });
+
+//   return () => {
+//       socket.off('message');
+//       socket.off('messages');
+//   };
+// }, [socket]);
 
   const handleMessageSend = (person) => {
   
@@ -49,29 +115,61 @@ useEffect(() => {
   
   
   const formatDate = (dateString) => {
-    const messageDate = new Date(dateString);
-    const daysAgo = Math.floor((currentDate - messageDate) / (1000 * 60 * 60 * 24));
+    const [day, month, year] = dateString.split('/');
+    const formattedDate = `${day}/${month}/${year}`;
   
-    if (daysAgo === 0) {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+  
+    if (formattedDate === today.toLocaleDateString('en-GB')) {
       return 'Today';
-    } else if (daysAgo === 1) {
+    } else if (formattedDate === yesterday.toLocaleDateString('en-GB')) {
       return 'Yesterday';
     } else {
-      // You can customize the date format further based on your requirement
-      return messageDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      return formattedDate;
     }
   };
   const [searchValue, setSearchValue] = React.useState('');
   
   const handleMessage = (e) => {
-    console.log(e.target.value)
     setCurrentMessage(e.target.value)
   };
   
   const handleInputChange2 = (e) => {
-    console.log(e.target.value)
     setSearchValue(e.target.value);
   };
+  const [currUser,setCurrUser]=useState()
+ const [currChatId,setCurrChatId]=useState()
+
+  const handleSubmit = async (e) => {
+    try {
+      // First fetch
+    
+      var link="http://localhost:8080/chats/addMessage/"+currChatId
+      // Second fetch
+      const secondResponse = await fetch(link, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sender:userObjectId ,
+          message: currentMessage,
+        }),
+      });
+  
+      const secondData = await secondResponse.json();
+      
+      // Handle success response for the second fetch
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error for both fetch calls
+    }
+  };
+
+
+
   
   
 
@@ -140,10 +238,7 @@ useEffect(() => {
                   Last seen {formatDate(selectedPerson.lastSeen.date)} {selectedPerson.lastSeen.time}
                 </span>
               )} */}
-              <div id="online">
-                <img src={green} alt="" />
-                {current} online
-              </div>
+              
             </div>
             <div id="chats">
               {selectedPerson.messages.map((message, index) => (
@@ -200,7 +295,8 @@ useEffect(() => {
                     </inf>
                   ) : null}
                   <div
-                    className="chat"
+                    className={`chat ${message.senderId === currentUser.id ? 'me' : ''}`}
+                    // className="chat"
                     style={{ textAlign: message.senderId === currentUser.id ? 'right' : 'left' }}
                   >
                     <p>{message.text}</p>
@@ -211,7 +307,7 @@ useEffect(() => {
             <div id="typingBox">
               <input type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}/>
               <div id="attach">
-                <button onClick={()=>{}}>send</button>
+                <button onClick={()=>{handleSubmit()}}>send</button>
                 <img src={clip} id="clip" alt="" />
               </div>
             </div>

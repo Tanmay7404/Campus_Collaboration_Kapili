@@ -14,7 +14,6 @@ const UserController = require("../controllers/userFunctions.js");
 userRouter.post("/addNewUser", upload.array("images",1), async (req,res)=>{
     try {
         var user_details = req.body;
-        console.log(user_details);
         var UC = new UserController();
         const username = await UC.addNewUser(user_details);
        // var data = UC.updateProfilePicture(username,{url: req.files.path,filename: req.file.fieldname});    
@@ -164,7 +163,17 @@ userRouter.post("/addCompletedCourse", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
+userRouter.get("/getuserfriends/:username" , async (req,res)=>{
+    try {
+        const {username} = req.params;
+        const data = await new UserController().getUserFriends(username);
+        res.json(data);
+    
+    } catch (error) {
+        res.send(error);
+    }
+   
+})
 userRouter.get('/getUser/:username', async (req, res) => {
     try {
         const username = req.params.username;

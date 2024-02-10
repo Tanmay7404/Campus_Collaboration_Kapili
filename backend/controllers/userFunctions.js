@@ -220,7 +220,27 @@ class UserController {
             throw new Error(error);
         }
     }
-
+    async getUserFriends(username) {
+        try {
+            const user = await Model.findOne({ username: username }).populate('friends');
+            const userFriends = user.friends;
+            const data = {
+                FRIENDS: []
+            };
+            for (let userFriend of userFriends) {
+                const friendData = {
+                    username: userFriend.username,
+                    id : userFriend._id ,
+                    profilePicture: userFriend.profileInfo.profilePicture.url, 
+                };
+                data.FRIENDS.push(friendData);
+            }
+            return data; 
+        } catch (error) {
+            console.error("Error fetching user friends:", error);
+            throw error; 
+        }
+    }
     async addParticipants(chatId, participantIds) {
         try {
             const chat = await Chat.findById(chatId);

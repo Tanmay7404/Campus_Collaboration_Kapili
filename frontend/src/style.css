@@ -231,24 +231,34 @@ input:focus {
 #inf{
     background-color: #3B3B3B;
     display: flex;
+
     
-    padding: 5px 10px;
+    /* padding: 20px 10px; */
+    padding-left: 20px;
+    padding-right: 20px;
     border-radius: 4px;
     gap: 20px;
     font-weight: 300;
     font-size: 17px;
-    margin-top: 10px;
+    /* margin-top: 10px;
     margin-left: 10px;
-    margin-right: 10px;
+    margin-right: 10px; */
 }
 .Name{
     font-weight: 400;
+    font-size: small;
 }
 .line{
     width: 1px;
     background-color: white;
-    height: 20px;
+    height: 12px;
+    padding-top: 10px;
 }
+
+/* inf3 .line{
+    padding-top: 10px !important;
+} */
+
 #last-seen{
     font-weight: 100;
 }
@@ -288,11 +298,13 @@ input:focus {
     background-color: #3B3B3B;
     display: flex;
     
-    padding: 5px 10px ;
+    padding: 5px 20px ;
+
+
     /* margin-bottom: 20px; */
     border-radius: 4px;
     gap: 20px;
-    font-weight: 300;
+    font-weight: 500;
     font-size: 17px;
 }
 .me>inf{
@@ -316,11 +328,14 @@ input:focus {
 
 
 
+
 inf{
     padding: 10px 10px;
     padding-bottom: 0;
+    padding-left: 20px;
+    padding-right: 20px;
     
-    margin: 10px 10px 10px ;
+    /* margin: 10px 10px 10px ; */
     display: flex;
     gap: 20px;
     background-color: #272727;
@@ -340,23 +355,26 @@ inf3{
 }
 
 .date,.time{
-    padding: 4px 0;
+    padding: 0px 0;
     color: #BCBCBC;
     font-weight: 200;
-    font-size: 15px;
+    font-size: 10px;
 }
 
 
 
 .chat p:nth-child(1){
-    padding-top: 5px;
+    /* padding-top: 5px; */
 }
 
 .chat p{
-    padding: 5px 5px;
-    font-weight: 300;
+    padding-bottom: 15px;
+    padding-top: 15px;
+    font-weight: 500;
     font-size: 17px;
     margin-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: #272727;
 }
 
