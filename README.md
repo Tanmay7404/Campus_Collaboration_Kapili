@@ -1,6 +1,3 @@
-# Campus_Collaboration_Kapili
-Kapili 2024 Kriti Development PS submission
-
 # Campus Collaboration
 
 
@@ -23,9 +20,9 @@ projects.
 
 
 
-<img src="./graph2.jpeg" alt="login page" height ="300" width="400">
+<img src="./img/graph2.jpeg" alt="login page" height ="300" width="400">
 
-<img src="./graph1.jpeg" alt="login page" height ="300" width="400">
+<img src="./img/graph1.jpeg" alt="login page" height ="300" width="400">
 
 
 
@@ -67,31 +64,31 @@ The design of pages is at [Figma File Link](https://www.figma.com/file/uglTzpF9R
 
 Login Page
 
-<img src="./login.jpeg" alt="login page" height ="300" width="400">
+<img src="./img/login.jpeg" alt="login page" height ="300" width="400">
 
 Explore Page
 
-<img src="./explorepage.png" alt="login page" height ="600" width="400">
+<img src="./img/explorepage.png" alt="login page" height ="600" width="400">
 
 Personal Chat 
 
-<img src="./personalchat.png" alt="login page" height ="300" width="400">
+<img src="./img/personalchat.png" alt="login page" height ="300" width="400">
 
 Project Page
 
-<img src="./project.png" alt="project page" height ="600" width="400">
+<img src="./img/project.png" alt="project page" height ="600" width="400">
 
 Profile Page
 
-<img src="./profile.png" alt="profile page" height ="300" width="400">
+<img src="./img/profile.png" alt="profile page" height ="300" width="400">
 
 Create Page
 
-<img src="./create.png" alt="profile page" height ="300" width="400">
+<img src="./img/create.png" alt="profile page" height ="300" width="400">
 
 Search Profile
 
-<img src="./searchprof.png" alt="profile page" height ="300" width="400">
+<img src="./img/searchprof.png" alt="profile page" height ="300" width="400">
 
 
 ## Tech-Stack Used
