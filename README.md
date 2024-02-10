@@ -1,6 +1,6 @@
 # Campus Collaboration
 
-
+This is a dynamic collaborative platform designed for college students to showcase their projects, foster meaningful collaborations, and connect with like-minded peers. Whether you are working on innovative software applications, groundbreaking research projects, or creative endeavors, our platform provides a vibrant space for you to share your work, collaborate with others, and explore a diverse range of projects within the college community.
 
 ## Description
 
