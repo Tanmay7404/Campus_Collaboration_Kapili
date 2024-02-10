@@ -10,12 +10,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import EditProfilePage from './editProfilePage.js';
 import EditProjectPage from './editProject.js';
 import CreateProjectPage from './createProject.js';
+import Home from "./pages/home.jsx";
 
 function App() {
   return (
   <Routes>
     <Route path="/" element = {   
-<CreateProfilePage/>
+<Home/>
 } ></Route>
   </Routes>
 

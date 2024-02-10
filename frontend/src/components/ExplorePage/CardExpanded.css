@@ -1,0 +1,373 @@
+@font-face {
+    font-family: "Lenxend";
+    src: url(../../font/Lexend-VariableFont_wght.ttf);
+}
+
+
+
+#details-main{
+    /* display: none; */
+    scale: 1;
+    opacity: 1;
+    background-color: #0000005d;
+    position: fixed;
+    z-index: 10;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    overflow: scroll;
+    
+}
+#details-main::-webkit-scrollbar {
+    display: none;
+}
+  
+#details-main {
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+#details{
+    max-width: 900px;
+    margin: auto;
+    margin-top: 20px;
+    background-color: #272727;
+    border-radius: 10px;
+    width: 80%;
+    overflow: hidden;
+}
+#banner{
+    width: 100%;
+    height: 500px;
+    position: fixed;
+}
+
+#banner-image{
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+#layer{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background: linear-gradient(73.02deg, #000000 -13.78%, rgba(0, 0, 0, 0.7) 60.46%, rgba(0, 0, 0, 0) 176.58%);
+}
+
+#cross{
+    position: fixed;
+    z-index: 2;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
+}
+
+#inf{
+    z-index: 3;
+    position: fixed;
+    left: 40px;
+    bottom: 40px;
+    height: 150px;
+    width: 400px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#inf h1{
+    font-family: "Lenxend";
+    font-weight: 400;
+
+}
+#inf2{
+    padding: 10px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    height: 40px;
+}
+#line{
+    width: 2px;
+    height: 100%;
+    background-color: white;
+}
+
+#deltails-page1{
+    padding: 40px 60px;
+}
+
+
+#contactor{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#profile{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#profile-picture{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border: 2px solid white;
+    border-radius: 50%;
+}
+
+#profile span{
+    font-family: "Lenxend";
+    font-weight: 300;
+    font-size: 16px;
+}
+
+#linker{
+    display: flex;
+    gap: 20px;
+}
+
+
+#linker button{
+
+    background-color: #0d0d0d;
+    color: #BCBCBC;
+    border: none;
+    padding: 10px 20px;
+    box-shadow: 0px 4px 4px 0px #00000040;
+    font-family: "Lenxend";
+    font-weight: 300;
+    font-size: 15px;
+
+}
+
+#linker button:hover{
+    background-color: #060606;
+    color: #FFFFFF;
+}
+
+#display-img{
+    padding: 40px 0;
+}
+
+
+.swiper {
+    width: 100%;
+   height: 100%; 
+   /* background-color: red; */
+   /* overflow: visible; */
+ }
+
+.swiper-slide{
+   position: relative;
+   margin: 20px 0px;
+   overflow: hidden;
+   height: 200px !important;
+   /* width: 20px; */
+   text-align: center;
+   font-size: 18px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.swiperImg{
+    position: absolute;
+    height: 200px;
+    width:100px;
+    object-fit: cover;
+
+}
+
+
+
+#description h1{
+    font-weight: 500;
+    font-size: 24px;
+    margin: 30px 0;
+}
+#description-part2{
+    color: #BCBCBC;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.03em;
+    text-align: justify;
+    margin: 20px 0;
+}
+
+#tags{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.tags{
+    text-decoration: none;
+    border: 1px solid white;
+    border-radius: 4px;
+    padding: 8px 17px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+#feedbacks-ratting{
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#feedbacks-ratting h1{
+    font-weight: 500;
+    font-size: 24px;
+    padding: 20px 0;
+}
+
+.feedback-pic{
+    margin: 10px 20px;
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+#ratting{
+    display: flex;
+    background-color: #1B1B1B;
+    align-items: center;
+
+}
+#addFeedbackButton{
+    flex: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.profile-id{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 5px;
+    padding: 12px 20px;
+    transition: all 1s;
+}
+
+.profile-name{
+    font-weight: 300;
+    font-size: 16px;
+    color: white;
+}
+
+form{
+    display: flex;
+    align-items: center;
+}
+
+.stars {
+    cursor: pointer;
+    padding-right: 15px;
+}
+
+.star{
+    height: 13px;
+}
+
+#date{
+    text-transform: uppercase;
+    align-items: center;
+    background-color: #1B1B1B;
+    border: none;
+    font-size: 12px;
+    font-family: "Lenxend";
+    font-weight: 300;
+    padding: 0px 12px;
+    border-left: 2px solid white;
+}
+
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+
+
+#submiting{
+    display: none;
+    transition: all 1s ease-out;
+}
+
+#FeedBackDownButton{
+    transition: all 0.25s ease-out;
+
+}
+#addFeedbackButton>div{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#addFeedbackButton>div:hover>span{
+    color: #FFFFFF;
+}
+
+#addFeedbackButton>div>span{
+    padding-right: 15px;
+    font-weight: 400;
+    color: #BCBCBC;
+    font-size: 16px;
+}
+
+#text{
+    display: none;
+}
+#text button{
+    cursor: pointer;
+    background-color: #1B1B1B;
+    border: none;
+    color: #757575;
+    width: 100px;
+    font-weight: 300;
+
+}
+#text button:hover{
+    color: white;
+}
+
+#feedBackText{
+    flex: auto;
+    background-color: #1B1B1B;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 300;
+    font-size: 15px;
+}
+
+inf{
+    display: flex;
+    padding-top: 10px;
+}
+
+#feedbacks{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+#feedbacks> div{
+    background-color:#1B1B1B;
+}
+#feedbacks> div>p{
+    text-align: justify;
+    padding: 15px 20px;
+    padding-top: 5px;
+    font-size: 14px;
+    font-weight: 200;
+    line-height: 20px;
+
+}

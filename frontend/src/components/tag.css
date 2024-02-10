@@ -1,0 +1,82 @@
+#taglist{
+    padding-top: 30px;
+    /* transform: translateY(800px); */
+    position: absolute;
+    z-index: 11;
+    top: calc(100% + 20px);
+    border-radius: 8px;
+    left: 0;
+    width: 30vw;
+    height: 300px;
+    overflow-y: scroll;
+    gap: 40px;
+    background: linear-gradient(212.81deg, rgba(0, 0, 0, 0.9) 3.07%, rgba(22, 22, 22, 0.9) 95.64%);
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 20px  ;
+}
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#taglist::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  #taglist {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+
+
+.webd{
+    width: 600px;
+    height: 78px;
+}
+.appd{
+    width: 600px;
+    height: 47px;
+}
+.database{
+    width: 600px;
+    height: 47px;
+}
+.devops{
+    width: 600px;
+    height: 47px;
+}
+.mlai{
+    width: 600px;
+    height: 78px;
+}
+.cyber{
+    width: 600px;
+    height: 78px; 
+}
+.design{
+    width: 600px;
+    height: 47px; 
+}
+.misc{
+    width: 600px;
+    height: 47px;
+}
+
+.box{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+.title{
+    /* height: 95px; */
+    width: 100%;
+    color: white;
+}
+.content{
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(30vw - 20px) !important;
+}
