@@ -4,6 +4,7 @@ const getObjectId = require("../functions/getObjectId.js");
 //Import Controllers
 const ProjectController = require("../controllers/projectFunctions.js");
 const Project = require("../models/projectModel.js");
+const User = require("../models/userModel.js");
 //Api Routes Declare
 
 // WORKING
@@ -85,5 +86,41 @@ projectRouter.post("/addfeedbacks" , async(req,res)=>{
     else {
         res.send("ERROR")
     }
+})
+
+projectRouter.get("/popularProjects" , async(req,res)=>{
+    try {
+        let projectList = await Project.find({});
+        let data = await new ProjectController().sortProjectByPopularity(projectList);
+        res.send(data);
+    } catch (error) {
+        res.send("ERROR")
+    }
+})
+
+projectRouter.get("/recentProjects" ,async (req,res)=>{
+    try {
+        let projectList = await Project.find({});
+        let data = await new ProjectController().sortProjectByTime(projectList);
+        res.send(data);
+    } catch (error) {
+        res.send("ERROR");
+    }
+})
+
+projectRouter.get("/commonProjects" ,async (req,res)=>{
+    try {
+        let user = await User.findOne(req.body.user);
+        let allProjects = await Project.find({});
+        let data = await new ProjectController().sortProjectsByFriends(user , allProjects);
+        res.send(data);
+    } catch (error) {
+        res.send("ERROR");
+    }
+})
+projectRouter.post("/addfeedbacks" ,async (req,res)=>{
+    let projectName = req.body.name;
+    let feedback = req.body.feedback;
+    let data = addFeed
 })
 module.exports = projectRouter;

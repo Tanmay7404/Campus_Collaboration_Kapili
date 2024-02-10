@@ -116,4 +116,14 @@ courseRouter.get("/:username",async (req,res)=>{
     }
 })
 
+courseRouter.get("/commoncourses" , async (req,res)=>{
+    try {
+        let username = req.body.username;
+        let courses = await Course.find({});
+        let data = await new CourseController().sortCoursesByFriends(username , courses);
+        res.send(data);
+    } catch (error) {
+        console.log(error);
+    }
+})
 module.exports = courseRouter;

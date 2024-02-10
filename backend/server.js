@@ -150,6 +150,9 @@ io.on('connection', socket => {
 const userRoutes = require("./routes/userRoutes.js");
 app.use("/",userRoutes);
 
+const Routes = require("./routes/test.js");
+app.use("/home",Routes);
+
 const projectRoutes=require("./routes/projectRoutes.js");
 app.use('/projects',projectRoutes);
 

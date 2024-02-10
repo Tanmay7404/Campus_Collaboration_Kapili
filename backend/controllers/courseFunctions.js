@@ -168,6 +168,28 @@ class CourseController {
         })
         return courseList;
     }
+    async sortCoursesByFriends(currUser, courseList) {
+        try {
+            var user = await User.findOne({ username: currUser });
+            courseList.sort((a, b) => {
+                const n1 = _.intersection(user.friends, a.enrolledUsers).length;
+                const n2 = _.intersection(user.friends, b.enrolledUsers).length;
+                if (n1 === n2) {
+                    const n3 = _.intersection(user.skills, a.tags).length;
+                    const n4 = _.intersection(user.skills, b.tags).length;
+                    if (n3 === n4) {
+                        return 0;
+                    }
+                    return n3 < n4 ? -1 : 1;
+                }
+                return n1 < n2 ? -1 : 1;
+            });
+            return courseList;
+        } catch (err) {
+            throw new Error(err);
+        }
+    }
+    
 }
 
 module.exports = CourseController;

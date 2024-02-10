@@ -47,7 +47,6 @@ class ProjectController {
                     'projectInfo.description': project_details.description,
                     'projectInfo.imgVideoLinks': { $push: project_details.imageVideolinks },
                     projectLink: project_details.projectLinks,
-                    ongoing: project_details.ongoing,
                 },
                 $push: { tags: { $each: project_details.tags } }
             }, { new: true });
@@ -58,7 +57,6 @@ class ProjectController {
         }
     }
     
-
     async addCreators(project_id, creators) {
         try {
             var project = await Project.findById(project_id);
@@ -136,27 +134,23 @@ class ProjectController {
         }
     }
 
-    async addFeedback(project_id, feedback) {
+    async addFeedback(projectName, userName , feedback) {
         try {
-            var userId = await getObjectId.userNameToId(feedback.reviewer);
-            if (userId === -1) {
-                throw new Error("User not found");
+            let user = await User.findOne({username : userName });
+            let project = await Project.findOne({name : projectName});
+            if (!user || !project) {
+                throw new Error("User or Project not found");
             }
-            var newFeedback = {
-                reviewer: userId,
-                message: {
-                    rating: feedback.rating,
-                    text: feedback.text,
-                    timestamp: feedback.timestamp
+            let data = {
+                reviewer : user._id,
+                message : {
+                    rating : feedback.message.rating,
+                    text : feedback.message.text,
                 }
-            }  
-            var project = await Project.findById(project_id);
-            if (!project) {
-                throw new Error("Project not found");
             }
-            project.feedbacks.push(newFeedback);
+            project.feedbacks.push(data);
             var n = project.feedbacks.length;
-            project.rating = (project.rating * (n - 1) + newFeedback.message.rating) / n;
+            project.rating = (project.rating * (n - 1) + data.message.rating) / n;
             await project.save();
             return 1;
         } catch(err){
@@ -224,43 +218,58 @@ class ProjectController {
     }
 
     sortProjectByPopularity(projectList){
-        projectList.sort((a,b)=>{
-            const n3 = (a.rating)* (a.endorsements.length);
-            const n4 = (b.rating)*(b.endorsements.length);
-            if(n3===n4){
-                return 0;
+        try {
+            if(!projectList){
+                throw new Error("ProjectList is Empty");
             }
-            return n3 < n4 ? -1 : 1;
-        })
-        return projectList;
+            projectList.sort((a,b)=>{
+                const n3 = (a.rating)* (a.endorsements.length);
+                const n4 = (b.rating)*(b.endorsements.length);
+                if(n3===n4){
+                    return 0;
+                }
+                return n3 < n4 ? -1 : 1;
+            })
+            return projectList;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
     sortProjectByTime(projectList){
-        projectList.sort((a,b)=>{
-            if(a.ongoing){
-                var n3 = (a.createdAt);
+        try {
+            if(!projectList){
+                throw new Error("Project list is empty");
             }
-            else{
-                var n3 = a.completedAt
-            }
-            if(b.ongoing){
-                var n4 = (b.createdAt);
-            }
-            else{
-                var n4 = b.completedAt
-            }
-            if(n3===n4){
-                return 0;
-            }
-            return n3 < n4 ? -1 : 1;
-        })
-        return projectList;
+            projectList.sort((a,b)=>{
+                if(a.ongoing){
+                    var n3 = (a.createdAt);
+                }
+                else{
+                    var n3 = a.completedAt
+                }
+                if(b.ongoing){
+                    var n4 = (b.createdAt);
+                }
+                else{
+                    var n4 = b.completedAt
+                }
+                if(n3===n4){
+                    return 0;
+                }
+                return n3 < n4 ? -1 : 1;
+            })
+            return projectList;
+        } catch (error) {
+            throw new Error(error);
+        }
+        
     }
     async sortProjectsByFriends(currUser,projectList){
         try{
             var user = await User.findOne({username: currUser});
             projectList.sort((a, b) => {
                 const n1 = _.intersection(user.friends,a.creators).length;
-                const n2 = _.intersection(user.friends,a.creators).length;
+                const n2 = _.intersection(user.friends,b.creators).length;
                 if (n1 === n2) {
                     const n3 = _.intersection(user.skills,a.tags).length;
                     const n4 = _.intersection(user.skills,b.tags).length;
@@ -271,6 +280,7 @@ class ProjectController {
                 }
                 return n1 < n2 ? -1 : 1;
             });
+            return projectList;
         }catch(err){
             throw new Error(err);
         }
@@ -313,6 +323,11 @@ class ProjectController {
         } catch (error) {
             throw new Error(error);
         }    
+    }
+    async addFeedbacks(project_name , feedback){
+        const project = await Project.findOne({name : project_name});
+        project.feedbacks.push(feedback);
+        return 1;
     }
 }
 
