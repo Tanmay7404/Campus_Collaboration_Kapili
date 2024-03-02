@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import like from "../../Images/like.svg";
-import cross from "../../Images/cross.svg";
-import star from "../../Images/star.svg";
-import unstar from "../../Images/unstared.svg";
-import downarrow from "../../Images/Arrow.svg";
-import FeedbackComponent from "./Feedback.js";
+import like from "../../assets/images/like.svg";
+import cross from "../../assets/images/cross.svg";
+import star from "../../assets/images/star.svg";
+import unstar from "../../assets/images/unstared.svg";
+import downarrow from "../../assets/images/Arrow.svg";
+import FeedbackComponent from "./feedback.jsx";
 import DemoSwiper from "./DemoSwiper.jsx";
 // import "./CardExpanded.css";
 
@@ -26,7 +26,7 @@ const CardExpanded = ({
   var [rating,setRating] = useState(0);
   function feedback(){
 
-    if(flag==0){
+    if(flag===0){
       setFlag(1);
     }
     else{

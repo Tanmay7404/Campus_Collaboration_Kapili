@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
   name:{ type: String, required: true,unique:true },
+  projectImage: String,
   projectInfo: {
     description: String,
-    imageVideolinks: [{url :String, filename: String}],
-    projectLink: [String]
+    demoLinks: [String],
+    projectLink: [{name:{type:String}, link:{type:String}}]
   },
   creators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  endorsements: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  endorsements: Number,
   tags: [{ type:mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
   createdAt: { type: Date, default: Date.now },
   completedAt: { type: Date, default: Date.now },

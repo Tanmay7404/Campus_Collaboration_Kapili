@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import likeImg from "../../Images/like.svg";
-import starImg from "../../Images/star.svg"
-import Modal from 'react-modal';
+import likeImg from "../../assets/images/like.svg";
+import starImg from "../../assets/images/star.svg"
+// import Modal from 'react-modal';
 
 import CardExpanded from "./CardExpanded";
 import ReactDOM from 'react-dom';

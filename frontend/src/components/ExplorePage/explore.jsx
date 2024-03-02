@@ -10,10 +10,6 @@ const Explore = (props) => {
     const [modaldata, setModalOpen] = useState(null);
     return (
     <>
-      <div id="layer0"></div>
-      <div id="layer1"></div>
-      <div id="layer2"></div>
-      <div id="layer3"></div>
       <ExplorePg1 />
       <ExplorePg2 />
       <ExplorePg3 allGroups={props.data.allGroups} setModalOpen = {setModalOpen}/>

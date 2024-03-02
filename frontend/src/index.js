@@ -3,13 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom"
-import EditProfilePage from './editProfilePage';
-import CreateProfilePage from './createProfile';
-import CreateProjectPage from './createProject';
-import CreateCoursePage from './createCourse';
-import EditCoursePage from './editCourse';
-import App2 from './App2';
-import Global  from './Global.js';
+
 
 // import reportWebVitals from './reportWebVitals';
 
@@ -17,7 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <App2/>
+    <App/>
     </BrowserRouter>
 
   </React.StrictMode>

@@ -1,6 +1,6 @@
 import React from 'react';
-import logoSVG from "../../Images/logo.svg";
-import page1PNG from '../../Images/designe-page1.png';
+import logoSVG from "../../assets/images/logo.svg";
+import page1PNG from '../../assets/images/designe-page1.png';
 const ExplorePg1 = () => {
     return (
     <div id="page1">

@@ -1,10 +1,11 @@
 import React from 'react';
-import Navbar from '../components/navbar.jsx';
+import Navbar from '../components/NavBar/navbar.jsx';
+import Explore from '../components/ExplorePage/explore.jsx';
 
-import backg from '../Images/img1.jpeg';
-import sli1 from '../Images/slider-img3.jpeg';
-import sli2 from '../Images/slider-img1.png';
-import profile from '../Images/profile.jpeg';
+import backg from '../assets/images/img1.jpeg';
+import sli1 from '../assets/images/slider-img3.jpeg';
+import sli2 from '../assets/images/slider-img1.png';
+import profile from '../assets/images/profile.jpeg';
 
 
 
@@ -661,6 +662,7 @@ const Home = (props)=>{
     return (
         <div id ="main">
             <Navbar data = {data}></Navbar>
+            <Explore data= {data.explore}/>
         </div>
     );
 };
