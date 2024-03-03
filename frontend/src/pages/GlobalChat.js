@@ -1,9 +1,9 @@
 import React from 'react';
 import './style.css'; // Import your stylesheet
-import smile from './images/smile.svg';
-import clip from './images/clip.svg';
-import logo from './images/logo.svg';
-import search from './images/search.svg';
+import smile from '../assets/images/smile.svg';
+import clip from '../assets/images/clip.svg';
+import logo from '../assets/images/logo.svg';
+import search from '../assets/images/search.svg';
 
 const GlobalChat = ({ peopleArray, currentUser }) => {
 

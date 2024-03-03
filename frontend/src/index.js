@@ -4,7 +4,13 @@ import './index.css';
 // import App from './App';
 import { BrowserRouter } from "react-router-dom"
 import CreateProjectPage from './pages/createProject';
-//import ChatPage from './pages/ChatPage';
+import ChatPage from './pages/ChatPage';
+import EditCoursePage from './pages/editCourse';
+import CreateCoursePage from './pages/createCourse';
+import CreateProfilePage from './pages/createProfile';
+import EditProfilePage from './pages/editProfilePage';
+import EditProjectPage from './pages/editProject';
+import Global from './pages/Global';
 
 
 // import reportWebVitals from './reportWebVitals';
@@ -17,7 +23,7 @@ root.render(
   //   </BrowserRouter>
 
   // </React.StrictMode>
-  <CreateProjectPage/>
+  <Global/>
 );
 
 // If you want to start measuring performance in your app, pass a function

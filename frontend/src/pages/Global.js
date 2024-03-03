@@ -1,9 +1,9 @@
 import React from 'react';
 import './style.css'; // Import your stylesheet
 import GlobalChat from './GlobalChat.js';
-import profile from './images/profile.jpeg';
-import prof from './images/profile2.jpeg';
-import logo from './images/logo.svg'
+import profile from '../assets/images/profile.jpeg';
+import prof from '../assets/images/profile2.jpeg';
+import logo from '../assets/images/logo.svg'
 
 
 
