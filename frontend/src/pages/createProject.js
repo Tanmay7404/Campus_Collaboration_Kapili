@@ -2,7 +2,7 @@ import React from "react";
 import Button from 'react-bootstrap/Button';
 import './profilePage.css';
 import { IoCloseOutline } from 'react-icons/io5'; 
-import profileImage from './profile_pic.jpg'; // Import your profile image
+import profileImage from '../assets/images/profile_pic.jpg'; // Import your profile image
 import TextField from '@mui/material/TextField';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Box } from "@mui/material";
