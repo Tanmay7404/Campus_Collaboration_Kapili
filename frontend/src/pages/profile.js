@@ -100,6 +100,17 @@ const Profile = () => {
           <div id="right">
           
             <div id="buttons">
+            <Link style={{textDecoration: 'none'}}
+                to="/"
+                id={
+                  selectedButton === 'bio'
+                    ? 'now-selected'
+                    : 'not-selected'
+                }
+                onClick={() => handleButtonClick('bio')}
+              >
+                Bio
+              </Link>
               <Link style={{textDecoration: 'none'}}
                 to="/"
                 id={
