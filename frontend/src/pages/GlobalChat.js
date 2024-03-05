@@ -25,23 +25,26 @@ const GlobalChat = ({ peopleArray, currentUser }) => {
   };
 
   return (
-    <div>
+    <div >
+      <div id="wholepage">
       <div id="layer1"></div>
       <div id="layer2"></div>
       <div id="main">
         {/* Left Panel - People */}
-        <nav>
-          <img src={logo} id="logo" alt="" />
-          <div id="search">
-            <input type="text" name="" id="" placeholder="Search" />
-            <img src={search} alt="" />
-          </div>
-          <div id="nav-part2">
-            <a href="#">Explore</a>
-            <a href="#">Chats</a>
-            <a href="#">Profile</a>
-          </div>
-        </nav>
+        <div id="navbar">
+          <nav>
+            <img src={logo} id="logo" alt="" />
+            <div id="search">
+              <input type="text" name="" id="sch" placeholder="Search" />
+              <img src={search} alt="" />
+            </div>
+            <div id="nav-part2">
+              <a href="#">Explore</a>
+              <a href="#">Chats</a>
+              <a href="#">Profile</a>
+            </div>
+          </nav>
+        </div>
 
         <div id="page1">
           <div id="left">
@@ -49,6 +52,8 @@ const GlobalChat = ({ peopleArray, currentUser }) => {
             <div id="typeButton">
               <button id="global">Personal</button>
               <button id="personal">Global</button>
+              <button id="global">Friends</button>
+
             </div>
           </div>
 
@@ -107,6 +112,7 @@ const GlobalChat = ({ peopleArray, currentUser }) => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   );

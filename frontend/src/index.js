@@ -11,6 +11,9 @@ import CreateProfilePage from './pages/createProfile';
 import EditProfilePage from './pages/editProfilePage';
 import EditProjectPage from './pages/editProject';
 import Global from './pages/Global';
+import Card from './components/searchuser/carduser';
+import CardList from './components/searchuser/cardlist';
+import GlobalChat from './pages/GlobalChat';
 
 
 // import reportWebVitals from './reportWebVitals';
@@ -23,7 +26,7 @@ root.render(
   //   </BrowserRouter>
 
   // </React.StrictMode>
-  <Global/>
+  <CardList/>
 );
 
 // If you want to start measuring performance in your app, pass a function

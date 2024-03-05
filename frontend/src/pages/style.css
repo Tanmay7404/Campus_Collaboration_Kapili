@@ -1,11 +1,115 @@
+/* src: url(../assets/font/Lexend-VariableFont_wght.ttf); */
+
+
 @font-face {
     font-family: "Lexend";
     src: url(../assets/font/Lexend-VariableFont_wght.ttf);
 }
 
+*{
+padding : 0;
+margin : 0;
+box-sizing: border-box;
+font-family: "Lexend";
+color: #fff;
+}
 
+body{
+    background-color: #181818;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    overflow: hidden;
+}
 
+#layer1{
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-image: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+    
+}
 
+#layer2{
+    height: 700px;
+    width: 700px;
+    border-radius: 50%;
+    position: absolute;
+    z-index: 1;
+    bottom: -110px;
+    right: -110px;
+    background-color: #000000;
+    filter: blur(254.5px);
+}
+
+#main{
+    height: 100%;
+    position: relative;
+    z-index: 3;
+    max-width: 2000px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#logo{
+    width: 120px;
+}
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 20px;
+}
+
+#search{
+    border-bottom: 1px solid #FFFFFF;
+    width: 30vw;
+    border-radius: 8px;
+    padding: 12px 20px;
+    height: 44px;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
+    color: #BCBCBC;
+    font-weight: 300;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+input:focus {
+        outline: none;
+      }
+
+#search input{
+    width: 100%;
+    margin-right: 30px;
+    padding: 0px 10px;
+    font-size: 16px;
+    background-color: #00000000;
+    border: none;
+    color: white;
+}
+
+#nav-part2 a{
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 16px;
+    padding: 10px;
+}
+#nav-part2 a:nth-child(2){
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
+    border-bottom: 1px solid #fff;
+    border-radius: 8px;
+}
+
+#page1{
+    flex: auto;
+    overflow: hidden;
+    display: flex;
+}
 #left{
     width: 30%;
     /* background-color: blue; */
@@ -34,36 +138,13 @@
     background-color: rgba(255, 255, 255, 0);
     border: 3px solid #BCBCBC;
     color: #BCBCBC;
+    cursor: pointer;
 }
 
 #global:hover{
     color: #fff;
 }
 
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-#chats::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  #chats {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
-
-
-
-  /* Hide scrollbar for Chrome, Safari and Opera */
-#persons::-webkit-scrollbar {
-    display: none;
-  }
-  
-  /* Hide scrollbar for IE, Edge and Firefox */
-  #persons {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-  }
 
 #search2{
     cursor: text;
@@ -89,8 +170,22 @@
 #persons{
     /* flex: auto; */
     overflow: scroll;
+
 }
+
+
+#persons::-webkit-scrollbar {
+    display: none;
+  }
+  
+#persons {
+    -ms-overflow-style: none;
+    scrollbar-width: none;  
+}
+
+
 .person{
+    cursor: pointer;
     position: relative;
     background-color: #272727;
     height: 55px;
@@ -113,8 +208,6 @@
     border: 2px solid white;
     border-radius: 50%;
 }
-
-
 #person-3{
     background-color: #3B3B3B;
 }
@@ -125,49 +218,51 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    overflow: scroll;
 }
 
 #inf{
     background-color: #3B3B3B;
     display: flex;
-
-    
-    /* padding: 20px 10px; */
-    padding-left: 20px;
-    padding-right: 20px;
+    align-items: center;
+    padding: 5px 10px;
     border-radius: 4px;
     gap: 20px;
     font-weight: 300;
     font-size: 17px;
-    /* margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px; */
 }
 .Name{
     font-weight: 400;
-    font-size: small;
 }
 .line{
     width: 1px;
     background-color: white;
-    height: 12px;
-    padding-top: 10px;
+    height: 17px;
 }
-
-/* inf3 .line{
-    padding-top: 10px !important;
-} */
-
 #last-seen{
     font-weight: 100;
 }
 
-#chats{
+/* #chats{
     flex: auto;
-    /* padding-top: 30px; */
+    padding-top: 30px;
+    overflow: auto;
+} */
+
+#chats::-webkit-scrollbar {
+    display: none;
+}
+  
+
+#chats {
+    -ms-overflow-style: none; 
+    scrollbar-width: none;
+
+
+    flex: auto;
+    padding-top: 30px;
     overflow: scroll;
 }
-
 
 
 #typingBox{
@@ -193,54 +288,21 @@
     gap: 10px;
 }
 
-#inf{
-    background-color: #3B3B3B;
-    display: flex;
-    
-    padding: 5px 20px ;
-
-
-    /* margin-bottom: 20px; */
-    border-radius: 4px;
-    gap: 20px;
-    font-weight: 500;
-    font-size: 17px;
+#attach>svg:hover>path{
+    fill: #fff;
+    cursor: pointer;
 }
-.me>inf{
-    justify-content: end;
-    flex-direction: row-reverse;
-}
-
-#online{
-    
-     display: inline-flex;
-     margin-left: auto;
-
-} 
-#online img{
-    height: 10px;
-    width: 10px;
-    border-radius: 50%;
-    margin-top: 6.5px;
-    margin-right: 10px;
-}
-
-
-
 
 inf{
     padding: 10px 10px;
     padding-bottom: 0;
-    padding-left: 20px;
-    padding-right: 20px;
-    
-    /* margin: 10px 10px 10px ; */
+    align-items: center;
     display: flex;
     gap: 20px;
     background-color: #272727;
 }
 
-inf2 {
+inf2 div{
     font-weight: 200;
     font-size: 16px;
 
@@ -248,32 +310,29 @@ inf2 {
 inf3{
     display: flex;
     gap: 15px;
-    text-align : center;
+    align-items: center;
     font-weight: 300;
 
 }
 
 .date,.time{
-    padding: 0px 0;
+    padding: 4px 0;
     color: #BCBCBC;
     font-weight: 200;
-    font-size: 10px;
+    font-size: 15px;
 }
 
 
 
 .chat p:nth-child(1){
-    /* padding-top: 5px; */
+    padding-top: 10px;
 }
 
 .chat p{
-    padding-bottom: 15px;
-    padding-top: 15px;
-    font-weight: 500;
+    padding: 20px 20px;
+    font-weight: 300;
     font-size: 17px;
-    margin-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    margin-bottom: 20px;
     background-color: #272727;
 }
 
