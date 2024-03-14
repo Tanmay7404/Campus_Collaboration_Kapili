@@ -1,66 +1,9 @@
-.green{
+.eachtag{
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid green;
-    color: green;
     border-radius: 10px;
     margin: 4px;
-}
-.orange{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid orange;
-    color: orange;
-    border-radius: 10px;
-    margin: 4px;
-}
-.blue{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid blue;
-    color: blue;
-    border-radius: 10px;
-    margin: 4px;
-}
-.purple{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid purple;
-    color: purple;
-    border-radius: 10px;
-    margin: 4px;
-}
-.yellow{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid yellow;
-    color: yellow;
-    border-radius: 10px;
-    margin: 4px;
-}
-
-
-
-.red{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid red;
-    border-radius: 10px;
-    margin: 4px;
-    color: red;
-}
-.pink{
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: 2px solid pink;
-    border-radius: 10px;
-   margin: 4px;
-    color: pink;
+    padding-left: 4px;
+    padding-right: 4px;
 }

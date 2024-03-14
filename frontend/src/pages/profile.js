@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import './profile.css';
 import Project from './project.js';
 import Course from './course.js';
@@ -50,7 +50,6 @@ const Profile = () => {
     
 //-----------------------------------------//
   return (
-    <BrowserRouter>
       <div id="main">
         
 
@@ -146,7 +145,6 @@ const Profile = () => {
         <Routes>      <Route exact path="/EditProfile" element={<EditProfile/>} />
             </Routes>
       </div>
-    </BrowserRouter>
   );
 };
 

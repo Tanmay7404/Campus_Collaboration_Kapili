@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { Link,NavLink } from 'react-router-dom';
+import { Link,NavLink, Outlet } from 'react-router-dom';
 import logoImg from "../../assets/images/logo.png";
 import searchSVG from "../../assets/images/search.svg";
 
 import './navbar.css';
-import Explore from '../ExplorePage/explore.jsx';
+import Explore from '../../pages/explore.jsx';
 // import Chats from './chat.jsx';
 // import Profile from './profile.jsx';
 import Tag from "./tag.jsx";
@@ -14,18 +14,21 @@ const Navbar = (props) => {
   const [search, setSearch] = useState(false);
   
   return (
-    <>
+    <div id = "main">
         <nav>
-          <img src= {logoImg} style={{ height: '35px' }} id="logo" alt="" onClick={()=>setSearch(false)}/>
-          <div id="search" onClick={()=>setSearch(true)}>
+          <img src= {logoImg} style={{ height: '35px' }} id="logo" alt=""/>
+          
+          <div id="search" onFocus={()=>setSearch(true)} onBlur={()=>setSearch(false)}>
             <input type="text" name="" id="" placeholder="Search" />
             <img src={searchSVG} alt=""/>
-            {search? <Tag/> : null}
           </div>
-          <div id="nav-part2" onClick={()=>setSearch(false)}>
-            <NavLink to="/Explore" className="nav-link">Explore</NavLink>
-            <NavLink to="/Chats" className="nav-link">Chats</NavLink>
-            <NavLink to="/Profile" className="nav-link">Profile</NavLink>
+
+            
+          
+          <div id="nav-part2">
+            <NavLink to="/explore" className="nav-link">Explore</NavLink>
+            <NavLink to="/chat" className="nav-link">Chats</NavLink>
+            <NavLink to="/profile/username" className="nav-link">Profile</NavLink>
           </div>
         </nav >
         <div id="up">
@@ -37,8 +40,9 @@ const Navbar = (props) => {
         <div id="layer1"></div>
         <div id="layer2"></div>
         <div id="layer3"></div>
- 
-    </>
+        {search? <Tag/> : null}
+        <Outlet/>
+    </div>
   );
 };
 

@@ -3,9 +3,12 @@
     /* transform: translateY(800px); */
     position: absolute;
     z-index: 11;
-    top: calc(100% + 20px);
+    top: 74.8px;
     border-radius: 8px;
     left: 0;
+    right: 66px;
+    margin-left: auto;
+    margin-right: auto;
     width: 30vw;
     height: 300px;
     overflow-y: scroll;
@@ -29,51 +32,19 @@
     scrollbar-width: none;  /* Firefox */
   }
 
-
-
-.webd{
-    width: 600px;
-    height: 78px;
-}
-.appd{
-    width: 600px;
-    height: 47px;
-}
-.database{
-    width: 600px;
-    height: 47px;
-}
-.devops{
-    width: 600px;
-    height: 47px;
-}
-.mlai{
-    width: 600px;
-    height: 78px;
-}
-.cyber{
-    width: 600px;
-    height: 78px; 
-}
-.design{
-    width: 600px;
-    height: 47px; 
-}
-.misc{
-    width: 600px;
-    height: 47px;
-}
-
 .box{
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 600px;
+    height: auto;
 
 }
 .title{
     /* height: 95px; */
     width: 100%;
     color: white;
+    
 }
 .content{
     display: flex;

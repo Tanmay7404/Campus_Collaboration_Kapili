@@ -1,7 +1,10 @@
 import React from 'react';
-import Navbar from '../components/NavBar/navbar.jsx';
-import Explore from './explore.jsx';
-
+import ExplorePg1 from '../components/ExplorePage/explorePage1.jsx';
+import ExplorePg2 from '../components/ExplorePage/explorePage2.jsx';
+import "./explore.css";
+import ExplorePg3 from '../components/ExplorePage/explorePage3.jsx';
+// import CardExpanded from '../components/ExplorePage/CardExpanded.jsx';
+import {useState} from 'react';
 import backg from '../assets/images/img1.jpeg';
 import sli1 from '../assets/images/slider-img3.jpeg';
 import sli2 from '../assets/images/slider-img1.png';
@@ -9,7 +12,12 @@ import profile from '../assets/images/profile.jpeg';
 
 
 
-const data = {
+
+
+
+const Explore = () => {
+
+  const data = {
     explore: {
         allGroups: [
             {
@@ -622,49 +630,16 @@ const data = {
         courseImage: "./Images/swigy.png"
         }]
     }
-}
-
+  }
   
-  
-
-
-
-
-
-
-
-
-
-
-
-
-const Home = (props)=>{
-  //   useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       // Perform async operation, for example fetching data from an API
-  //       const response = await fetch('https://localhost:8080/home/login');
-  //       const data = await response.json();
-  //       console.log(data);
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     }
-  //   };
-
-  //   // Call the async function when the component is rendered
-  //   fetchData();
-
-  //   // If you want to cleanup, you can return a cleanup function
-  //   // return () => {
-  //   //   cleanup code...
-  //   // };
-  // }, []);
+    const [modaldata, setModalOpen] = useState(null);
     return (
-        <div id ="main">
-            <Navbar data = {data}></Navbar>
-            <Explore data= {data.explore}/>
-        </div>
+    <>
+      <ExplorePg1 />
+      <ExplorePg2 />
+      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen}/>
+    </>
     );
-};
-
-export default Home;
+  };
+  
+export default Explore;

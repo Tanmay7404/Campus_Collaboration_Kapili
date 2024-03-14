@@ -1,8 +1,11 @@
 @font-face {
     font-family: "Lenxend";
-    src: url(./font/Lexend-VariableFont_wght.ttf);
-}
+    src: url(../assets/font/Lexend-VariableFont_wght.ttf);
+  }
 
+
+
+msm
 *{
     box-sizing: border-box;
     color: white;
@@ -393,7 +396,7 @@ input:focus {
 }
 @font-face {
     font-family: "Lenxend";
-    src: url(./font/Lexend-VariableFont_wght.ttf);
+    src: url(../assets/font/Lexend-VariableFont_wght.ttf);
 }
 
 *{
