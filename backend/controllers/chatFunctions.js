@@ -98,7 +98,6 @@ class ChatController {
             console.log(`Chat with ID ${chatId} not found`);
             return [];
         }
-            //console.log("here23 " +chat.messages)
             return chat ? chat.messages : [];
             } catch (error) {
             console.error("Error getting messages by chat ID:", error);
@@ -111,18 +110,17 @@ class ChatController {
             for (const chatId of chatIds) {
                 
                 const chat = await Chat.findById(chatId);
-                console.log(chat)
                 if (chat) {
                     // Filter out the current user from the participants list
                     if(chat.projectName==null&&chat.courseName==null){
                     const participantsExcludingCurrentUser = chat.participants.filter(participant => !participant.equals(currentUserId));
-                    chatList.push({chatId:chatId,participants:participantsExcludingCurrentUser,type:'User'});
+                    chatList.push({chatId:chatId,participants:participantsExcludingCurrentUser,type:'User',lastMessageTime:chat.lastMessageTime});
                 }
                     else if(chat.projectName!=null)
                     {
-                        chatList.push({chatId:chatId,participants:chat.projectName,type:'Project'})
+                        chatList.push({chatId:chatId,participants:chat.projectName,type:'Project',lastMessageTime:chat.lastMessageTime})
                     }else {
-                        chatList.push({chatId:chatId,participants:chat.courseName,type:'Course'})
+                        chatList.push({chatId:chatId,participants:chat.courseName,type:'Course',lastMessageTime:chat.lastMessageTime})
 
                     }
                 } else {
@@ -159,10 +157,7 @@ class ChatController {
                 }
                 return n3 < n4 ? -1 : 1;
             })
-            console.log(1232)
-            console.log(chats)
-            console.log(1232)
-            
+           
             var data =[];
             chats.forEach((chat)=>{
                 // var d1={};

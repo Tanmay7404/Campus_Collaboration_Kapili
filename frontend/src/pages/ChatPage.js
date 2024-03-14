@@ -7,8 +7,8 @@ import clip from '../assets/images/clip.svg';
 import logo from '../assets/images/logo.svg';
 import search from '../assets/images/search.svg';
 import io from 'socket.io-client';
-import  { useEffect } from 'react';
-// const socket=io('http://localhost:8080')
+import  { useEffect ,useRef} from 'react';
+const socket=io('http://localhost:8080')
 const ChatPage = ({  currentUser }) => {
   const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -18,7 +18,11 @@ const ChatPage = ({  currentUser }) => {
  const [userFriends, setUserFriends] = useState([]);
  const [people, setPeopleData] = useState([]);
 
+ const selectedPersonRef = useRef(selectedPerson);
 
+ useEffect(() => {
+   selectedPersonRef.current = selectedPerson;
+ }, [selectedPerson]);
 const fetchUserFriends = async () => {
   try {
     const response = await fetch('http://localhost:8080/getuserfriends/'+currentUser.name, {
@@ -37,9 +41,8 @@ const fetchUserFriends = async () => {
   }
 };
   const handlePersonClick = async(person) => {
-  console.log(person)
     setSelectedPerson(person);
-
+console.log(person)
     // const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
     //   method: 'POST',
     //   headers: {
@@ -59,8 +62,6 @@ const fetchUserFriends = async () => {
     //   }
      
     // });
-    
-    
     setCurrChatId(person.chatId)
     
     // const userId = (await UserResponse.json())._id;
@@ -71,7 +72,6 @@ const fetchUserFriends = async () => {
     //   }
      
     // });
-  //  setUserObjectId(userId)
   if(person.messages.length===0){
     const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${person.chatId}`, {
       method: 'GET',
@@ -80,22 +80,36 @@ const fetchUserFriends = async () => {
       }
     }); 
     var chatMessages=await ChatResponse.json()
-    console.log(chatMessages);
    setChatList(chatMessages)
-//setPeopleData()
 updateMessagesForPerson(person.name,chatMessages)
 }
 else
 {
-  console.log('repeat')
   setChatList(person.messages)
 
 }
   };
 
+// Function to sort people array by lastMessageTime
+const sortPeopleByLastMessageTime = (peopleArray) => {
+  return peopleArray.slice().sort((a, b) => {
+      // If one of the persons doesn't have lastMessageTime, move it to the end
+      if (!a.lastMessageTime) return 1;
+      if (!b.lastMessageTime) return -1;
+
+      // Compare lastMessageTime to determine order
+      return new Date(b.lastMessageTime) - new Date(a.lastMessageTime);
+  });
+};
+const [count,setCount]=useState(0)
+// Call the sort function whenever people array changes
+useEffect(() => {
+  console.log('deed')
+  setPeopleData(prevPeople => sortPeopleByLastMessageTime(prevPeople));
+}, [count]);
+
 
   const updateMessagesForPerson = (personName, newMessages) => {
-    console.log("11 "+personName)
     setPeopleData(prevPeople => {
       // Find the index of the person in the people array
       const index = prevPeople.findIndex(person => person.name === personName);
@@ -116,7 +130,6 @@ else
   };
  
   const updateMessageForPerson = (personName, newMessage) => {
-    console.log("22")
 
     setPeopleData(prevPeople => {
       // Find the index of the person in the people array
@@ -128,15 +141,46 @@ else
   
       // Create a new array with the updated person object
       const updatedPeople = [...prevPeople];
-      console.log(121)
-      console.log(updatedPeople)
-      console.log(121)
+
 
       updatedPeople[index] = {
         ...updatedPeople[index], // Copy the existing person object
-        messages: [...updatedPeople[index].messages] // Update the messages array by appending new messages
+        messages: [...updatedPeople[index].messages,newMessage] // Update the messages array by appending new messages
       };
   
+      return updatedPeople; // Return the updated state
+    });
+  };
+
+  const updateMessageForChatId = (chatId, newMessage) => {
+
+    setPeopleData(prevPeople => {
+      // Find the index of the person in the people array
+      const index = prevPeople.findIndex(person => person.chatId === chatId);
+      if (index === -1) {
+        console.error(` ChatID '${chatId}' not found.`);
+        return prevPeople; // Return the origi  nal state if person not found
+      }
+  console.log('execution '+chatId)
+      // Create a new array with the updated person object
+      const updatedPeople = [...prevPeople];
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString();
+if(updatedPeople[index].messages.length>0){
+  console.log('im wrong')
+
+      updatedPeople[index] = {
+        ...updatedPeople[index], // Copy the existing person object
+        messages: [...updatedPeople[index].messages,newMessage],
+        lastMessageTime:formattedDate  // Update the messages array by appending new messages
+      };
+   }else{
+    console.log('here man')
+   updatedPeople[index] = {
+    ...updatedPeople[index], // Copy the existing person object
+  
+    lastMessageTime:formattedDate  // Update the messages array by appending new messages
+  };}
       return updatedPeople; // Return the updated state
     });
   };
@@ -144,7 +188,6 @@ else
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Dead')
         const response = await fetch('http://localhost:8080/getUserChatList/' + currentUser.name, {
           method: 'GET',
           headers: {
@@ -155,7 +198,14 @@ else
   
         const data = await response.json();
         setPeopleData(data)
-        //console.log(data)
+        console.log(121)
+        console.log(data)
+        console.log(121)
+         setCount(prev=>prev+1)
+        for (const peep of data)
+        {
+          socket.emit("join_room",peep.chatId)
+        }
         //setUserFriends(data);
       } catch (error) {
         console.error('Error fetching user friends:', error);
@@ -173,43 +223,55 @@ else
 //     return () => newSocket.close();
 // }, []);
 
-// useEffect(() => {
-//   if (!socket) return;
+useEffect(() => {
+  if (!socket ) return;
+console.log('socker')
+  socket.on('receive_message', message => {
 
-//   socket.on('message', message => {
-//       setMessages(prevMessages => [...prevMessages, message]);
-//   });
+    console.log('received message')
+if(selectedPersonRef.current){ 
+      if(selectedPersonRef.current.chatId===message.chatId){setChatList(prevMessages => [...prevMessages, message.message])};
+     
 
-//   socket.on('messages', messages => {
-//       setMessages(messages);
-//   });
+      
+}
+updateMessageForChatId(message.chatId,message.message)
+     setCount(prev=>prev+1)
+      // updateMessageForPerson(.name,{
+      //   senderName:currentUser.name,
+      //   message:currentMessage,
+      //   timestamp:formattedDate
+      //  })
+  });
 
-//   return () => {
-//       socket.off('message');
-//       socket.off('messages');
-//   };
-// }, [socket]);
+  // socket.on('messages', messages => {
+  //     setMessages(messages);
+  // });
 
-  const handleMessageSend = (person) => {
-  
+  return () => {
+    socket.off('receive_message');
   };
+}, [socket]);
+
+  
   const [currentMessage, setCurrentMessage] = useState(""); // Initialize with the first person
   
   
- 
-  const [searchValue, setSearchValue] = React.useState('');
   
   const handleMessage = (e) => {
     setCurrentMessage(e.target.value)
   };
-  
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter' && currentMessage.trim() !== '') {
+      handleSubmit()
+    }
+  };
 
- const [currChatId,setCurrChatId]=useState()
+ const [currChatId,setCurrChatId]=useState("")
 
   const handleSubmit = async (e) => {
     try {
       // First fetch
-    
       var link="http://localhost:8080/chats/addMessage/"+currChatId
       // Second fetch
       const secondResponse = await fetch(link, {
@@ -223,19 +285,28 @@ else
           message: currentMessage,
         }),
       });
-  //  updateMessageForPerson(selectedPerson.name,{
-  //   senderName:currentUser.name,
-  //   message:currentMessage,
-  //   timestamp:Date.now
-  //  })
-   chatList.push({
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString();
+   updateMessageForPerson(selectedPerson.name,{
     senderName:currentUser.name,
     message:currentMessage,
-    timestamp:Date.now
+    timestamp:formattedDate
    })
+   const newMessage = {
+    senderName: currentUser.name,
+    message: currentMessage,
+    timestamp: formattedDate 
+  };
+  setCount(prev=>prev+1)
+
+  setChatList(prevList => {
+    
+    return [...prevList, newMessage];
+  });
+  socket.emit("send_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
       const secondData = await secondResponse.json();
-      console.log(chatList)
       // Handle success response for the second fetch
+
     } catch (error) {
       console.error('Error:', error);
       // Handle error for both fetch calls
@@ -381,7 +452,8 @@ else
               
             </div>
             <div id="typingBox" >
-              <input type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}/>
+              <input type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}             onKeyDown={handleKeyPress}
+/>
               <div id="attach">
                 <button onClick={()=>{handleSubmit()}}>send</button>
                 <img src={clip} id="clip" alt="" />

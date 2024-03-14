@@ -14,7 +14,6 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 app.use(cors());
-app.set("view engine", "ejs"); 
 
 
 
@@ -108,37 +107,24 @@ async function initialize() {
 }
 
 io.on('connection', socket => {
-    console.log('New client connected');
-    socket.on('new-user',  (room, name) => {
-    
+    console.log('New client connected ',socket.id);
+    socket.on('join_room',  (room) => {
+    console.log(room)
         socket.join(room)
       })
 
-
-    // Send previous messages to the client
+  
     
-
-    // Handle new messages from the client
     
-
     // Handle disconnection
     socket.on('disconnect', () => {
         console.log('Client disconnected');
     });
-    socket.on('send-chat-message',  async(room, message,username) => {
-        const senderId='rgvdgv'
-        // console.log(message)
-        const messageData={
-          sender:senderId,
-          message:message,
-          timestamp:new Date().toLocaleString()
-        };
-        await login.findOneAndUpdate({projectName:room},
-         { $push: { messages: messageData },
-          $set:{ lastMessage: message, lastMessageTime: new Date().toLocaleString }
-        },{ new: true }
-          );
-        socket.broadcast.to(room).emit('chat-message', { message: message, name: username })
+    socket.on('send_chat_message',  async(data) => {
+ 
+console.log(data)
+
+        socket.broadcast.to(data.room).emit('receive_message', { message: data.message, name: data.username ,chatId:data.room})
       })
 });
 

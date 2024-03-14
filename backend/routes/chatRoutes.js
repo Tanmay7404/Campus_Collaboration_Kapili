@@ -28,7 +28,6 @@ chatRouter.post("/addMessage/:chatId", async (req, res) => {
     try {
         const chatId = req.params.chatId;
         const messageDetails = req.body;
-        console.log(messageDetails)
         const data = await new ChatController().addMessage(chatId, messageDetails);
         
         if (data === 1) {
@@ -120,7 +119,6 @@ chatRouter.get("/getAllMessages/:chatId", async (req, res) => {
       var CC = new ChatController();
   
       const chats = await CC.getMessagesByChatId(chatId);
-      //console.log("chats "+ chats)
       res.json(chats);
     } catch (error) {
       console.error('Error in /getAllMessages', error);
@@ -132,7 +130,6 @@ chatRouter.get("/getAllMessages/:chatId", async (req, res) => {
     try {
       const chatId = req.params.chatId;
       var CC = new ChatController();
-     console.log(chatId)
       const chats = await CC.getAllChatsOfUser(chatId);
       
 

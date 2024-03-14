@@ -4,6 +4,7 @@ import GlobalChat from './GlobalChat.js';
 import profile from '../assets/images/profile.jpeg';
 import prof from '../assets/images/profile2.jpeg';
 import logo from '../assets/images/logo.svg'
+import { useState } from 'react';
 
 
 import ChatPage from './ChatPage.js';
@@ -67,12 +68,38 @@ const currentUser2 = {
   profilePic: profile, // Set the current user's profile picture
 
 };
+const currentUser3 = {
+  id: "65c739c5470e4ba5247c3025", // Set the current user's id
+  name: 'Ramu', // Set the current user's name
+  profilePic: profile, // Set the current user's profile picture
 
+};
 const Chatpagecalling = () => {
+  const [selectedUser, setSelectedUser] = useState(null);
+  const handleUserSelection = (user) => {
+    console.log(user)
+    setSelectedUser(user)  };
+
     return (
+
       <div>
-        <ChatPage   currentUser={currentUser} />
+        {!selectedUser && (
+          <div>
+      <h2>Choose a User:</h2>
+      <button onClick={() =>  handleUserSelection(currentUser)}>Simon</button>
+      <button onClick={() => handleUserSelection(currentUser2)}>Shushant</button>
+      <button onClick={() => handleUserSelection(currentUser3)}>Ramu</button>
+
+      <br />
       </div>
+       ) }
+      {selectedUser && (
+        <div>
+          <ChatPage currentUser={selectedUser} />
+        </div>
+      )}
+    </div>
+
     );
   };
   

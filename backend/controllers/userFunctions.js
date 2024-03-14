@@ -68,7 +68,6 @@ class UserController {
 
     async addSkills(userName, skills) {
         try {
-            console.log(userName)
             // Step 1: Find the user by their username
             const user = await Model.findOne({ username: userName });
 
@@ -216,7 +215,6 @@ class UserController {
     async getUserByUsername(username) {
         try {
             const user = await Model.findOne({ username:username });
-            console.log(user)
             return user;
         } catch (error) {
             throw new Error(error);
@@ -232,11 +230,9 @@ class UserController {
     }
     async  getUsernameProfile(userIds) {
         try {
-            console.log("here")
             const profiles = [];
             for (const userIdT of userIds) {
                 if(userIdT.type==='User'){
-                console.log(userIdT)
              for(const userId of userIdT.participants){
                 const user = await Model.findById(userId);
                 if (user) {
@@ -244,7 +240,8 @@ class UserController {
                         name: user.username,
                         profilePic: user.profileInfo.profilePicture.url,
                         messages:[],
-                        chatId:userIdT.chatId
+                        chatId:userIdT.chatId,
+                        lastMessageTime:userIdT.lastMessageTime
                     };
                     profiles.push(profile);
                 } else {
@@ -259,7 +256,9 @@ class UserController {
                     name: project.name,
                     profilePic: project.projectImage,
                     messages:[],
-                    chatId:userIdT.chatId
+                    chatId:userIdT.chatId,
+                    lastMessageTime:userIdT.lastMessageTime
+
                 };
                 profiles.push(profile);
             } else {
@@ -273,7 +272,9 @@ class UserController {
                      name: course.name,
                      profilePic: course.projectImage,
                      messages:[],
-                     chatId:userIdT.chatId
+                     chatId:userIdT.chatId,
+                     lastMessageTime:userIdT.lastMessageTime
+
                  };
                  profiles.push(profile);
              } else {
@@ -282,7 +283,6 @@ class UserController {
             }
         
         }
-            console.log(profiles)
             return profiles;
         } catch (error) {
             throw new Error(error);
@@ -292,7 +292,6 @@ class UserController {
 
     async getUserChatList(username) {
         try {
-            console.log(username)
             const user = await Model.findOne({ username:username });
             return user.chats;
         } catch (error) {
