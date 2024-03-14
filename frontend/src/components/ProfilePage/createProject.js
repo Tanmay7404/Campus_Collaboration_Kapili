@@ -16,6 +16,22 @@ export default function CreateProjectPage({projects}) {
       description: ''
     
     };
+    const initialImages = [];
+    const [images, setImages] = useState(initialImages);
+
+  const addImage = () => {
+    // Placeholder for a new image URL, you may want to get this from user input or another source
+    const newImageUrl = "path_to_new_image.jpg";
+    setImages([...images, newImageUrl]);
+  };
+
+  const removeImage = (imageUrl) => {
+    console.log("Removing image with URL:", imageUrl); // For debugging
+    const filteredImages = images.filter(image => image !== imageUrl);
+    console.log("Remaining images:", filteredImages); // For debugging
+    setImages(filteredImages);
+  };
+  
     const [formData, setFormData] = useState(initialFormData);
     useEffect(() => {
       console.log(formData);
@@ -246,14 +262,67 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="space">
 
 </div>
-<div style={{paddingLeft:64}}>
-    <Box style={{backgroundColor:"#3B3B3B",height:100,width:180,display: 'flex',borderRadius: 5,
-          justifyContent: 'center',margin:'0',
-          alignItems: 'center'}}>
-<AiOutlinePlusCircle color="white" size={36}></AiOutlinePlusCircle>
 
-    </Box>
-</div>
+<div style={{ paddingLeft: '64px', display: 'flex', alignItems: 'flex-start' }}>
+    <button onClick={addImage} style={{
+      background: 'none',
+      border: 'none',
+      cursor: 'pointer',
+      padding: 0,
+      marginRight: '10px', // adds space between button and images
+    }}>
+      <div style={{
+        backgroundColor: "#3B3B3B",
+        height: '100px',
+        width: '180px',
+        display: 'flex',
+        borderRadius: '5px',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        {/* Replace this with your plus icon component */}
+        <AiOutlinePlusCircle color="white" size={36} />
+      </div>
+    </button>
+    <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+      {images.map((imageUrl, index) => (
+        <div key={index} style={{
+          position: 'relative',
+          display: 'flex', // use flex for image alignment
+          flexDirection: 'column', // stack image and button vertically
+          margin: '10px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          borderRadius: '5px',
+          overflow: 'hidden'
+        }}>
+          <img src={imageUrl} alt={`Gallery item ${index}`} style={{
+            width: '180px',
+            height: '100px',
+            objectFit: 'cover'
+          }} />
+          <button onClick={() => removeImage(imageUrl)} style={{
+            position: 'absolute',
+            top: '4px',
+            right: '4px',
+            background: 'white',
+            border: 'none',
+            borderRadius: '50%',
+            cursor: 'pointer',
+            padding: '0',
+            width: '24px',
+            height: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
+          }}>
+            {/* Replace this with your close icon component */}
+            X
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
 <div className="space">
 
 </div>

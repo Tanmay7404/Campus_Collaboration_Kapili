@@ -81,6 +81,16 @@ margin:0;
         height:100%;
         /* background-color: aquamarine; */
       }
+      .buttonHover {
+        width: 200px; /* moved from inline style */
+        margin: 0; /* moved from inline style */
+        background-color: black; /* moved from inline style */
+        transition: background-color 0.3s ease; /* smooth transition for hover effect */
+      }
+      
+      .buttonHover:hover {
+        background-color: #333; /* slightly lighter black on hover */
+      }
 .name{
     display: flex;
     flex: 1;
@@ -127,13 +137,16 @@ margin:0;
     padding-left: 15px;
     padding-right: 64px
 }
-.textfield{
-    display: flex;
-    flex: 1;
-    height: fit-content;
-
-    padding-left: 64px;
-    padding-right: 64px;
+.textfield {
+  display: flex;
+  flex: auto;
+  overflow: visible;
+  flex-wrap: wrap;
+  padding-left: 64px;
+  padding-right: 64px;
+  word-wrap: break-word; /* Deprecated, consider using overflow-wrap instead */
+  overflow-wrap: break-word; /* Ensures breaking of long words to prevent overflow */
+  white-space: pre-wrap; /* Allows wrapping at normal whitespace while preserving whitespace */
 }
 
 .customButton {
