@@ -9,6 +9,7 @@ const upload = multer({ storage });
 
 //Import Controllers
 const UserController = require("../controllers/userFunctions.js");
+const ChatController = require("../controllers/chatFunctions.js");
 //Api Routes Declare
 
 userRouter.post("/addNewUser", upload.array("images",1), async (req,res)=>{
@@ -181,6 +182,27 @@ userRouter.get('/getUser/:username', async (req, res) => {
 
         if (user) {
             res.json(user);
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+userRouter.get('/getUserChatList/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const userId= await new UserController().getUserIdByUsername(username)
+        const chatList = await new UserController().getUserChatList(username);
+            const chatParticipants=await new ChatController().getChatParticipants(chatList,userId);
+            
+
+            const usernameProfile=await new UserController().getUsernameProfile(chatParticipants)
+
+        if (usernameProfile) {
+            res.json(usernameProfile);
         } else {
             res.status(404).json({ message: 'User not found' });
         }

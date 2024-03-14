@@ -9,13 +9,14 @@ import search from '../assets/images/search.svg';
 import io from 'socket.io-client';
 import  { useEffect } from 'react';
 // const socket=io('http://localhost:8080')
-const ChatPage = ({ people, currentUser,current }) => {
-  const [selectedPerson, setSelectedPerson] = useState(people[1]); // Initialize with the first person
+const ChatPage = ({  currentUser }) => {
+  const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
    // Track the current date
- const [userObjectId,setUserObjectId]=useState()
+ const [userObjectId,setUserObjectId]=useState(currentUser.id)
  const [chatList,setChatList]=useState([])
  const [userFriends, setUserFriends] = useState([]);
+ const [people, setPeopleData] = useState([]);
 
 
 const fetchUserFriends = async () => {
@@ -36,52 +37,134 @@ const fetchUserFriends = async () => {
   }
 };
   const handlePersonClick = async(person) => {
-  
+  console.log(person)
     setSelectedPerson(person);
-    const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        currUserId:selectedPerson.name,
-         friendId: currentUser.name,
-      }),
-    });
-    const userData = await firstResponse.json();
 
-    const UserResponse = await fetch('http://localhost:8080/getUser/'+currentUser.name, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+    // const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     currUserId:selectedPerson?.name,
+    //      friendId: currentUser.name,
+    //   }),
+    // });
+    // const userData = await firstResponse.json();
+
+    // const UserResponse = await fetch('http://localhost:8080/getUser/'+currentUser.name, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
      
-    });
+    // });
     
     
-    setCurrChatId(userData)
+    setCurrChatId(person.chatId)
     
-    
-    const userId = (await UserResponse.json())._id;
-    const UserResponseasd = await fetch('http://localhost:8080/chats/getTotalChats/'+currentUser.name, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
+    // const userId = (await UserResponse.json())._id;
+    // const UserResponseasd = await fetch('http://localhost:8080/chats/getTotalChats/'+currentUser.name, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
      
-    });
-    setUserObjectId(userId)
-    const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${userData}`, {
+    // });
+  //  setUserObjectId(userId)
+  if(person.messages.length===0){
+    const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${person.chatId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       }
     }); 
-    var a=await ChatResponse.json()
-     await fetchUserFriends()
-  // setChatList(a)
+    var chatMessages=await ChatResponse.json()
+    console.log(chatMessages);
+   setChatList(chatMessages)
+//setPeopleData()
+updateMessagesForPerson(person.name,chatMessages)
+}
+else
+{
+  console.log('repeat')
+  setChatList(person.messages)
+
+}
   };
 
+
+  const updateMessagesForPerson = (personName, newMessages) => {
+    console.log("11 "+personName)
+    setPeopleData(prevPeople => {
+      // Find the index of the person in the people array
+      const index = prevPeople.findIndex(person => person.name === personName);
+      if (index === -1) {
+        console.error(`Person with name '${personName}' not found.`);
+        return prevPeople; // Return the original state if person not found
+      }
+  
+      // Create a new array with the updated person object
+      const updatedPeople = [...prevPeople];
+      updatedPeople[index] = {
+        ...updatedPeople[index], // Copy the existing person object
+        messages: newMessages // Update the messages array
+      };
+  
+      return updatedPeople; // Return the updated state
+    });
+  };
+ 
+  const updateMessageForPerson = (personName, newMessage) => {
+    console.log("22")
+
+    setPeopleData(prevPeople => {
+      // Find the index of the person in the people array
+      const index = prevPeople.findIndex(person => person.name === personName);
+      if (index === -1) {
+        console.error(`Person with name '${personName}' not found.`);
+        return prevPeople; // Return the original state if person not found
+      }
+  
+      // Create a new array with the updated person object
+      const updatedPeople = [...prevPeople];
+      console.log(121)
+      console.log(updatedPeople)
+      console.log(121)
+
+      updatedPeople[index] = {
+        ...updatedPeople[index], // Copy the existing person object
+        messages: [...updatedPeople[index].messages] // Update the messages array by appending new messages
+      };
+  
+      return updatedPeople; // Return the updated state
+    });
+  };
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        console.log('Dead')
+        const response = await fetch('http://localhost:8080/getUserChatList/' + currentUser.name, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+          // You can include additional headers or body if needed
+        });
+  
+        const data = await response.json();
+        setPeopleData(data)
+        //console.log(data)
+        //setUserFriends(data);
+      } catch (error) {
+        console.error('Error fetching user friends:', error);
+      }
+    };
+  
+    fetchData(); // Call the fetchData function
+  
+  }, []);
 //   useEffect(() => {
 //     console.log('connected to localhost')
 //     const newSocket = io('http://localhost:8080'); // Replace with your server URL
@@ -113,32 +196,14 @@ const fetchUserFriends = async () => {
   const [currentMessage, setCurrentMessage] = useState(""); // Initialize with the first person
   
   
-  const formatDate = (dateString) => {
-    const [day, month, year] = dateString.split('/');
-    const formattedDate = `${day}/${month}/${year}`;
-  
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
-  
-    if (formattedDate === today.toLocaleDateString('en-GB')) {
-      return 'Today';
-    } else if (formattedDate === yesterday.toLocaleDateString('en-GB')) {
-      return 'Yesterday';
-    } else {
-      return formattedDate;
-    }
-  };
+ 
   const [searchValue, setSearchValue] = React.useState('');
   
   const handleMessage = (e) => {
     setCurrentMessage(e.target.value)
   };
   
-  const handleInputChange2 = (e) => {
-    setSearchValue(e.target.value);
-  };
-  const [currUser,setCurrUser]=useState()
+
  const [currChatId,setCurrChatId]=useState()
 
   const handleSubmit = async (e) => {
@@ -154,12 +219,22 @@ const fetchUserFriends = async () => {
         },
         body: JSON.stringify({
           sender:userObjectId ,
+          senderName:currentUser.name,
           message: currentMessage,
         }),
       });
-  
+  //  updateMessageForPerson(selectedPerson.name,{
+  //   senderName:currentUser.name,
+  //   message:currentMessage,
+  //   timestamp:Date.now
+  //  })
+   chatList.push({
+    senderName:currentUser.name,
+    message:currentMessage,
+    timestamp:Date.now
+   })
       const secondData = await secondResponse.json();
-      
+      console.log(chatList)
       // Handle success response for the second fetch
     } catch (error) {
       console.error('Error:', error);
@@ -173,7 +248,7 @@ const fetchUserFriends = async () => {
   
 
   return (
-    <div>
+    <div >
       <div id="layer1"></div>
       <div id="layer2"></div>
       <div id="main">
@@ -221,15 +296,15 @@ const fetchUserFriends = async () => {
           <div id="right">
             <div id="inf">
               <img
-                src={selectedPerson.profilePic}
-                className={`profilePic ${selectedPerson.id === currentUser.id ? 'me' : ''}`}
+                src={selectedPerson?.profilePic}
+                className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
                 alt=""
               />
               <span
                 id="Name"
-                style={{ textAlign: selectedPerson.id === currentUser.id ? 'right' : 'left' }}
+                style={{ textAlign: selectedPerson?.id === currentUser.id ? 'right' : 'left' }}
               >
-                {selectedPerson.name}
+                {selectedPerson?.name}
               </span>
               {/* <span className="line"></span> */}
               {/* {selectedPerson.lastSeen && !selectedPerson.isGroup && (
@@ -239,54 +314,55 @@ const fetchUserFriends = async () => {
               )} */}
               
             </div>
-            <div id="chats">
-              {selectedPerson.messages.map((message, index) => (
+            <div id="chats" style={{height:'65vh'}} >
+              {chatList?.map((message, index) => (
                 <div
                   key={index}
-                  className={`front ${message.senderId === currentUser.id ? 'me' : ''}`}
+                  className={`front ${message.senderName=== currentUser.name ? currentUser.name : ''}`}
                 >
-                  {!index || (message.senderId !== selectedPerson.messages[index - 1]?.senderId) ? (
+                  {!index || (message.senderName !== chatList[index-1]?.senderName) ? (
                     <inf
                     style={{
-                      textAlign: message.senderId === currentUser.id ? 'right' : 'left',
+                      textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                      
                     }}
 
                     >
                       <img
                         src={
-                          message.senderId === currentUser.id
+                          message.senderName === currentUser.name
                             ? currentUser.profilePic
-                            : people.find((p) => p.id === message.senderId)?.profilePic
+                            : people.find((p) => p.name === message.senderName)?.profilePic
                         }
-                        className={`profilePic ${message.senderId === currentUser.id ? 'me' : ''}`}
+                        className={`profilePic ${message.senderName === currentUser.name ? 'me' : ''}`}
                         alt=""
                         style={{
-                          float: message.senderId === currentUser.id ? 'right' : 'left',
+                          float: message.senderName === currentUser.name ? 'right' : 'left',
                         }}
                       />
                       
                       <inf2
                         style={{
-                          textAlign: message.senderId === currentUser.id ? 'right' : 'left',
+                          textAlign: message.senderName === currentUser.name ? 'right' : 'left',
                         }}
 
                       >
                         <div
                           id="Name"
                           style={{
-                            textAlign: message.senderId === currentUser.id ? 'right' : 'left',
+                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
                           }}
                         >
-                          {message.senderId === currentUser.id ? 'Me' : people.find((p) => p.id === message.senderId)?.name}
+                          {message.senderName === currentUser.name ? 'Me' : people.find((p) => p.name === message.senderName)?.name}
                         </div>
                         <inf3
                           style={{
-                            textAlign: message.senderId === currentUser.id ? 'right' : 'left',
+                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
                           }}
                         >
-                          <span className="date">{formatDate(message.date)}</span>
+                          <span className="date">{new Date(message.timestamp).toLocaleDateString()}</span>
                           <span className="line"></span>
-                          <span className="time">{message.time}</span>
+                          <span className="time">{new Date(message.timestamp).toLocaleTimeString()}</span>
                         </inf3>
                             
                       </inf2>
@@ -294,16 +370,17 @@ const fetchUserFriends = async () => {
                     </inf>
                   ) : null}
                   <div
-                    className={`chat ${message.senderId === currentUser.id ? 'me' : ''}`}
+                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
                     // className="chat"
-                    style={{ textAlign: message.senderId === currentUser.id ? 'right' : 'left' }}
+                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
                   >
-                    <p>{message.text}</p>
+                    <p>{message.message}</p>
                   </div>
                 </div>
               ))}
+              
             </div>
-            <div id="typingBox">
+            <div id="typingBox" >
               <input type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}/>
               <div id="attach">
                 <button onClick={()=>{handleSubmit()}}>send</button>

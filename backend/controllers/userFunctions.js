@@ -1,4 +1,6 @@
+const Project = require("../models/projectModel");
 const Model = require("../models/userModel");
+const Course = require("../models/courseModel");
 
 class UserController {
     
@@ -220,6 +222,84 @@ class UserController {
             throw new Error(error);
         }
     }
+    async getUserIdByUsername(username) {
+        try {
+            const user = await Model.findOne({ username:username });
+            return user._id;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+    async  getUsernameProfile(userIds) {
+        try {
+            console.log("here")
+            const profiles = [];
+            for (const userIdT of userIds) {
+                if(userIdT.type==='User'){
+                console.log(userIdT)
+             for(const userId of userIdT.participants){
+                const user = await Model.findById(userId);
+                if (user) {
+                    const profile = {
+                        name: user.username,
+                        profilePic: user.profileInfo.profilePicture.url,
+                        messages:[],
+                        chatId:userIdT.chatId
+                    };
+                    profiles.push(profile);
+                } else {
+                    console.log(`User with ID ${userId} not found`);
+                }}
+            }
+            else if(userIdT.type==='Project')
+            {
+               const project=await Project.findById(userIdT.participants)
+               if (project) {
+                const profile = {
+                    name: project.name,
+                    profilePic: project.projectImage,
+                    messages:[],
+                    chatId:userIdT.chatId
+                };
+                profiles.push(profile);
+            } else {
+                console.log(`Project not found`);
+            }
+            }else 
+            {
+                const course=await Course.findById(userIdT.participants)
+                if (course) {
+                 const profile = {
+                     name: course.name,
+                     profilePic: course.projectImage,
+                     messages:[],
+                     chatId:userIdT.chatId
+                 };
+                 profiles.push(profile);
+             } else {
+                 console.log(`Course not found`);
+             }
+            }
+        
+        }
+            console.log(profiles)
+            return profiles;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+    
+
+    async getUserChatList(username) {
+        try {
+            console.log(username)
+            const user = await Model.findOne({ username:username });
+            return user.chats;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+    
     async getUserFriends(username) {
         try {
             const user = await Model.findOne({ username: username }).populate('friends');

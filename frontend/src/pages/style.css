@@ -218,7 +218,6 @@ input:focus {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    overflow: scroll;
 }
 
 #inf{
@@ -255,13 +254,13 @@ input:focus {
   
 
 #chats {
-    -ms-overflow-style: none; 
-    scrollbar-width: none;
+ 
 
 
     flex: auto;
     padding-top: 30px;
-    overflow: scroll;
+    overflow-y: auto;
+    
 }
 
 

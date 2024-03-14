@@ -2,6 +2,7 @@ const Chat = require("../models/chatModel.js"); // Assuming the correct path to 
 const User = require("../models/userModel.js");
 const getObjectId = require("../functions/getObjectId.js");
 const {createRoom} = require("../functions/Chats_Socket/socket.js");
+const { ObjectId } = require('mongodb');
 
 
 class ChatController {
@@ -30,8 +31,10 @@ class ChatController {
                 console.error("Chat not found");
                 return 0;
             }
+            const senderId= new ObjectId (messageDetails.sender)
             chat.messages.push({
-                sender: messageDetails.sender,
+                
+                senderName:messageDetails.senderName,
                 message: messageDetails.message,
                 timestamp: Date.now()
             });
@@ -87,16 +90,52 @@ class ChatController {
             throw new Error(err);
         }
     }
-    async getMessagesByChatId(chatId) {
+        async getMessagesByChatId(chatId) {
+            try {
+            const chat = await Chat.findById(chatId);
+            //const chat=chats.populate('messages.sender', 'username')
+            if (!chat) {
+            console.log(`Chat with ID ${chatId} not found`);
+            return [];
+        }
+            //console.log("here23 " +chat.messages)
+            return chat ? chat.messages : [];
+            } catch (error) {
+            console.error("Error getting messages by chat ID:", error);
+            throw error; // Rethrow to handle it outside
+            }
+          }
+    async getChatParticipants(chatIds,currentUserId){
         try {
-          const chat = await Chat.findById(chatId).populate('messages.sender', 'username');
-          return chat ? chat.messages : [];
-        } catch (error) {
-          console.error("Error getting messages by chat ID:", error);
-          throw error; // Rethrow to handle it outside
+            var chatList = [];
+            for (const chatId of chatIds) {
+                
+                const chat = await Chat.findById(chatId);
+                console.log(chat)
+                if (chat) {
+                    // Filter out the current user from the participants list
+                    if(chat.projectName==null&&chat.courseName==null){
+                    const participantsExcludingCurrentUser = chat.participants.filter(participant => !participant.equals(currentUserId));
+                    chatList.push({chatId:chatId,participants:participantsExcludingCurrentUser,type:'User'});
+                }
+                    else if(chat.projectName!=null)
+                    {
+                        chatList.push({chatId:chatId,participants:chat.projectName,type:'Project'})
+                    }else {
+                        chatList.push({chatId:chatId,participants:chat.courseName,type:'Course'})
+
+                    }
+                } else {
+                    console.log(`Chat with ID ${chatId} not found`);
+                }
+            }
+            return chatList
+          } catch (error) {
+            console.error("Error getting messages by chat ID:", error);
+            throw error; // Rethrow to handle it outside
+            return []
         }
       }
-    
     async getAllChatsOfUser(currUserId){
         try{
             var user = await User.findOne({ username:currUserId });

@@ -26,7 +26,7 @@ const GlobalChat = ({ peopleArray, currentUser }) => {
 
   return (
     <div >
-      <div id="wholepage">
+      <div >
       <div id="layer1"></div>
       <div id="layer2"></div>
       <div id="main">
@@ -64,7 +64,7 @@ const GlobalChat = ({ peopleArray, currentUser }) => {
               <span id="Name">Global Forum</span>
             </div>
 
-            <div id="chats">
+            <div id="chats" style={{height:'65vh'}}>
               {peopleArray[0].messages.map((message, index) => (
                 <div key={index} className={`front ${message.senderId === currentUser.id ? 'me' : ''}`}>
                   <inf>
