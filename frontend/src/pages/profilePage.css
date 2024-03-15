@@ -1,8 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300&display=swap');
 
-* {
-  font-family: 'Lexend', sans-serif;
-}
 
 :root {
     --button-color: rgb(0, 51, 255); /* Define a CSS variable for button color */

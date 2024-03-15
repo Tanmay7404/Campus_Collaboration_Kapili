@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './profile.css';
-import Project from './project.js';
-import Course from './course.js';
-import EditProfile from './editProfilePage.js';
+// import Project from './project.js';
+// import Course from './course.js';
+// import EditProfile from './editProfilePage.js';
+import profilePic from '../assets/images/profile.jpg';
+
 
 const Profile = () => {
   const [selectedButton, setSelectedButton] = useState('project');
@@ -15,7 +17,6 @@ const Profile = () => {
   //dynamic variables (for backend)
   const userName = 'Soumya Savarn';
   const userEmail = 's.savarn@iitg.ac.in';
-  const profilePic = '../Images/profile.jpeg';
   const userDepartment = 'DSAI, IITG';
   const userSkills = ['BlockChain', 'MySQL', 'iOS dev', 'TensorFlow'];
 
@@ -50,17 +51,16 @@ const Profile = () => {
     
 //-----------------------------------------//
   return (
-      <div id="main">
         
-
-        <div id="layer"></div>
-        <div id="layer1"></div>
-        <div id="layer2"></div>
-        <div id="ellips1"></div>
+    <>
+        <div id="profilelayer"></div>
+        <div id="profilelayer1"></div>
+        <div id="profilelayer2"></div>
+        {/* <div id="profileellips1"></div> */}
         
-        <div id="page1">
+        <div id="profilepage1">
             
-          <div id="left">
+          <div id="profileleft">
             
             <h1>Profile</h1>
             
@@ -96,12 +96,12 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div id="right">
+          <div id="profileright">
           
             <div id="buttons">
             <Link style={{textDecoration: 'none'}}
                 to="/"
-                id={
+                className={
                   selectedButton === 'bio'
                     ? 'now-selected'
                     : 'not-selected'
@@ -112,7 +112,7 @@ const Profile = () => {
               </Link>
               <Link style={{textDecoration: 'none'}}
                 to="/"
-                id={
+                className={
                   selectedButton === 'project'
                     ? 'now-selected'
                     : 'not-selected'
@@ -123,7 +123,7 @@ const Profile = () => {
               </Link>
               <Link style={{textDecoration: 'none'}}
                 to="/Course"
-                id={
+                className={
                   selectedButton === 'course'
                     ? 'now-selected'
                     : 'not-selected'
@@ -134,17 +134,17 @@ const Profile = () => {
               </Link>
             </div>
 
-            <Routes>
+            {/* <Routes>
               <Route exact path="/EditProfile" element={<EditProfile/>} />
-              <Route exact path="/" element={<Project projects = {projects} />} />
+              <Route path="/" element={<Project projects = {projects} />} />
               <Route exact path="/Course" element={<Course courses = {courses}/>} />
-            </Routes>
+            </Routes> */}
             
           </div>
         </div>
-        <Routes>      <Route exact path="/EditProfile" element={<EditProfile/>} />
-            </Routes>
-      </div>
+        {/* <Routes>      <Route exact path="/EditProfile" element={<EditProfile/>} />
+            </Routes> */}
+    </>
   );
 };
 

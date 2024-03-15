@@ -30,8 +30,8 @@ const CardList = ({data,setModalOpen}) => {
   return (
     <div>
         <h1 className="project-heading">{data.text}</h1>
-        <div class="swiper swiper1 mySwiper">
-            <div class="swiper-wrapper">
+        <div className="swiper swiper1 mySwiper">
+            <div className="swiper-wrapper">
                 <Swiper
                     modules={[Navigation]}
                     slidesPerView={3}
@@ -51,8 +51,8 @@ const CardList = ({data,setModalOpen}) => {
                         </div>
                     );
                 })}
-                <div class="swiper-button-next next"></div>
-                <div class="swiper-button-prev"></div>
+                <div className="swiper-button-next next"></div>
+                <div className="swiper-button-prev"></div>
                 </Swiper>
             </div>
         </div>

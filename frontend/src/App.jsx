@@ -86,6 +86,7 @@ import Explore from './pages/explore.jsx';
 import TestPage from './pages/testPage.jsx';
 // import Search from './pages/search.jsx'
 import { userContext } from './userContext.jsx';
+import Profile from './pages/profile.js';
 
 function App() {
   const [currUser, setCurrUser] = useState(null);
@@ -96,7 +97,7 @@ function App() {
       <Route element ={<Navbar/>}>
         <Route path ="/explore" element = {<Explore/>}/>
         <Route path ="/chat" element = {<ChatpageCalling/>}/>
-        <Route path = "/profile/:username" element = {<TestPage/>} />
+        <Route path = "/profile/:username" element = {<Profile/>} />
         <Route path = "/search/*" element = {<TestPage/>} />
       </Route>
       <Route path = "/createProfile" element={<TestPage/>}/>

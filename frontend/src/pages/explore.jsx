@@ -19,24 +19,29 @@ import {userContext} from "../userContext.jsx";
 const Explore = () => {
     const [exploreData,setExploreData] = useState([])
     const currUser = useContext(userContext);
-    useEffect(async () => {
-        try {
-            const response = await fetch("http://localhost:8080/exploreDataGet/"+currUser, {
-                method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
-                // headers: {
-                // "Content-Type": "application/json",
-                // As sending JSON data to API
-                // },
-                // body: JSON.stringify(data)   //if data to be given to the backend, uncomment this and the header, with data input in function
-            });
-            const res = await response.json();
-            setExploreData(res.message);
-            return;
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const response = await fetch("http://localhost:8080/exploreDataGet/"+currUser, {
+                    method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
+                    // headers: {
+                    // "Content-Type": "application/json",
+                    // As sending JSON data to API
+                    // },
+                    // body: JSON.stringify(data)   //if data to be given to the backend, uncomment this and the header, with data input in function
+                });
+                const res = await response.json();
+                setExploreData(res.message);
+                return;
+            }
+            catch(err){
+                console.log(11111111);
+                setExploreData([]);
+                return;
+            }
         }
-        catch(err){
-            setExploreData([]);
-            return;
-        }
+        fetchData();
+        
     },[currUser,setExploreData])
   const data = {
     explore: {
