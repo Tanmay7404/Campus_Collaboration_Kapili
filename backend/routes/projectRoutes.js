@@ -10,17 +10,26 @@ const User = require("../models/userModel.js");
 // WORKING
 projectRouter.post("/addNewProject", async (req,res)=>{
     try {
+        console.log(req.body)
         var project_details = {
             title: req.body.title,
             name : req.body.name,
             description: req.body.description,
-            projectlinks: req.body.projectlinks,
-            ongoing: req.body.ongoing
+            projectLink: req.body.links,
+            demoLinks:req.body.projectImages,
+            ongoing: req.body.ongoing,
+            projectImage: {
+                url: req.body.url, // Set the image URL from the request body
+                filename: req.body.imageName // You might need to get the filename from the request body as well
+              },
+              openForCollaboration:req.body.openForCollaboration,
+                  
+
         };
         var PC = new ProjectController();
         var project_id = await PC.addProject(project_details);
         if(req.body.creators){
-          await PC.addCreators(project_id,req.body.creators);
+          await PC.addCreators(project_id,req.body.collaboratorName);
         }
         if(req.body.tags){
          await  PC.addTags(project_id,req.body.tags);

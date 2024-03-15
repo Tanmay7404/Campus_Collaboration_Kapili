@@ -16,6 +16,7 @@ export default function CreateCoursePage() {
     
     };
     const [formData, setFormData] = useState(initialFormData);
+
     useEffect(() => {
       console.log(formData);
     }, [formData]);

@@ -12,16 +12,19 @@ import Axios from 'axios';
 export default function CreateProfilePage() {
   const [formData, setFormData] = useState({
     username: "",
-   // fullname: "",
-    email: "",
-    fullname:" ",
+    fullname: "sadasda asasdasdsadasd",
+    email:"asdasd asdasdasdas",
     department:" ",
     instagramLink:"",
     githubLink:"",
-    linkedinLink:" "
+    linkedinLink:" ",
+    appleLink:" ",
+    facebookLink:" ",
+    imageName:"",
+tags:[],
 
-
-    // bio: "",
+    bio: "",
+    url:""
     // profilePictureUrl: "",
     // profilePictureFilename: "",
     // skills: [],
@@ -31,13 +34,21 @@ export default function CreateProfilePage() {
   
 
   const uploadImage = (files) => {
-    const formData = new FormData();
-    formData.append("file",files[0]);
-    formData.append("upload_preset","xgz5toim");
+    const formData1 = new FormData();
+    formData1.append("file",files[0]);
+    formData1.append("upload_preset","xgz5toim");
 
-    Axios.post("https://api.cloudinary.com/v1_1/dxkhzuvmr/image/upload", formData).then((res)=>{
+    Axios.post("https://api.cloudinary.com/v1_1/dxkhzuvmr/image/upload", formData1).then((res)=>{
       console.log(res.data.secure_url);
+      console.log(res.data)
       setpp(res.data.secure_url);
+      setFormData({
+        ...formData,
+        url: res.data.secure_url,
+        imageName: res.data.etag
+      });
+
+      
     });
   };
 
@@ -46,7 +57,7 @@ export default function CreateProfilePage() {
   
   const handleSubmit = () => {
     // Assuming you have an API endpoint to send the data
-
+console.log(formData)
     fetch('http://localhost:8080/addNewUser', {
       method: 'POST',
       headers: {
@@ -70,7 +81,9 @@ export default function CreateProfilePage() {
           "&.Mui-focused fieldset": {
             borderColor: "white"
           }
-        }
+        },
+      
+      
       }
 
       var [profilepic,setpp] = useState(profileImage);
@@ -122,9 +135,22 @@ export default function CreateProfilePage() {
 </div>
 <div className="space"></div>
 <div className="space"></div>
-
 <div className="E-mail" >
-    <p style={{color:"white"}} >Name</p>
+<p style={{color:"white",paddingRight:'20px'}} >Full Name</p>
+
+    <p style={{color:"gray"}} >: Simon Lalremsiama</p>
+
+</div>
+<div className="space"></div>
+<div className="E-mail" >
+<p style={{color:"white",paddingRight:'20px'}} >Email</p>
+
+    <p style={{color:"gray"}} >: acdefghitkss@gmail.com</p>
+
+</div>
+<div className="space"></div>
+<div className="E-mail" >
+    <p style={{color:"white"}} >Username</p>
 </div>
 <div className="textfield">
 <TextField fullWidth  id="fullWidth" size="small" sx={style}
@@ -147,29 +173,14 @@ export default function CreateProfilePage() {
 <div className="space"></div>
 <div className="space"></div>
 
+
 <div className="E-mail">
-    <div className="email1"><p style={{color:"white"}} className="editProfile">E-mail</p></div>
-    <div className="email2"><p style={{color:"white"}} className="editProfile">Department</p></div>
+<p style={{color:"white"}} >Department</p>
 
 </div>
-<div className="name">
-    <div className="email1"><TextField fullWidth  id="fullWidth" size="small"  sx={style}
-    value={formData.email}
-    onChange={(event) => setFormData({ ...formData, email: event.target.value })}
-    InputProps={{
-        style: {
-            
-          color: 'white', // Text color
-          borderColor: 'white', // Border color
-          backgroundColor: '#3B3B3B'
-        
-          // Background color
-        },
-       
-        placeholder:"Type here"
-      }} // Change text color
-     InputLabelProps={{ style: { color: 'gray' } }}/></div>
-    <div className="email2"><TextField fullWidth  id="fullWidth" size="small"  sx={style}
+<div className="textfield">
+  
+   <TextField fullWidth  id="fullWidth" size="small"  sx={style}
 value={formData.department}
 onChange={(event) => setFormData({ ...formData, department: event.target.value })}
 
@@ -184,11 +195,39 @@ onChange={(event) => setFormData({ ...formData, department: event.target.value }
         },
         placeholder:"Type here"
       }} // Change text color
-     InputLabelProps={{ style: { color: 'gray' } }}/></div>
+     InputLabelProps={{ style: { color: 'gray' } }}/>
 </div>
 
 <div className="space"></div>
 <div className="space"></div>
+
+<div className="E-mail">
+<p style={{color:"white"}} >Bio</p>
+
+</div>
+<div className="textfield">
+  
+   <TextField fullWidth  id="fullWidth" size="small"  sx={style} multiline={true} 
+value={formData.bio}
+onChange={(event) => setFormData({ ...formData, bio: event.target.value })}
+
+    InputProps={{
+        style: {
+            height:'100px',
+          color: 'white', // Text color
+          borderColor: 'white', // Border color
+          backgroundColor: '#3B3B3B', 
+         
+          // Background color
+        },
+        placeholder:"Type here"
+      }} // Change text color
+     InputLabelProps={{ style: { color: 'gray' } }}/>
+</div>
+
+<div className="space"></div>
+<div className="space"></div>
+
 
 <div className="E-mail" >
 <p style={{color:"white"}} className="editProfile">Skills</p>
@@ -283,8 +322,8 @@ onChange={(event) => setFormData({ ...formData, department: event.target.value }
 <div className="space"></div>
 
 <div className="E-mail">
-    <div className="email1"><p style={{color:"white"}} className="editProfile">Social Link Title</p></div>
-    <div className="email2"><p style={{color:"white"}} className="editProfile">URL</p></div>
+    <div className="email1"><p style={{color:"gray"}} className="editProfile">Social Link Title</p></div>
+    <div className="email2"><p style={{color:"gray"}} className="editProfile">URL</p></div>
 
 </div>
 <div className="name">
@@ -341,6 +380,50 @@ onChange={(event) => setFormData({ ...formData, department: event.target.value }
     <div className="email2"><TextField fullWidth id="fullWidth" size="small" 
      value={formData.githubLink}
      onChange={(event) => setFormData({ ...formData, githubLink: event.target.value })}
+    InputProps={{
+        style: {
+            
+          color: 'white', // Text color
+          borderColor: 'white', // Border color
+          backgroundColor: '#3B3B3B', 
+         
+          // Background color
+        },
+        placeholder:"Type here"
+      }} // Change text color
+     InputLabelProps={{ style: { color: 'gray' } }}/></div>
+</div>
+<div className="space"/>
+
+<div className="name">
+    <div className="email1">
+      <p style={{color:'white'}}>Apple</p>
+    </div>
+    <div className="email2"><TextField fullWidth id="fullWidth" size="small" 
+     value={formData.appleLink}
+     onChange={(event) => setFormData({ ...formData, appleLink: event.target.value })}
+    InputProps={{
+        style: {
+            
+          color: 'white', // Text color
+          borderColor: 'white', // Border color
+          backgroundColor: '#3B3B3B', 
+         
+          // Background color
+        },
+        placeholder:"Type here"
+      }} // Change text color
+     InputLabelProps={{ style: { color: 'gray' } }}/></div>
+</div>
+<div className="space"/>
+
+<div className="name">
+<div className="email1">
+      <p style={{color:'white'}}>Facebook</p>
+    </div>
+    <div className="email2"><TextField fullWidth id="fullWidth" size="small" 
+     value={formData.facebookLink}
+     onChange={(event) => setFormData({ ...formData, facebookLink: event.target.value })}
     InputProps={{
         style: {
             

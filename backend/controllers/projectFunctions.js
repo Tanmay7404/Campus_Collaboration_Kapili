@@ -9,18 +9,21 @@ const {createRoom} = require("../functions/Chats_Socket/socket.js");
 class ProjectController {
     async addProject(project_details) {
         try {
+            console.log(project_details)
             var project = new Project({
                 title: project_details.title,
                 name : project_details.name,
+                projectImage: {url :project_details.projectImage.url, filename: project_details.projectImage.filename},
                 projectInfo: {
                     description: project_details.description,
-                    imgVideoLinks: [],
-                    projectLink: project_details.projectLinks
+                    demoLinks: project_details.demoLinks,
+                    projectLink: project_details.projectLink
                 },
                 creators: [], // Assuming creators is an array of user IDs
                 endorsements: [],
                 tags: [], // Assuming tags is an array of strings
                 ongoing: project_details.ongoing || false,
+                openForCollaboration:project_details.openForCollaboration||false,
                 feedbacks: [],
                 rating: 0,
                 issues: []

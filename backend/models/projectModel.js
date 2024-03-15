@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
   name:{ type: String, required: true,unique:true },
-  projectImage: String,
+  projectImage: {url :String, filename: String},
   projectInfo: {
     description: String,
-    demoLinks: [String],
+    demoLinks: [{fileName:{type:String}, link:{type:String}}],
     projectLink: [{name:{type:String}, link:{type:String}}]
   },
   creators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -14,6 +14,7 @@ const projectSchema = new mongoose.Schema({
   tags: [{ type:mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
   createdAt: { type: Date, default: Date.now },
   completedAt: { type: Date, default: Date.now },
+  openForCollaboration:Boolean,
   ongoing: Boolean,
   feedbacks: [{
     reviewer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

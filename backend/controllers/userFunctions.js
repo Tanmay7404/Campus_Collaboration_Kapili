@@ -6,7 +6,7 @@ class UserController {
     
     async addNewUser(user_details){
         try {
-            const { username, fullname, email, bio, githubLink, instagramLink, linkedinLink } = user_details;
+            const { username, fullname, email, bio, githubLink, instagramLink, linkedinLink,appleLink,facebookLink,url,imageName } = user_details;
 
             const user = new Model({
                username: username,
@@ -14,11 +14,13 @@ class UserController {
                 email:email,
                 friends: [],
                 profileInfo: {
-                    bio,
-                    profilePicture: { url: "", filename: "" }
+                  bio:  bio,
+                    profilePicture: { url: url, filename: imageName }
                 },
                 githubLink: githubLink,
                   instagramLink:  instagramLink,
+                  appleLink:appleLink,
+                  facebookLink:facebookLink,
                    linkedinLink: linkedinLink,
                 department: user_details.department,
                 skills: [],

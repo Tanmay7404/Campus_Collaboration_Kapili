@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
     githubLink:{type: String},
     instagramLink: {type: String},
     linkedinLink:{type: String} ,
+    appleLink:{type: String},
+    facebookLink:{type: String},
   department:{type: String},
   skills:[{ type: String, ref: 'Tag' }],
   projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
