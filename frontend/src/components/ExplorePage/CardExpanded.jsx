@@ -6,7 +6,7 @@ import unstar from "../../assets/images/unstared.svg";
 import downarrow from "../../assets/images/Arrow.svg";
 import FeedbackComponent from "./feedback.jsx";
 import DemoSwiper from "./DemoSwiper.jsx";
-// import "./CardExpanded.css";
+import "./CardExpanded.css";
 
 
 
@@ -84,7 +84,7 @@ const CardExpanded = ({
               </div>
               <div id="tags">
                 {tags.map((tag, idx) => (
-                  <a href="#" id={tag.name} className="tags1" key={idx} style={{borderColor: tag.color, color: tag.color}} >{tag.name}</a>
+                  <div id={tag.name} className="tags1" key={idx} style={{borderColor: tag.color, color: tag.color}} >{tag.name}</div>
                 ))}
               </div>
             </div>

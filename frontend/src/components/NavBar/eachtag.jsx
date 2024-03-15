@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import './eachtag.css'
 
 
-function Eachtag({skill,color}) {
-  const {selected,changeSelected} = useState(false);
+function Eachtag({skill,color, changeTagList}) {
+  const [selected, changeSelected] = useState(false);
   const divstyle = {
     border: `2px solid ${color}`,
     color: color,
@@ -14,6 +14,7 @@ function Eachtag({skill,color}) {
   }
   const change = ()=>{
     changeSelected(!selected);
+    changeTagList();
   }
   return (
     <div className="eachtag" style = {selected?selectedStyle:divstyle} onClick={change}>

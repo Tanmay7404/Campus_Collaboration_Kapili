@@ -44,3 +44,15 @@
     border-color: #fff;
     color: #fff !important;
 }
+.swiper-slide img{
+    position: absolute;
+    height: 100%;
+    object-fit: cover;
+  
+}
+.swiper {
+    width: 100%;
+    height: 100%; 
+    /* background-color: red; */
+    /* overflow: visible; */
+}

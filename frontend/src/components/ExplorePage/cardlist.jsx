@@ -4,6 +4,7 @@ import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import Card from './card.jsx';
+import "./cardlist.css";
 
 
 const CardList = ({data,setModalOpen}) => {

@@ -1,115 +1,48 @@
-/* src: url(../assets/font/Lexend-VariableFont_wght.ttf); */
 
-
-@font-face {
-    font-family: "Lexend";
-    src: url(../assets/font/Lexend-VariableFont_wght.ttf);
-}
-
-*{
-padding : 0;
-margin : 0;
-box-sizing: border-box;
-font-family: "Lexend";
-color: #fff;
-}
-
-body{
+#chatlayer0{
+    top:0;
     background-color: #181818;
-    height: 100vh;
-    width: 100vw;
-    position: relative;
-    overflow: hidden;
-}
-
-#layer1{
-    height: 100vh;
+    height: auto;
+    bottom: 0;
     width: 100vw;
     position: absolute;
-    z-index: 2;
-    top: 0;
-    left: 0;
-    background-image: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+    overflow: hidden;
+    z-index: -101;
+}
+
+
+#chatlayer1{
+    top: 0px;
+    position: absolute;
+    width: 100%;
+    height: 65%;
+    background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
+    z-index: -100;
     
 }
 
-#layer2{
-    height: 700px;
-    width: 700px;
+#chatlayer2{
+    height: 60%;
+    width: 40%;
     border-radius: 50%;
     position: absolute;
-    z-index: 1;
-    bottom: -110px;
-    right: -110px;
+    z-index: -99;
+    bottom: 0px;
+    right: 0px;
     background-color: #000000;
     filter: blur(254.5px);
 }
 
-#main{
-    height: 100%;
-    position: relative;
-    z-index: 3;
-    max-width: 2000px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-#logo{
-    width: 120px;
-}
-nav{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px 20px;
-}
-
-#search{
-    border-bottom: 1px solid #FFFFFF;
-    width: 30vw;
-    border-radius: 8px;
-    padding: 12px 20px;
-    height: 44px;
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
-    color: #BCBCBC;
-    font-weight: 300;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-input:focus {
-        outline: none;
-      }
-
-#search input{
-    width: 100%;
-    margin-right: 30px;
-    padding: 0px 10px;
-    font-size: 16px;
-    background-color: #00000000;
-    border: none;
-    color: white;
-}
-
-#nav-part2 a{
-    text-decoration: none;
-    font-weight: 300;
-    font-size: 16px;
-    padding: 10px;
-}
-#nav-part2 a:nth-child(2){
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
-    border-bottom: 1px solid #fff;
-    border-radius: 8px;
-}
-
-#page1{
+#chatpage1{
     flex: auto;
     overflow: hidden;
     display: flex;
 }
+#chatsmain{
+    height: calc(100vh - 104.8px);
+
+}
+
 #left{
     width: 30%;
     /* background-color: blue; */
@@ -117,6 +50,7 @@ input:focus {
     flex-direction: column;
     gap: 20px;
     padding: 20px 20px;
+    height: calc(100vh - 104.8px);
 }
 #left>p{
     font-weight: 300;
@@ -168,7 +102,7 @@ input:focus {
 }
 
 #persons{
-    /* flex: auto; */
+
     overflow: scroll;
 
 }
@@ -218,9 +152,10 @@ input:focus {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    height: calc(100vh - 104.8px);
 }
 
-#inf{
+#chatinf{
     background-color: #3B3B3B;
     display: flex;
     align-items: center;
@@ -242,26 +177,11 @@ input:focus {
     font-weight: 100;
 }
 
-/* #chats{
-    flex: auto;
-    padding-top: 30px;
-    overflow: auto;
-} */
 
-#chats::-webkit-scrollbar {
-    display: none;
-}
+
   
 
-#chats {
- 
 
-
-    flex: auto;
-    padding-top: 30px;
-    overflow-y: auto;
-    
-}
 
 
 #typingBox{
@@ -292,7 +212,22 @@ input:focus {
     cursor: pointer;
 }
 
-inf{
+
+#chats{
+
+    overflow: scroll;
+
+} 
+#chats {
+    -ms-overflow-style: none;
+    scrollbar-width: none;  
+}
+#chats::-webkit-scrollbar {
+    display: none;
+}
+
+
+#chats inf{
     padding: 10px 10px;
     padding-bottom: 0;
     align-items: center;
@@ -301,12 +236,12 @@ inf{
     background-color: #272727;
 }
 
-inf2 div{
+#chats inf2 div{
     font-weight: 200;
     font-size: 16px;
 
 }
-inf3{
+#chats inf3{
     display: flex;
     gap: 15px;
     align-items: center;

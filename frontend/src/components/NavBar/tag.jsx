@@ -2,7 +2,7 @@ import React from 'react'
 import './tag.css'
 import Eachtag from './eachtag.jsx';
 
-function Tag() {
+function Tag({ onTagClick }) {
     const all_tags = [
       {name: "Programming Language",color: "green" ,tags: ['Java','Python','JavaScript','C#','PHP','Ruby','C++','Swift','Kotlin','Typescript']},
       {name: "Web Development",color: "orange" ,tags: ['React','Angular','Vue.js','Node.js','Django','Flask','Bootstrap','Wordpress','HTML5','CSS3']},
@@ -26,7 +26,7 @@ function Tag() {
                 {
                   element.tags.map((ele)=>{
                     return(
-                        <Eachtag skill={ele} color={element.color}/>
+                      <Eachtag skill={ele} color={element.color} changeTagList={() => onTagClick(ele)}/>
                     );
                   })
                 }

@@ -1,48 +1,48 @@
 #page2{
     overflow-y: auto;
     white-space: nowrap;
-}
-
-#page2-container{
+  }
+  
+  #page2-container{
     animation-name: movingtext;
     animation-duration: 30s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-
-}
-
-#page2-container>h1{
+  
+  }
+  
+  #page2-container>h1{
     display: inline-block;
     font-weight: 700;
     font-size: 128px;
-}
-
-#page2-line{
+  }
+  
+  #page2-line{
     display: inline-block;
     width: 100px;
     height: 30px;
     background-color: #D4A359;
     margin: 30px 60px;
-
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-#page2::-webkit-scrollbar {
+  
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  #page2::-webkit-scrollbar {
     display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-#page2 {
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  #page2 {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
-}
-
-
-@keyframes movingtext {
+  }
+  
+  
+  @keyframes movingtext {
     from{
         transform: translate(0%,0%);
     }
     to{
         transform: translate(-500%,0%);
     }
-}
+  }

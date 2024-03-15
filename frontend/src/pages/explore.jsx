@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ExplorePg1 from '../components/ExplorePage/explorePage1.jsx';
 import ExplorePg2 from '../components/ExplorePage/explorePage2.jsx';
 import "./explore.css";
 import ExplorePg3 from '../components/ExplorePage/explorePage3.jsx';
 // import CardExpanded from '../components/ExplorePage/CardExpanded.jsx';
-import {useState} from 'react';
+import {useState, useContext} from 'react';
 import backg from '../assets/images/img1.jpeg';
 import sli1 from '../assets/images/slider-img3.jpeg';
 import sli2 from '../assets/images/slider-img1.png';
 import profile from '../assets/images/profile.jpeg';
+import {userContext} from "../userContext.jsx";
 
 
 
@@ -16,7 +17,27 @@ import profile from '../assets/images/profile.jpeg';
 
 
 const Explore = () => {
-
+    const [exploreData,setExploreData] = useState([])
+    const currUser = useContext(userContext);
+    useEffect(async () => {
+        try {
+            const response = await fetch("http://localhost:8080/exploreDataGet/"+currUser, {
+                method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
+                // headers: {
+                // "Content-Type": "application/json",
+                // As sending JSON data to API
+                // },
+                // body: JSON.stringify(data)   //if data to be given to the backend, uncomment this and the header, with data input in function
+            });
+            const res = await response.json();
+            setExploreData(res.message);
+            return;
+        }
+        catch(err){
+            setExploreData([]);
+            return;
+        }
+    },[currUser,setExploreData])
   const data = {
     explore: {
         allGroups: [
@@ -635,6 +656,10 @@ const Explore = () => {
     const [modaldata, setModalOpen] = useState(null);
     return (
     <>
+      <div id="layer0"></div>
+      <div id="layer1"></div>
+      <div id="layer2"></div>
+      <div id="layer3"></div>
       <ExplorePg1 />
       <ExplorePg2 />
       <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen}/>

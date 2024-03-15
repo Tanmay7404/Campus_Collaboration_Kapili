@@ -60,7 +60,7 @@
 
 import { Link, Route, Routes} from 'react-router-dom';
 import './App.css';
-import React from 'react';
+import React, { useState } from 'react';
 // import ChatPage from './pages/ChatPage.js';
 // import CreateProjectPage from './pages/createProject';
 // import EditCoursePage from './pages/editCourse';
@@ -72,27 +72,30 @@ import React from 'react';
 // import Card from './components/searchuser/carduser';
 // import CardList from './components/searchuser/cardlist';
 // import GlobalChat from './pages/GlobalChat';
+import ChatpageCalling from './pages/Chatpagecalling';
 
 //Import from Pages
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // import Home from "./pages/home.jsx";
-import Login from './pages/login.jsx';
+// import Login from './pages/login.jsx';
 import Navbar from './components/NavBar/navbar.jsx';
 import Explore from './pages/explore.jsx';
 // import Profile from './pages/profile.js';
 import TestPage from './pages/testPage.jsx';
 // import Search from './pages/search.jsx'
+import { userContext } from './userContext.jsx';
 
 function App() {
+  const [currUser, setCurrUser] = useState(null);
   return (
-
+    <userContext.Provider value= {currUser}>
     <Routes>
-      <Route path ="/login" element= {<Login/>}></Route>
+      <Route path ="/login" element= {<TestPage/>}></Route>
       <Route element ={<Navbar/>}>
         <Route path ="/explore" element = {<Explore/>}/>
-        <Route path ="/chat" element = {<TestPage/>}/>
+        <Route path ="/chat" element = {<ChatpageCalling/>}/>
         <Route path = "/profile/:username" element = {<TestPage/>} />
         <Route path = "/search/*" element = {<TestPage/>} />
       </Route>
@@ -103,6 +106,7 @@ function App() {
       <Route path = "/editProject/:projectname" element={<TestPage/>}/>
       <Route path = "/editCourse/:coursename" element={<TestPage/>}/>
     </Routes>
+    </userContext.Provider>
     // <>
     // <Home/>
     // {/* <ChatPage people={peopleData} currentUser={currentUser} /> */}

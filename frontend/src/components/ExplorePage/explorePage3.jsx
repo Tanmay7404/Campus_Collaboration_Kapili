@@ -1,5 +1,6 @@
 import React from 'react';
 import CardList from './cardlist.jsx';
+import "./explorePage3.css";
 
 const ExplorePg3 = (props) => {
     console.log(props);

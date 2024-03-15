@@ -1,7 +1,7 @@
 // ChatPage.js
 
 import React, { useState } from 'react';
-import './style.css'; // Import your stylesheet
+import './ChatPage.css'; // Import your stylesheet
 import smile from '../assets/images/smile.svg';
 import clip from '../assets/images/clip.svg';
 import logo from '../assets/images/logo.svg';
@@ -210,8 +210,9 @@ if(updatedPeople[index].messages.length>0){
       } catch (error) {
         console.error('Error fetching user friends:', error);
       }
+      return;
     };
-  
+    
     fetchData(); // Call the fetchData function
   
   }, []);
@@ -319,26 +320,14 @@ updateMessageForChatId(message.chatId,message.message)
   
 
   return (
-    <div >
-      <div id="layer1"></div>
-      <div id="layer2"></div>
-      <div id="main">
+    <>
+    <div id= "chatlayer0"></div>
+    <div id= "chatlayer1"></div>
+    <div id= "chatlayer2"></div>
+    <div id= "chatsmain">
         {/* Left Panel - People */}
-        <nav>
-          <img src={logo} id="logo" alt="" />
-
-          <div id="search">
-            <input type="text" name="" id="" placeholder="Search" />
-            <img src={search} alt="" />
-          </div>
-          <div id="nav-part2">
-            <a href="#">Explore</a>
-            <a href="#">Chats</a>
-            <a href="#">Profile</a>
-          </div>
-        </nav>
-
-        <div id="page1">
+       
+        <div id="chatpage1">
           <div id="left">
             <p>Chats</p>
             <div id="typeButton">
@@ -365,7 +354,7 @@ updateMessageForChatId(message.chatId,message.message)
 
           {/* Right Panel - Text Messages */}
           <div id="right">
-            <div id="inf">
+            <div id="chatinf">
               <img
                 src={selectedPerson?.profilePic}
                 className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
@@ -462,7 +451,7 @@ updateMessageForChatId(message.chatId,message.message)
           </div>
         </div>
       </div>
-    </div>
+      </>
   );
 };
 

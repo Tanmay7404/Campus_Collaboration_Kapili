@@ -1,4 +1,5 @@
 import React from 'react';
+import "./explorePage2.css";
 
 const ExplorePg2 = () => {
     return (

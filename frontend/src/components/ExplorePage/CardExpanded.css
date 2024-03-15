@@ -1,11 +1,7 @@
-@font-face {
-    font-family: "Lenxend";
-    src: url(../../font/Lexend-VariableFont_wght.ttf);
-}
 
-
-
-#details-main{
+  
+  
+  #details-main{
     /* display: none; */
     scale: 1;
     opacity: 1;
@@ -18,15 +14,16 @@
     left: 0;
     overflow: scroll;
     
-}
-#details-main::-webkit-scrollbar {
+  }
+  #details-main::-webkit-scrollbar {
     display: none;
-}
+  }
   
-#details-main {
+  #details-main {
     -ms-overflow-style: none;  /* IE and Edge */
-}
-#details{
+    scrollbar-width: none;  /* Firefox */
+  }
+  #details{
     max-width: 900px;
     margin: auto;
     margin-top: 20px;
@@ -34,39 +31,42 @@
     border-radius: 10px;
     width: 80%;
     overflow: hidden;
-}
-#banner{
+  }
+  #banner{
     width: 100%;
     height: 500px;
-    position: fixed;
-}
-
-#banner-image{
+    position: relative;
+  }
+  
+  #banner-image{
     width: 100%;
     height: 500px;
     object-fit: cover;
-}
-#layer{
+  }
+  #layer{
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     z-index: 1;
     top: 0;
     left: 0;
     background: linear-gradient(73.02deg, #000000 -13.78%, rgba(0, 0, 0, 0.7) 60.46%, rgba(0, 0, 0, 0) 176.58%);
-}
-
-#cross{
-    position: fixed;
+  }
+  #banner>svg{
+    position: absolute;
     z-index: 2;
     right: 30px;
     top: 30px;
     cursor: pointer;
-}
-
-#inf{
+    fill: #BCBCBC;
+  }
+  #banner>svg:hover{
+    fill: #fff;
+  }
+  
+  #inf{
     z-index: 3;
-    position: fixed;
+    position: absolute;
     left: 40px;
     bottom: 40px;
     height: 150px;
@@ -75,64 +75,68 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-#inf h1{
+  }
+  #inf h1{
     font-family: "Lenxend";
     font-weight: 400;
-
-}
-#inf2{
+  
+  }
+  #inf2{
     padding: 10px;
     display: flex;
     gap: 20px;
-    align-items: center;
     height: 40px;
-}
-#line{
+  }
+  #inf2>div{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #line{
     width: 2px;
     height: 100%;
     background-color: white;
-}
-
-#deltails-page1{
+  }
+  
+  #deltails-page1{
     padding: 40px 60px;
-}
-
-
-#contactor{
+  }
+  
+  
+  #contactor{
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-#profile{
+  }
+  
+  #profile{
     display: flex;
     align-items: center;
     gap: 15px;
-}
-
-#profile-picture{
+  }
+  
+  #profile-picture{
     height: 40px;
     width: 40px;
     object-fit: cover;
     border: 2px solid white;
     border-radius: 50%;
-}
-
-#profile span{
+  }
+  
+  #profile span{
     font-family: "Lenxend";
     font-weight: 300;
     font-size: 16px;
-}
-
-#linker{
+  }
+  
+  #linker{
     display: flex;
     gap: 20px;
-}
-
-
-#linker button{
-
+  }
+  
+  
+  #linker button{
+    cursor: pointer;
     background-color: #0d0d0d;
     color: #BCBCBC;
     border: none;
@@ -141,55 +145,48 @@
     font-family: "Lenxend";
     font-weight: 300;
     font-size: 15px;
-
-}
-
-#linker button:hover{
+  
+  }
+  
+  #linker button:hover{
     background-color: #060606;
     color: #FFFFFF;
-}
-
-#display-img{
+  }
+  
+  #display-img{
     padding: 40px 0;
-}
-
-
-.swiper {
-    width: 100%;
-   height: 100%; 
-   /* background-color: red; */
-   /* overflow: visible; */
- }
-
-.swiper-slide{
-   position: relative;
-   margin: 20px 0px;
-   overflow: hidden;
-   height: 200px !important;
-   /* width: 20px; */
-   text-align: center;
-   font-size: 18px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-}
-
-.swiperImg{
-    position: absolute;
-    height: 200px;
-    width:100px;
-    object-fit: cover;
-
-}
-
-
-
-#description h1{
+  }
+  
+  
+  
+  #details-main .swiper-slide{
+    position: relative;
+    margin: 20px 0px;
+    overflow: hidden;
+    height: 200px !important;
+    text-align: center;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #details-main .swiperImg{
+     position: relative;
+     height: 100%;
+     width:90%;
+     object-fit: cover;
+  
+  }
+  
+  
+  
+  #description h1{
     font-weight: 500;
     font-size: 24px;
     margin: 30px 0;
-}
-#description-part2{
+  }
+  #description-part2{
     color: #BCBCBC;
     font-weight: 300;
     font-size: 16px;
@@ -197,88 +194,116 @@
     letter-spacing: 0.03em;
     text-align: justify;
     margin: 20px 0;
-}
-
-#tags{
+  }
+  
+  #tags{
     display: flex;
     align-items: center;
     gap: 12px;
-}
-
-.tags{
+  }
+  
+  .tags{
     text-decoration: none;
     border: 1px solid white;
     border-radius: 4px;
     padding: 8px 17px;
     font-weight: 400;
     font-size: 16px;
-}
-
-#feedbacks-ratting{
+  }
+  
+  #UX{
+    border-color: #C9FF93;
+    color: #C9FF93;
+  }
+  #Java{
+    border-color: #4EB0E7;
+    color: #4EB0E7;
+  }
+  #AI{
+    border-color: #FF93C1;
+    color: #FF93C1;
+  }
+  #UX:hover{
+    background-color: #C9FF93;
+    color: #272727;
+  }
+  #Java:hover{
+    background-color: #4EB0E7;
+    color: #272727;
+  }
+  #AI:hover{
+    background-color: #FF93C1;
+    color: #272727;
+  }
+  
+  
+  
+  
+  #feedbacks-ratting{
     padding-top: 40px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-#feedbacks-ratting h1{
+  }
+  #feedbacks-ratting h1{
     font-weight: 500;
     font-size: 24px;
     padding: 20px 0;
-}
-
-.feedback-pic{
+  }
+  
+  .feedback-pic{
     margin: 10px 20px;
     height: 40px;
     width: 40px;
     object-fit: cover;
     border-radius: 50%;
-}
-
-
-#ratting{
+  }
+  
+  
+  #ratting{
     display: flex;
     background-color: #1B1B1B;
     align-items: center;
-
-}
-#addFeedbackButton{
+    
+  }
+  #addFeedbackButton{
     flex: auto;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     padding-right: 10px;
-}
-
-.profile-id{
+  }
+  
+  .profile-id{
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     gap: 5px;
     padding: 12px 20px;
     transition: all 1s;
-}
-
-.profile-name{
+  }
+  
+  .profile-name{
     font-weight: 300;
     font-size: 16px;
     color: white;
-}
-
-form{
+  }
+  
+  form{
     display: flex;
     align-items: center;
-}
-
-.stars {
+  }
+  
+  .stars {
     cursor: pointer;
     padding-right: 15px;
-}
-
-.star{
+  }
+  
+  .star{
     height: 13px;
-}
-
-#date{
+  }
+  
+  #date{
     text-transform: uppercase;
     align-items: center;
     background-color: #1B1B1B;
@@ -288,86 +313,96 @@ form{
     font-weight: 300;
     padding: 0px 12px;
     border-left: 2px solid white;
-}
-
-input[type="date"]::-webkit-inner-spin-button,
-input[type="date"]::-webkit-calendar-picker-indicator {
+  }
+  
+  input[type="date"]::-webkit-inner-spin-button,
+  input[type="date"]::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
-}
-
-
-
-#submiting{
+  }
+  
+  
+  
+  #submiting{
     display: none;
     transition: all 1s ease-out;
-}
-
-#FeedBackDownButton{
+  }
+  
+  #FeedBackDownButton{
     transition: all 0.25s ease-out;
-
-}
-#addFeedbackButton>div{
+    
+  }
+  #addFeedbackButton>div{
     display: flex;
     align-items: center;
     cursor: pointer;
-}
-
-#addFeedbackButton>div:hover>span{
+  }
+  
+  #addFeedbackButton>div:hover>span{
     color: #FFFFFF;
-}
-
-#addFeedbackButton>div>span{
+  }
+  #addFeedbackButton>div:hover>svg>path{
+    fill: #fff;
+  }
+  
+  
+  #addFeedbackButton>div>span{
     padding-right: 15px;
     font-weight: 400;
     color: #BCBCBC;
     font-size: 16px;
-}
-
-#text{
+  }
+  
+  #text{
     display: none;
-}
-#text button{
+  }
+  #text button{
     cursor: pointer;
     background-color: #1B1B1B;
     border: none;
     color: #757575;
     width: 100px;
     font-weight: 300;
-
-}
-#text button:hover{
+  
+  }
+  #text button:hover{
     color: white;
-}
-
-#feedBackText{
+  }
+  
+  #feedBackText{
     flex: auto;
     background-color: #1B1B1B;
     border: none;
     padding: 10px 20px;
     font-weight: 300;
     font-size: 15px;
-}
-
-inf{
+  }
+  
+  inf{
     display: flex;
     padding-top: 10px;
-}
-
-#feedbacks{
+  }
+  
+  #feedbacks{
     display: flex;
     flex-direction: column;
     gap: 30px;
-}
-#feedbacks> div{
+  }
+  #feedbacks> div{
     background-color:#1B1B1B;
-}
-#feedbacks> div>p{
+  }
+  #feedbacks> div>p{
     text-align: justify;
     padding: 15px 20px;
     padding-top: 5px;
     font-size: 14px;
     font-weight: 200;
     line-height: 20px;
-
-}
+  
+  }
+  
+  
+  /* ----------------for popup card----------------------------------------*/
+  
+  
+  

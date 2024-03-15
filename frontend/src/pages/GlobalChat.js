@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css'; // Import your stylesheet
+// import './style.css'; // Import your stylesheet
 import smile from '../assets/images/smile.svg';
 import clip from '../assets/images/clip.svg';
 import logo from '../assets/images/logo.svg';

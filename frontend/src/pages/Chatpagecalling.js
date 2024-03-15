@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css'; // Import your stylesheet
+// import './style.css'; // Import your stylesheet
 import GlobalChat from './GlobalChat.js';
 import profile from '../assets/images/profile.jpeg';
 import prof from '../assets/images/profile2.jpeg';
