@@ -79,7 +79,7 @@ import ChatpageCalling from './pages/Chatpagecalling';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 // import Home from "./pages/home.jsx";
-// import Login from './pages/login.jsx';
+import Login from './pages/login.jsx';
 import Navbar from './components/NavBar/navbar.jsx';
 import Explore from './pages/explore.jsx';
 // import Profile from './pages/profile.js';
@@ -87,20 +87,22 @@ import TestPage from './pages/testPage.jsx';
 // import Search from './pages/search.jsx'
 import { userContext } from './userContext.jsx';
 import Profile from './pages/profile.js';
+import SucessLogin from "./pages/sucessLogin.jsx"
 
 function App() {
   const [currUser, setCurrUser] = useState(null);
   return (
     <userContext.Provider value= {currUser}>
     <Routes>
-      <Route path ="/login" element= {<TestPage/>}></Route>
+      <Route path ="/login" element= {<Login/>}/>
+      <Route path = "/sucesslogin/:username" element = {<SucessLogin setUser={setCurrUser}/>}/>
       <Route element ={<Navbar/>}>
         <Route path ="/explore" element = {<Explore/>}/>
         <Route path ="/chat" element = {<ChatpageCalling/>}/>
         <Route path = "/profile/:username" element = {<Profile/>} />
         <Route path = "/search/*" element = {<TestPage/>} />
       </Route>
-      <Route path = "/createProfile" element={<TestPage/>}/>
+      <Route path = "/createProfile/:email/:fullname" element={<TestPage/>}/>
       <Route path = "/createProject" element={<TestPage/>}/>
       <Route path = "/createCourse" element={<TestPage/>}/>
       <Route path = "/editProfile/:username" element={<TestPage/>}/>

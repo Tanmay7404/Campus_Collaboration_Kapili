@@ -134,7 +134,7 @@ console.log(data)
 
 //ROUTES IMPORT
 const userRoutes = require("./routes/userRoutes.js");
-app.use("/",userRoutes);
+app.use("/user",userRoutes);
 
 const Routes = require("./routes/test.js");
 app.use("/home",Routes);
@@ -147,6 +147,10 @@ app.use('/courses',courseRoutes);
 
 const chatRoutes=require("./routes/chatRoutes.js");
 app.use('/chats',chatRoutes);
+
+const loginRoutes=require("./routes/loginRoutes.js");
+app.use('/',loginRoutes);
+
 //PORT
 const port = process.env.port || 8080;
 

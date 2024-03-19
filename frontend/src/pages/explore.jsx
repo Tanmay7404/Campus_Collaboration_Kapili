@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ExplorePg1 from '../components/ExplorePage/explorePage1.jsx';
 import ExplorePg2 from '../components/ExplorePage/explorePage2.jsx';
 import "./explore.css";
 import ExplorePg3 from '../components/ExplorePage/explorePage3.jsx';
 // import CardExpanded from '../components/ExplorePage/CardExpanded.jsx';
-import {useState, useContext} from 'react';
 import backg from '../assets/images/img1.jpeg';
 import sli1 from '../assets/images/slider-img3.jpeg';
 import sli2 from '../assets/images/slider-img1.png';

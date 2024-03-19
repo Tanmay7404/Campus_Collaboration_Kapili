@@ -8,6 +8,9 @@ import profilePic from '../assets/images/profile.jpg';
 
 
 const Profile = () => {
+  const handleLogOut = () => {
+    window.location.href = 'http://localhost:8080/logout';
+  };
   const [selectedButton, setSelectedButton] = useState('project');
 
   const handleButtonClick = (buttonId) => {
@@ -92,7 +95,7 @@ const Profile = () => {
                   <img src="./Images/pencil.png" alt="" id="pencil" />
                   <Link style={{textDecoration: 'none'}} to="/EditProfile">Edit Your Profile</Link>
                 </button>
-                <h3>Log Out</h3>
+                <h3 onClick={handleLogOut}>Log Out</h3>
               </div>
             </div>
           </div>
