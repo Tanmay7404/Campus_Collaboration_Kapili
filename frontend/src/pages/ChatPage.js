@@ -28,7 +28,7 @@ const ChatPage = ({  currentUser }) => {
  }, [selectedPerson]);
 const fetchUserFriends = async () => {
   try {
-    const response = await fetch('http://localhost:8080/getuserfriends/'+currentUser.name, {
+    const response = await fetch('http://localhost:8080/user/getuserfriends/'+currentUser.name, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -222,17 +222,16 @@ if(updatedPeople[index].messages.length>0){
 
   useEffect(()=>{
     if(divRef.current){
-      console.log(77777777);
       divRef.current?.lastElementChild?.scrollIntoView();
     }
-  },[chatList,globalChats]);
+  },[chatList,globalChats,global]);
 
   useEffect(() => {
     const fetchGlobalData = async () => {
       try {
         if(global==true && globalPeople.length===0){
 
-        const response = await fetch('http://localhost:8080/getGlobalChatList/' + currentUser.name, {
+        const response = await fetch('http://localhost:8080/user/getGlobalChatList/' + currentUser.name, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
