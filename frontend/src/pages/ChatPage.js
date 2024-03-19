@@ -191,7 +191,7 @@ if(updatedPeople[index].messages.length>0){
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/getUserChatList/' + currentUser.name, {
+        const response = await fetch('http://localhost:8080/user/getUserChatList/' + currentUser.name, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

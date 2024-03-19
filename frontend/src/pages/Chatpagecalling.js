@@ -35,7 +35,7 @@ const Chatpagecalling = () => {
   useEffect(()=>{
     const fetchData = async () => {
       try {
-    const response = await fetch('http://localhost:8080/getUserChatPage/' + currUser, {
+    const response = await fetch('http://localhost:8080/user/getUserChatPage/' + currUser, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
