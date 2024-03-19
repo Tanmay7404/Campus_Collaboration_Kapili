@@ -192,6 +192,40 @@ userRouter.get('/getUser/:username', async (req, res) => {
     }
 });
 
+userRouter.get('/getUserChatPage/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await new UserController().getUserByUsername(username);
+
+        if (user) {
+            res.json({id:user.id,name:user.username,profile:user.profileInfo.profilePicture.url});
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+userRouter.get('/getGlobalChatList/:username', async (req, res) => {
+    try {
+        const userId=req.params.username
+        const id="65f40b3453c7721fd9f231dc"
+            const chatParticipants=await new ChatController().getGlobalChatParticipants(id,userId);
+            
+
+            const usernameProfile=await new UserController().getUsernameProfile(chatParticipants)
+            console.log(usernameProfile)
+        if (usernameProfile) {
+            res.json({chatId:id,profiles:usernameProfile});
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
 userRouter.get('/getUserChatList/:username', async (req, res) => {
     try {
         const username = req.params.username;

@@ -109,7 +109,6 @@ async function initialize() {
 io.on('connection', socket => {
     console.log('New client connected ',socket.id);
     socket.on('join_room',  (room) => {
-    console.log(room)
         socket.join(room)
       })
 
@@ -122,10 +121,15 @@ io.on('connection', socket => {
     });
     socket.on('send_chat_message',  async(data) => {
  
-console.log(data)
 
         socket.broadcast.to(data.room).emit('receive_message', { message: data.message, name: data.username ,chatId:data.room})
-      })
+      });
+      socket.on('send_global_message',  async(data) => {
+ console.log("global global")
+
+        socket.broadcast.to(data.room).emit('receive_global_message', { message: data.message, name: data.username ,chatId:data.room})
+      });
+     
 });
 
 

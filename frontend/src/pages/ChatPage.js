@@ -12,14 +12,17 @@ const socket=io('http://localhost:8080')
 const ChatPage = ({  currentUser }) => {
   const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
-   // Track the current date
  const [userObjectId,setUserObjectId]=useState(currentUser.id)
  const [chatList,setChatList]=useState([])
+ 
  const [userFriends, setUserFriends] = useState([]);
  const [people, setPeopleData] = useState([]);
-
  const selectedPersonRef = useRef(selectedPerson);
-
+ const [global,setGlobal]=useState(false);
+ const [globalChats,setGlobalChats]=useState([]);
+ const [globalPeople,setGlobalPeople]=useState([]);
+ const divRef = useRef(null);
+ //const [getAllPeople,]
  useEffect(() => {
    selectedPersonRef.current = selectedPerson;
  }, [selectedPerson]);
@@ -198,9 +201,10 @@ if(updatedPeople[index].messages.length>0){
   
         const data = await response.json();
         setPeopleData(data)
-        console.log(121)
-        console.log(data)
-        console.log(121)
+        // console.log(121)
+        // console.log(data)
+        // console.log(121)
+
          setCount(prev=>prev+1)
         for (const peep of data)
         {
@@ -212,10 +216,57 @@ if(updatedPeople[index].messages.length>0){
       }
       return;
     };
-    
     fetchData(); // Call the fetchData function
   
   }, []);
+
+  useEffect(()=>{
+    if(divRef.current){
+      console.log(77777777);
+      divRef.current?.lastElementChild?.scrollIntoView();
+    }
+  },[chatList,globalChats]);
+
+  useEffect(() => {
+    const fetchGlobalData = async () => {
+      try {
+        if(global==true && globalPeople.length===0){
+
+        const response = await fetch('http://localhost:8080/getGlobalChatList/' + currentUser.name, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+          // You can include additional headers or body if needed
+        });
+  
+        const data = await response.json();
+        setGlobalPeople(data.profiles)
+        setCurrChatId(data.chatId)
+        console.log(121)
+        console.log(data)
+        console.log(121)
+       //  setCount(prev=>prev+1)
+        socket.emit("join_room",data.chatId)
+        const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${data.chatId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }); 
+        var chatMessages=await ChatResponse.json()
+       setGlobalChats(chatMessages)
+      }
+        //setUserFriends(data);
+      } catch (error) {
+        console.error('Error fetching user friends:', error);
+      }
+      return;
+    };
+    
+    fetchGlobalData(); // Call the fetchData function
+  
+  }, [global]);
 //   useEffect(() => {
 //     console.log('connected to localhost')
 //     const newSocket = io('http://localhost:8080'); // Replace with your server URL
@@ -228,13 +279,9 @@ useEffect(() => {
   if (!socket ) return;
 console.log('socker')
   socket.on('receive_message', message => {
-
     console.log('received message')
 if(selectedPersonRef.current){ 
       if(selectedPersonRef.current.chatId===message.chatId){setChatList(prevMessages => [...prevMessages, message.message])};
-     
-
-      
 }
 updateMessageForChatId(message.chatId,message.message)
      setCount(prev=>prev+1)
@@ -244,13 +291,29 @@ updateMessageForChatId(message.chatId,message.message)
       //   timestamp:formattedDate
       //  })
   });
+  socket.on('receive_global_message', message => {
+    console.log('global received message')
+    console.log(131)
+    console.log(currentUser.name)
+    console.log(message.name)
+    console.log(131)
+    console.log(12)
+      if(currentUser.name!==message.name){setGlobalChats(prevMessages => [...prevMessages, message.message])};
 
+      // updateMessageForPerson(.name,{
+      //   senderName:currentUser.name,
+      //   message:currentMessage,
+      //   timestamp:formattedDate
+      //  })
+  });
   // socket.on('messages', messages => {
   //     setMessages(messages);
   // });
 
   return () => {
     socket.off('receive_message');
+    socket.off('receive_global_message');
+
   };
 }, [socket]);
 
@@ -288,6 +351,22 @@ updateMessageForChatId(message.chatId,message.message)
       });
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString();
+
+      if(global){
+        console.log("global")
+        const newMessage = {
+          senderName: currentUser.name,
+          message: currentMessage,
+          timestamp: formattedDate 
+        };
+        socket.emit("send_global_message",{room:currChatId,message:newMessage,username:currentUser.name})
+      
+        setGlobalChats(prevList => {
+    
+          return [...prevList, newMessage];
+        });
+      }
+      else{
    updateMessageForPerson(selectedPerson.name,{
     senderName:currentUser.name,
     message:currentMessage,
@@ -307,7 +386,7 @@ updateMessageForChatId(message.chatId,message.message)
   socket.emit("send_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
       const secondData = await secondResponse.json();
       // Handle success response for the second fetch
-
+      }
     } catch (error) {
       console.error('Error:', error);
       // Handle error for both fetch calls
@@ -331,13 +410,19 @@ updateMessageForChatId(message.chatId,message.message)
           <div id="left">
             <p>Chats</p>
             <div id="typeButton">
-              <button id="personal">Personal</button>
-              <button id="global">Global</button>
+              <button id={global ? "global" : "personal"} onClick={()=>{
+                setGlobal(false)
+              }}>Personal</button>
+              <button id={global ? "personal" : "global"} onClick={()=>{
+                setGlobal(true)
+              }}>Global</button>
             </div>
+            {!global&&(
             <div id="search2">
               <input type="text" name="" id="chats-search" placeholder="Search Chats" />
               <img src={search} alt="" />
-            </div>
+            </div>)}
+            {!global&&(
             <div id="persons">
               {people.map((person) => (
                 <div
@@ -349,11 +434,11 @@ updateMessageForChatId(message.chatId,message.message)
                   {person.name}
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Right Panel - Text Messages */}
+            </div>)}
+</div>
           <div id="right">
+          {!global&&(
+
             <div id="chatinf">
               <img
                 src={selectedPerson?.profilePic}
@@ -366,16 +451,30 @@ updateMessageForChatId(message.chatId,message.message)
               >
                 {selectedPerson?.name}
               </span>
-              {/* <span className="line"></span> */}
-              {/* {selectedPerson.lastSeen && !selectedPerson.isGroup && (
-                <span id="last-seen" style={{ textAlign: 'right' }}>
-                  Last seen {formatDate(selectedPerson.lastSeen.date)} {selectedPerson.lastSeen.time}
-                </span>
-              )} */}
-              
+             
+           
             </div>
-            <div id="chats" style={{height:'65vh'}} >
-              {chatList?.map((message, index) => (
+               )}
+                {global&&(
+
+<div id="chatinf">
+  <img
+    src={selectedPerson?.profilePic}
+    className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
+    alt=""
+  />
+  <span
+    id="Name"
+    style={{ textAlign: selectedPerson?.id === currentUser.id ? 'right' : 'left' }}
+  >
+    Global Chat
+  </span>
+ 
+
+</div>
+   )}
+            <div id="chats" style={{height:'65vh'}} ref={divRef}>
+              {!global&&chatList?.map((message, index) => (
                 <div
                   key={index}
                   className={`front ${message.senderName=== currentUser.name ? currentUser.name : ''}`}
@@ -414,6 +513,69 @@ updateMessageForChatId(message.chatId,message.message)
                           }}
                         >
                           {message.senderName === currentUser.name ? 'Me' : people.find((p) => p.name === message.senderName)?.name}
+                        </div>
+                        <inf3
+                          style={{
+                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                          }}
+                        >
+                          <span className="date">{new Date(message.timestamp).toLocaleDateString()}</span>
+                          <span className="line"></span>
+                          <span className="time">{new Date(message.timestamp).toLocaleTimeString()}</span>
+                        </inf3>
+                            
+                      </inf2>
+                      
+                    </inf>
+                  ) : null}
+                  <div
+                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    // className="chat"
+                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                  >
+                    <p>{message.message}</p>
+                  </div>
+                </div>
+              ))}
+               {global&&globalChats?.map((message, index) => (
+                <div
+                  key={index}
+                  className={`front ${message.senderName=== currentUser.name ? currentUser.name : ''}`}
+                >
+                  {!index || (message.senderName !== globalChats[index-1]?.senderName) ? (
+                    <inf
+                    style={{
+                      textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                      
+                    }}
+
+                    >
+                      <img
+                        src={
+                          message.senderName === currentUser.name
+                            ? currentUser.profilePic
+                            : globalPeople.find((p) => p.name === message.senderName)?.profilePic
+                        }
+                        className={`profilePic ${message.senderName === currentUser.name ? 'me' : ''}`}
+                        alt=""
+                        style={{
+                          float: message.senderName === currentUser.name ? 'right' : 'left',
+                        }}
+                      />
+                      
+                      <inf2
+                        style={{
+                          textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                        }}
+
+                      >
+                        <div
+                          id="Name"
+                          style={{
+                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                          }}
+                        >
+                          {message.senderName === currentUser.name ? 'Me' : globalPeople.find((p) => p.name === message.senderName)?.name}
                         </div>
                         <inf3
                           style={{

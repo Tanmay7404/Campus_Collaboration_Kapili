@@ -41,7 +41,6 @@ chatRouter.post("/addMessage/:chatId", async (req, res) => {
     }
 });
 
-
 chatRouter.post("/addParticipants/:chatId", async (req, res) => {
     try {
         const chatId = req.params.chatId;

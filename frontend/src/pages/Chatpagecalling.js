@@ -1,60 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 // import './style.css'; // Import your stylesheet
 import GlobalChat from './GlobalChat.js';
 import profile from '../assets/images/profile.jpeg';
 import prof from '../assets/images/profile2.jpeg';
 import logo from '../assets/images/logo.svg'
-import { useState } from 'react';
-
+import { useState ,useEffect} from 'react';
+import { userContext } from '../userContext.jsx';
 
 import ChatPage from './ChatPage.js';
 // import reportWebVitals from './reportWebVitals';
-const peopleData = [
-  {
-    id: 2,
-    name:'Shushant',  
-    messages: [
-      
-      { text: 'Hello there!', date: '10/02/2024', time: '10:45 AM', senderId: 1 },
-      { text: '!', date: '3/12/23', time: '10:45 AM', senderId: 1 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Ysdas...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yasadas...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
 
-      { text: 'asda...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-
-      // Add more messages as needed
-    ],
-    
-    isGroup: false,
-  },
-  {
-    id: 3,
-    name: 'Priyan',
-    profilePic: prof,
-    messages: [
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 3 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 3 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 1 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 1 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-      { text: 'Yeah...', date: '3/12/23', time: '10:50 AM', senderId: 2 },
-
-      // Add more messages as needed
-    ],
-    lastSeen: { date: '3/12/23', time: '10:50 AM' },
-    isGroup: false,
-  },
-  // Add more people as needed
-];
 
 const currentUser = {
   id: "65c68489cb8fad53daf0f3d4", // Set the current user's id
@@ -75,6 +30,32 @@ const currentUser3 = {
 
 };
 const Chatpagecalling = () => {
+ // const currUser=useContext(userContext)
+ const currUser="Simon"
+  useEffect(()=>{
+    const fetchData = async () => {
+      try {
+    const response = await fetch('http://localhost:8080/getUserChatPage/' + currUser, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+      // You can include additional headers or body if needed
+    });
+
+    const data = await response.json();
+   setSelectedUser(data)
+    console.log(data)
+
+  }
+    catch (error) {
+      console.error('Error fetching userId:', error);
+    }
+  }
+
+  fetchData()
+
+  },[])
   const [selectedUser, setSelectedUser] = useState(null);
   const handleUserSelection = (user) => {
     console.log(user)

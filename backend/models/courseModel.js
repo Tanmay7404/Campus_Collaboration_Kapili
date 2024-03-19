@@ -3,8 +3,12 @@ const mongoose = require("mongoose");
 const courseSchema = new mongoose.Schema({
   title: { type: String, required: true, unique:true},
   creators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  description: String,
-  courseLinks: [{ title: String, content: String }],
+  courseImage: {url :String, filename: String},
+  courseInfo: {
+    description: String,
+    demoLinks: [{fileName:{type:String}, link:{type:String}}],
+    courseLink: [{name:{type:String}, link:{type:String}}]
+  },
   tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
   enrolledUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now },

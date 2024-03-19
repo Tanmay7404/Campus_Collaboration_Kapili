@@ -6,23 +6,23 @@ const { ObjectId } = require('mongodb');
 
 
 class ChatController {
-    async addChat(chat_details) {
-        try {
-            const chat = new Chat({
-                participants: chat_details.participants, // Assuming participants is an array of user IDs
-                messages: chat_details.messages,
-                lastMessage: chat_details.lastMessage,
-                lastMessageTime: chat_details.lastMessageTime || Date.now(),
-                projectName: chat_details.projectName // Assuming projectName is a project ID
-            });
-            
-            await chat.save();
-            return chat._id;
-        } catch (err) {
-            console.error(err);
-            return 0;
+        async addChat(chat_details) {
+            try {
+                const chat = new Chat({
+                    participants: chat_details.participants, // Assuming participants is an array of user IDs
+                    messages: chat_details.messages,
+                    lastMessage: chat_details.lastMessage,
+                    lastMessageTime: chat_details.lastMessageTime || Date.now(),
+                    projectName: chat_details.projectName // Assuming projectName is a project ID
+                });
+                
+                await chat.save();
+                return chat._id;
+            } catch (err) {
+                console.error(err);
+                return 0;
+            }
         }
-    }
 
   async addMessage(chatId, messageDetails) {
         try {
@@ -127,6 +127,36 @@ class ChatController {
                     console.log(`Chat with ID ${chatId} not found`);
                 }
             }
+            return chatList
+          } catch (error) {
+            console.error("Error getting messages by chat ID:", error);
+            throw error; // Rethrow to handle it outside
+            return []
+        }
+      }
+    async getGlobalChatParticipants(chatId,currentUserId){
+        try {
+            var chatList = [];
+           
+                
+                const chat = await Chat.findById(chatId);
+                if (chat) {
+                    // Filter out the current user from the participants list
+                    if(chat.projectName==null&&chat.courseName==null){
+                    const participantsExcludingCurrentUser = chat.participants.filter(participant => !participant.equals(currentUserId));
+                    chatList.push({participants:participantsExcludingCurrentUser,type:'User',lastMessageTime:chat.lastMessageTime});
+                }
+                    else if(chat.projectName!=null)
+                    {
+                        chatList.push({chatId:chatId,participants:chat.projectName,type:'Project',lastMessageTime:chat.lastMessageTime})
+                    }else {
+                        chatList.push({chatId:chatId,participants:chat.courseName,type:'Course',lastMessageTime:chat.lastMessageTime})
+
+                    }
+                } else {
+                    console.log(`Chat with ID ${chatId} not found`);
+                }
+            
             return chatList
           } catch (error) {
             console.error("Error getting messages by chat ID:", error);
