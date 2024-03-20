@@ -85,36 +85,35 @@ import Explore from './pages/explore.jsx';
 // import Profile from './pages/profile.js';
 import TestPage from './pages/testPage.jsx';
 // import Search from './pages/search.jsx'
-import { userContext } from './userContext.jsx';
+import { UserProvider } from './userContext.jsx';
 import Profile from './pages/profile.js';
 import SucessLogin from "./pages/sucessLogin.jsx"
 
 function App() {
-  const [currUser, setCurrUser] = useState(null);
   return (
-    <userContext.Provider value= {currUser}>
-    <Routes>
-      <Route path ="/login" element= {<Login/>}/>
-      <Route path = "/sucesslogin/:username" element = {<SucessLogin setUser={setCurrUser}/>}/>
-      <Route element ={<Navbar/>}>
-        <Route path ="/explore" element = {<Explore/>}/>
-        <Route path ="/chat" element = {<ChatpageCalling/>}/>
-        <Route path = "/profile/:username" element = {<Profile/>} />
-        <Route path = "/search/*" element = {<TestPage/>} />
-      </Route>
-      <Route path = "/createProfile/:email/:fullname" element={<TestPage/>}/>
-      <Route path = "/createProject" element={<TestPage/>}/>
-      <Route path = "/createCourse" element={<TestPage/>}/>
-      <Route path = "/editProfile/:username" element={<TestPage/>}/>
-      <Route path = "/editProject/:projectname" element={<TestPage/>}/>
-      <Route path = "/editCourse/:coursename" element={<TestPage/>}/>
-    </Routes>
-    </userContext.Provider>
+    <UserProvider>
+      <Routes>
+        <Route path ="/login" element= {<Login/>}/>
+        <Route path = "/sucesslogin/:username" element = {<SucessLogin/>}/>
+        <Route element ={<Navbar/>}>
+          <Route path ="/explore" element = {<Explore/>}/>
+          <Route path ="/chat" element = {<ChatpageCalling/>}/>
+          <Route path = "/profile/:username" element = {<Profile/>} />
+          <Route path = "/search/*" element = {<TestPage/>} />
+        </Route>
+        <Route path = "/createProfile/:email/:fullname" element={<TestPage/>}/>
+        <Route path = "/createProject" element={<TestPage/>}/>
+        <Route path = "/createCourse" element={<TestPage/>}/>
+        <Route path = "/editProfile/:username" element={<TestPage/>}/>
+        <Route path = "/editProject/:projectname" element={<TestPage/>}/>
+        <Route path = "/editCourse/:coursename" element={<TestPage/>}/>
+      </Routes>
+    </UserProvider>
     // <>
     // <Home/>
     // {/* <ChatPage people={peopleData} currentUser={currentUser} /> */}
     // </>
-
+ 
   );
 }
 

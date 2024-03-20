@@ -93,8 +93,9 @@ loginRouter.get('/explore',async (req, res) => {
         if(user.username==null){
             console.log(1);
             const encodedEmail = encodeURIComponent(user.email);
-            const encodedFullName = encodeURIComponent(user.fullName);
+            const encodedFullName = encodeURIComponent(user.fullname);
             res.redirect(`http://localhost:3000/createProfile/${encodedEmail}/${encodedFullName}`);
+            
         }
         else{
             console.log(2);
@@ -176,41 +177,43 @@ loginRouter.get('/logout', (req, res) => {
 });
 
 
+async function saveDataToDatabase(tokenResponse) {
+    // console.log(tokenResponse);
+
+    let existingUser = await UserModel.findOne({ email: tokenResponse.account.username});
+    
+    if (!existingUser) {
+        user = {
+            username: null,
+            email: tokenResponse.account.username,
+            fullname: tokenResponse.account.name
+        };
+    }
+    else{
+        user = {
+            username: existingUser.username,
+            email: existingUser.email,
+            fullname: existingUser.fullname
+        }
+    }
+    console.log(user.fullname);
+    return user;
+}
+
 // async function saveDataToDatabase(tokenResponse) {
 //     // console.log(tokenResponse);
 
 //     let existingUser = await UserModel.findOne({ email: tokenResponse.account.username});
 //     if (!existingUser) {
-//         user = {
+//         existingUser =new UserModel ({
 //             username: null,
 //             email: tokenResponse.account.username,
 //             fullname: tokenResponse.account.name
-//         };
+//         });
 //     }
-//     else{
-//         user = {
-//             username: existingUser.username,
-//             email: existingUser.email,
-//             fullname: existingUser.fullname
-//         }
-//     }
+//     await existingUser.save();
 //     return existingUser;
 // }
-
-async function saveDataToDatabase(tokenResponse) {
-    // console.log(tokenResponse);
-
-    let existingUser = await UserModel.findOne({ email: tokenResponse.account.username});
-    if (!existingUser) {
-        existingUser =new UserModel ({
-            username: null,
-            email: tokenResponse.account.username,
-            fullname: tokenResponse.account.name
-        });
-    }
-    await existingUser.save();
-    return existingUser;
-}
 
 
 

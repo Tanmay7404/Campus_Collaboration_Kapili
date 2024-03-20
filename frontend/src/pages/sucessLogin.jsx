@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useParams,Navigate } from 'react-router-dom';
-const RedirectToOtherPage = ({setUser}) => {
-  
+import UserContext from '../userContext';
+const RedirectToOtherPage = () => {
+  const {setCurrUser} = useContext(UserContext);
   const {username} = useParams();
   useEffect(() => {
     // Call your function here
@@ -10,7 +11,7 @@ const RedirectToOtherPage = ({setUser}) => {
 
   const redirectToOtherPage = () => {
     const decodedUsername = decodeURIComponent(username);
-    setUser(decodedUsername);
+    setCurrUser(decodedUsername);
   };
 
   // Return null to render nothing

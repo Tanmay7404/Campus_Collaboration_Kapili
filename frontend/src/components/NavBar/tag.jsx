@@ -2,7 +2,9 @@ import React from 'react'
 import './tag.css'
 import Eachtag from './eachtag.jsx';
 
-function Tag({ onTagClick }) {
+function Tag({ onTagClick, tagList, selectedSearch, setSelectedSearch}) {
+    console.log(selectedSearch);
+    
     const all_tags = [
       {name: "Programming Language",color: "green" ,tags: ['Java','Python','JavaScript','C#','PHP','Ruby','C++','Swift','Kotlin','Typescript']},
       {name: "Web Development",color: "orange" ,tags: ['React','Angular','Vue.js','Node.js','Django','Flask','Bootstrap','Wordpress','HTML5','CSS3']},
@@ -17,6 +19,26 @@ function Tag({ onTagClick }) {
 
   return (
     <div id='taglist'>
+      <div className="box" key = "Search">
+        <div className="title">What To Search</div>
+        <div className="content">
+          <Eachtag skill="Projects" selectedList={[selectedSearch]} color={"white"} changeTagList={()=>setSelectedSearch({tagname: "Projects", color:"white"})} />
+          <Eachtag skill="Courses" selectedList={[selectedSearch]} color={"white"} changeTagList={()=>setSelectedSearch({tagname: "Courses", color:"white"})} />
+          <Eachtag skill="Users" selectedList={[selectedSearch]} color={"white"} changeTagList={()=>setSelectedSearch({tagname: "Users", color:"white"})} />
+        </div>
+      </div>
+        <div className="box" key = "SelectedTags">
+        <div className="title">Filter By Tags</div>
+        <div className="content">
+            {
+              tagList.map((ele)=>{
+                return(
+                  <Eachtag skill={ele.tagname} selectedList={tagList} color={ele.color} changeTagList={()=>onTagClick(ele)} />
+                );
+              })
+            }
+          </div>
+        </div>
         {
           all_tags.map((element)=>{
             return (
@@ -26,7 +48,7 @@ function Tag({ onTagClick }) {
                 {
                   element.tags.map((ele)=>{
                     return(
-                      <Eachtag skill={ele} color={element.color} changeTagList={() => onTagClick(ele)}/>
+                      <Eachtag skill={ele} selectedList={tagList} color={element.color} changeTagList={() => onTagClick({tagname: ele, color:element.color})}/>
                     );
                   })
                 }

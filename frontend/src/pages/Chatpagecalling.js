@@ -5,7 +5,7 @@ import profile from '../assets/images/profile.jpeg';
 import prof from '../assets/images/profile2.jpeg';
 import logo from '../assets/images/logo.svg'
 import { useState ,useEffect} from 'react';
-import { userContext } from '../userContext.jsx';
+import UserContext from '../userContext.jsx';
 
 import ChatPage from './ChatPage.js';
 // import reportWebVitals from './reportWebVitals';
@@ -30,8 +30,8 @@ const currentUser3 = {
 
 };
 const Chatpagecalling = () => {
- // const currUser=useContext(userContext)
- const currUser="Simon"
+ const {currUser}=useContext(UserContext)
+//  const currUser="Simon"
   useEffect(()=>{
     const fetchData = async () => {
       try {

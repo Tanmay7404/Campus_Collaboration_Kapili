@@ -6,11 +6,11 @@
     top: 74.8px;
     border-radius: 8px;
     left: 0;
-    right: 66px;
+    right: 80px;
     margin-left: auto;
     margin-right: auto;
     width: 30vw;
-    height: 300px;
+    height: 500px;
     overflow-y: scroll;
     gap: 40px;
     background: linear-gradient(212.81deg, rgba(0, 0, 0, 0.9) 3.07%, rgba(22, 22, 22, 0.9) 95.64%);

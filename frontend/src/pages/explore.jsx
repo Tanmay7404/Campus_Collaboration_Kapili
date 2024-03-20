@@ -8,7 +8,7 @@ import backg from '../assets/images/img1.jpeg';
 import sli1 from '../assets/images/slider-img3.jpeg';
 import sli2 from '../assets/images/slider-img1.png';
 import profile from '../assets/images/profile.jpeg';
-import {userContext} from "../userContext.jsx";
+import UserContext from "../userContext.jsx";
 
 
 
@@ -17,7 +17,8 @@ import {userContext} from "../userContext.jsx";
 
 const Explore = () => {
     const [exploreData,setExploreData] = useState([])
-    const currUser = useContext(userContext);
+    const {currUser} = useContext(UserContext);
+    console.log(currUser);
     useEffect(() => {
         async function fetchData() {
             try {
