@@ -1,6 +1,7 @@
 import React from 'react';
 import './profile.css';
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const Project = ({projects}) => {
     const listproject = projects.map((element) => {
@@ -20,17 +21,19 @@ const Project = ({projects}) => {
           </div>
         );
       });
+
+      
     return (
             <>
             
             
-            <div id="projects">
+            <div id="projects" >
 
-            <div id="upload">
+            <div id="upload"> 
                 <div>
                     <div id="circle">
-                    <Link to="/CreateProjectPage" style={{textDecoration: 'none'}}><img src="./Images/plus-1512-svgrepo-com.svg" alt="" />
-                    </Link>
+                    <Button  style={{textDecoration: 'none'}}><img src="./Images/plus-1512-svgrepo-com.svg" alt="" />
+                    </Button>
                     </div>
                     Create
                 </div>

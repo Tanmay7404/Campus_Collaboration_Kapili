@@ -125,6 +125,7 @@ input:focus {
     gap: 30px;
     width: 25%;
     min-width: 300px;
+    height:700px
 }
 
 #left>h1{
@@ -144,7 +145,8 @@ input:focus {
 }
 
 #profile-picture{
-    height: 100px;
+    height: 200px;
+    width:200px;
     border-radius: 50%;
 
 }
@@ -175,7 +177,6 @@ input:focus {
 #self4{
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 10px;
 
 }
@@ -184,11 +185,12 @@ input:focus {
     font-size: 16px;
     font-weight: 300;
     border: 1px solid;
+    
     border-radius: 4px;
     padding: 8px 12px;
 }
 .tags:hover {
-    background-color:#8ff106cb;
+    
     transition: 0.7s;
 }
 
@@ -282,7 +284,6 @@ input:focus {
     overflow: visible;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
     overflow-y: scroll;
     gap: 20px;
     /* background-color: red; */

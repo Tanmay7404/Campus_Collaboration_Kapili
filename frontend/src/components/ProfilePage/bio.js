@@ -5,6 +5,7 @@ import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import ProfileCard from './ProfileCard';
 import Course from './course';
+    import { Button } from 'react-bootstrap';
 
 const Bio = () => {
   const bio = "Hi I am a passionate developer ready for collab in any ML related projects. dhewiuhfdwuihqdiohidjijedoqejodjoq2pjdopjqdop"
@@ -15,12 +16,21 @@ const Bio = () => {
       }
     }
   }
-  const userSkills = ['BlockChain', 'MySQL', 'iOS dev', 'TensorFlow',"Node JS"];
-  const profiles = {
+  const userSkills = [
+    { skill: 'BlockChain', color: '#FF5733' },
+    { skill: 'MySQL', color: '#33FF57' },
+    { skill: 'iOS dev', color: '#5733FF' },
+    { skill: 'TensorFlow', color: '#FF33D6' },
+    { skill: 'Node JS', color: '#33D6FF' },
+  ];  const profiles = {
     1: { name: "Sushant", imageUrl: "https://via.placeholder.com/150" },
     2: { name: "Wahid", imageUrl: "https://via.placeholder.com/150" },
     3: { name: "Tanmay", imageUrl: "https://via.placeholder.com/150" },
     4: { name: "Simon", imageUrl: "https://via.placeholder.com/150" },
+    5: { name: "Simon", imageUrl: "https://via.placeholder.com/150" },
+  6: { name: "Simon", imageUrl: "https://via.placeholder.com/150" },
+
+
 
     // Add more profiles as needed
   };
@@ -30,9 +40,9 @@ const Bio = () => {
 
 
 
-<div class="containerPP">
+<div  >
   
-  <div class="contentPP" style={{overflowY:'scroll'}}>
+  <div class="contentPP" style={{width:'100%',height:'620px',overflow:'auto'}} >
     <div className="fillWidthDiv">
       
 </div>
@@ -74,24 +84,19 @@ const Bio = () => {
 <div className="space"></div>
 <div className="space"></div>
 
-<div className="E-mail">
+<div className="E-mail" >
 <p style={{color:"white",margin:0}} >Skills</p>
 </div>
-<div className="textfield" >
 
-<div className="textfield" style={{padding:'20px',backgroundColor:"#131313",borderRadius: '10px 10px 0 0'}}  >
+<div className="blackbg" style={{height:"fit-content"  }}>
 
-</div>
-</div>
-<div className="blackbg" style={{height:"150px"  }}>
-
-<div style={{ backgroundColor:"#131313",width:"100%",paddingLeft:20, overflowY: "auto",height: "150px",borderRadius: '0 0 10px 10px'}}>
+<div style={{ backgroundColor:"#131313",width:"100%",paddingLeft:20,paddingTop:'20px',paddingBottom:'20px', overflowY: "auto",borderRadius: '0 0 10px 10px'}}>
 <p style={{color:"white", backgroundColor:"#131313",width:"100%"}} className="editProfile"></p>
 
 <div id="self4">
                 {userSkills.map((skill, index) => (
-                  <div key={index} className="tags">
-                    {skill}
+                  <div key={index} className="tags" style={{borderColor:skill.color}}>
+                   <p style={{color:skill.color}}> {skill.skill}</p>
                   </div>
                 ))}
               </div>
@@ -108,9 +113,9 @@ const Bio = () => {
     <div className="email1"><p style={{color:"white"}} className="editProfile">Friends</p></div>
 </div>
 
-<div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
+<div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px',paddingLeft:'64px',paddingRight:'64px' }}>
       {Object.entries(profiles).map(([id, { name, imageUrl }]) => (
-          <Link style={{textDecoration: 'none'}} to="/"><ProfileCard key={id} name={name} imageUrl={imageUrl} /></Link>
+          <Button style={{textDecoration: 'none'}} ><ProfileCard key={id} name={name} imageUrl={imageUrl} /></Button>
       ))}
     </div>
     {/* <Routes>

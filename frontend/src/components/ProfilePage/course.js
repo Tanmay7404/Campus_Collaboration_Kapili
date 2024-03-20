@@ -1,6 +1,7 @@
 import React from 'react';
 import './profile.css';
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 const Course = ({ courses }) => {
   const listcourse = courses.map((element) => {
@@ -25,7 +26,7 @@ const Course = ({ courses }) => {
         <div id="upload">
           <div>
             <div id="circle">
-            <Link to="/CreateCoursePage" style={{textDecoration: 'none'}}><img src="./Images/plus-1512-svgrepo-com.svg" alt="" /></Link>
+            <Button style={{textDecoration: 'none'}}><img src="./Images/plus-1512-svgrepo-com.svg" alt="" /></Button>
             </div>
             
             

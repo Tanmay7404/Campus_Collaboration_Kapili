@@ -5,8 +5,8 @@ import './profile.css';
 // import Course from './course.js';
 // import EditProfile from './editProfilePage.js';
 import profilePic from '../assets/images/profile.jpg';
-
-
+import Bio from '../components/ProfilePage/bio'
+import Project from '../components/ProfilePage/project'
 const Profile = () => {
   const handleLogOut = () => {
     window.location.href = 'http://localhost:8080/logout';
@@ -137,6 +137,10 @@ const Profile = () => {
               </Link>
             </div>
 
+            <div>
+{/* <Bio></Bio> */}
+{/* <Project></Project> */}
+            </div>
             {/* <Routes>
               <Route exact path="/EditProfile" element={<EditProfile/>} />
               <Route path="/" element={<Project projects = {projects} />} />
