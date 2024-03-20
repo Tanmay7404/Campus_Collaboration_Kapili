@@ -1,11 +1,20 @@
+#cardwhole{
+  height: 355px;
+  width: 335px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
 .user-card {
     width: 315px;
-    height: 315px;
+    height: 350px;
     overflow-y: auto;
+    
     /* display: flex; */
     align-items: center;
     margin: 10px 10px 10px 10px;
     margin-top: 10px;
+    margin-bottom: 40px;
     background-color:  #272727;
     ;
   }

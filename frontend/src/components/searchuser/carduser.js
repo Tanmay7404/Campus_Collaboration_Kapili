@@ -27,7 +27,7 @@ const UserCard = ({ user }) => {
     };
 
     return (
-        <div>
+        <div id="cardwhole">
             <div className="user-card"  onClick={handleCardClick}>
                 <div id="upperpart">
                     <div id="imgi"> <img src={user.image}  alt="" /></div>

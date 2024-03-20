@@ -5,7 +5,7 @@ import "./cardlist.css"
 import logo from '../../assets/images/logo.svg';
 import search from '../../assets/images/search.svg';
 
-const CardList = () => {
+const CardListu = () => {
   return (
     <div id="wholepage">
         <div id="navbar">
@@ -39,4 +39,4 @@ const CardList = () => {
   );
 };
 
-export default CardList;
+export default CardListu;

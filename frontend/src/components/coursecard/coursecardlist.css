@@ -16,25 +16,13 @@ body{
     max-height: 100vh;
 }
 
-.card-list{
-    
-    display: flex;
-  flex-wrap: wrap;
-  margin-left: 10px;
-  
-  
-}
-
-
 *{
     padding : 0;
     margin : 0;
     box-sizing: border-box;
     font-family: "Lexend";
     color: #fff;
-    }
-
-
+}
 
 #logo{
     width: 120px;
@@ -45,6 +33,44 @@ nav{
     align-items: center;
     padding: 30px 20px;
 }
+
+#search{
+    border-bottom: 1px solid #FFFFFF;
+    width: 30vw;
+    border-radius: 8px;
+    padding: 12px 20px;
+    height: 44px;
+    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
+    color: #BCBCBC;
+    font-weight: 300;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#personal{
+    border: none;
+    background-color: #FFFFFF;
+    color: #151515;
+}
+#global{
+    background-color: rgba(255, 255, 255, 0);
+    border: 3px solid #BCBCBC;
+    color: #BCBCBC;
+    cursor: pointer;
+}
+
+#global:hover{
+    color: #fff;
+}
+
+#typeButton button{
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: 300;
+    border-radius: 4px;
+    padding: 7px 15px;
+} 
 
 #search{
     border-bottom: 1px solid #FFFFFF;
@@ -80,7 +106,7 @@ input:focus {
     font-size: 16px;
     padding: 10px;
 }
-#nav-part2 a:nth-child(2){
+#nav-part2 a:nth-child(1){
     background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
     border-bottom: 1px solid #fff;
     border-radius: 8px;
@@ -92,26 +118,7 @@ input:focus {
     padding-bottom: 20px;
 }
 
-#personal{
-    border: none;
-    background-color: #FFFFFF;
-    color: #151515;
+.card-list{
+    display: flex;
+    flex-wrap: wrap;
 }
-#global{
-    background-color: rgba(255, 255, 255, 0);
-    border: 3px solid #BCBCBC;
-    color: #BCBCBC;
-    cursor: pointer;
-}
-
-#global:hover{
-    color: #fff;
-}
-
-#typeButton button{
-    margin-right: 10px;
-    font-size: 20px;
-    font-weight: 300;
-    border-radius: 4px;
-    padding: 7px 15px;
-} 

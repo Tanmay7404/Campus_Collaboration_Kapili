@@ -60,6 +60,7 @@ const CardList = ({data,setModalOpen}) => {
   );
 };
 
+
 export default CardList;
 
 

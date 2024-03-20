@@ -1,4 +1,9 @@
-
+.course-card{
+    height: 355px;
+    width:355px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 
 
 .tags1{
@@ -28,7 +33,7 @@
 }
 .swiper-slide1{
     overflow: hidden;
-    height: fit-content;
+    height: 350px;
     display: flex;
     flex-direction: column;
     overflow: visible;
@@ -119,10 +124,10 @@
     position: absolute;
     top: 55px;
     right: 11px;
+    margin-left: 10px;
     /* top: 10px;
     left: 10px; */
     z-index: 7 !important;
-    
     height: 45px;
     border-radius: 50%;
     z-index: 2;
