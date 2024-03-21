@@ -1,5 +1,7 @@
 
 
+iframe#webpack-dev-server-client-overlay{ display:none!important }
+
 :root {
     --button-color: rgb(0, 51, 255); /* Define a CSS variable for button color */
     --button-border-color: rgb(0, 51, 255); /* Define a CSS variable for button border color */
@@ -54,6 +56,10 @@ margin-left: auto;
     height: 15%;
     /* background-color: red; */
     padding-left: 64px;
+  }
+  .picture_upload{
+    padding-top: 15px;
+
   }
   .profile-image {
      /* Ensure the image fills the circular div */
@@ -128,10 +134,116 @@ margin:0;
     display: flex;
     flex: 1;
     height: fit-content;
+    
 
     padding-left: 64px;
     padding-right: 64px;
+    
 }
+
+.textfield1{
+  display: flex;
+  flex: 1;
+
+  padding-left: 64px;
+  padding-right: 64px;
+  
+}
+
+
+
+
+
+
+
+
+
+
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px; /* you can adjust as needed */
+  height: 30px; /* you can adjust as needed */
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px; /* you can adjust as needed */
+  width: 26px; /* you can adjust as needed */
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 30px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .customButton {
   /* Your default button styles here */
@@ -176,6 +288,36 @@ margin:0;
   color: var(--button-color);
   border-color: var(--button-border-color);
   background-color: transparent;
+}
+
+
+/* position: 'absolute',
+          // top:'5px',
+          right: '5px',
+          backgroundColor: 'transparent',
+          border: 'none',
+          cursor: 'pointer',
+          color: 'black',
+          fontWeight: 'bold',
+          fontSize: '16px', */
+
+
+
+.deleteButton {
+  position: absolute;
+  /* top: 5px; */
+  right: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  visibility: hidden; /* Initially hide the button */
+}
+
+.imageContainer:hover .deleteButton {
+  visibility: visible; /* Show the button when hovering over the image container */
 }
 
   

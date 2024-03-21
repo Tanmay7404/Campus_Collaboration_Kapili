@@ -12,14 +12,14 @@ import Axios from 'axios';
 export default function CreateProfilePage() {
   const [formData, setFormData] = useState({
     username: "",
-    fullname: "sadasda asasdasdsadasd",
-    email:"asdasd asdasdasdas",
-    department:" ",
+    fullname: "aaaafaffssas asdsadasdsadasddasda",
+    email:"asdasdasdasdasdasdsad asdassasdasdassadasdda",
+    department:"",
     instagramLink:"",
     githubLink:"",
-    linkedinLink:" ",
-    appleLink:" ",
-    facebookLink:" ",
+    linkedinLink:"",
+    appleLink:"",
+    facebookLink:"",
     imageName:"",
 tags:[],
 
@@ -31,6 +31,38 @@ tags:[],
     // projects: [],
     // coursesCompleted: []
   });
+
+
+
+  const deleteImageFromCloudinary = async (publicId) => {
+    if(publicId==='')
+    {
+      window.alert('no image: ' );
+return
+    }
+    try {
+      console.log('deleting image')
+      const response = await fetch(`http://localhost:8080/image/deleteImage/`+publicId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }); 
+      var data=await response.json()
+
+      setpp(profileImage)
+      setFormData({...formData,url:'',imageName:''})
+      console.log(data);
+      console.log('Image deletion response:', response.data);
+      // Handle further actions after deletion (e.g., updating UI state)
+    } catch (error) {
+
+     window.alert('Error deleting image: ' );
+      console.error('Error deleting image:');
+      // Handle error scenario
+    }
+  };
+  
   
 
   const uploadImage = (files) => {
@@ -45,7 +77,7 @@ tags:[],
       setFormData({
         ...formData,
         url: res.data.secure_url,
-        imageName: res.data.etag
+        imageName: res.data.public_id
       });
 
       
@@ -57,19 +89,20 @@ tags:[],
   
   const handleSubmit = () => {
     // Assuming you have an API endpoint to send the data
+    if(formData.username==='')
+    {
+      window.alert('username cannot be empty ' );
+return
+    }
 console.log(formData)
-    fetch('http://localhost:8080/addNewUser', {
+    fetch('http://localhost:8080/user/addNewUser', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(formData)
     })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Success:', data);
-      // Handle success response
-    })
+    .then(response => response)
     .catch((error) => {
       console.error('Error:', error);
       // Handle error
@@ -113,24 +146,26 @@ console.log(formData)
 </div>
 
 
-<div className="buttonContainer" style={{paddingLeft:20}}>
-<div>
-      
-   
-        
+<div className="buttonContainer" style={{paddingLeft:10}}>
+    <div>
         <input type="file" id="fileInput" name="fileInput" hidden onChange={(event)=>{
           uploadImage(event.target.files)
         }}/>
-        <label for="fileInput" variant="outline-dark" className="buttonHover" style={{ width: 250, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px',borderColor:'white' }}>
-         <p > Upload new Picture </p></label>
-               
-    
-      </div>
+        <label for="fileInput" variant="outline-dark" className="buttonHover" style={{ width: 200, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px',borderColor:'white' }}>
+         <p  class="picture_upload"> Upload new Picture </p></label>
     </div>
-      <div className="buttonContainer"style={{paddingLeft:10}} >
+</div>
 
-<Button variant="outline-light" style={{width:200}}  >
-       Remove Picture
+
+<div className="buttonContainer" style={{paddingLeft:20}} >
+
+<Button variant="outline-dark" onClick ={()=>{
+  deleteImageFromCloudinary(formData.imageName);
+  
+  
+}
+  } className="buttonHover"  style={{ width: 200, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px' }}  >
+<p  class="picture_upload"> Remove Picture </p>
       </Button></div>
 </div>
 <div className="space"></div>
@@ -147,7 +182,7 @@ console.log(formData)
 
     <p style={{color:"gray"}} >: acdefghitkss@gmail.com</p>
 
-</div>
+</div>   
 <div className="space"></div>
 <div className="E-mail" >
     <p style={{color:"white"}} >Username</p>
@@ -213,7 +248,7 @@ onChange={(event) => setFormData({ ...formData, bio: event.target.value })}
 
     InputProps={{
         style: {
-            height:'100px',
+          
           color: 'white', // Text color
           borderColor: 'white', // Border color
           backgroundColor: '#3B3B3B', 
@@ -341,7 +376,6 @@ onChange={(event) => setFormData({ ...formData, bio: event.target.value })}
           color: 'white', // Text color
           borderColor: 'white', // Border color
           backgroundColor: '#3B3B3B', 
-         
           // Background color
         },
         placeholder:"Type here"

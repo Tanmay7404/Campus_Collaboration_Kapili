@@ -9,12 +9,81 @@ import { Box } from "@mui/material";
 import  { useState, useEffect } from 'react';
 import Axios from 'axios';
 
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
+
+
+
+
+
+
+
+const ToggleSwitch_collab = ({ formData, setFormData }) => {
+
+  const toggleOngoing_collab = () => {
+    // Toggle the ongoing value in the formData state
+    setFormData({ ...formData,openForCollaboration:!formData.openForCollaboration });
+    console.log(formData.openForCollaboration);
+  };
+  
+  return (
+    <>
+    <div class="form-check form-switch" style={{marginLeft:'10px'}}>
+  <input class="form-check-input" type="checkbox" role="switch" 
+  id="flexSwitchCheckDefault" checked={formData.openForCollaboration} onChange={toggleOngoing_collab} />
+  <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+</div>
+
+    </>
+
+
+  );
+  };
+
+
+  
+  const ParentComponent_collab = ({ formData, setFormData }) => {
+   
+    return (
+      <div>
+        {/* ... your other components ... */}
+        <ToggleSwitch_collab formData={formData} setFormData={setFormData} />
+      </div>
+    );
+  };
+const ToggleSwitch = ({ formData, setFormData }) => {
+  const toggleOngoing_ongoing = () => {
+    // Toggle the ongoing value in the formData state
+    setFormData({ ...formData, ongoing: !formData.ongoing });
+  };
+  return (
+    <>
+    <div class="form-check form-switch" style={{marginLeft:'10px'}}>
+  <input class="form-check-input" type="checkbox" role="switch"  checked={formData.ongoing} onChange={toggleOngoing_ongoing} id="flexSwitchCheckDefault"/>
+  <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+</div>
+
+    </>
+
+  );
+  
+  };
+  
+
+  const ParentComponent = ({ formData, setFormData }) => {
+    return (
+      <div>
+        {/* ... your other components ... */}
+        <ToggleSwitch formData={formData} setFormData={setFormData} />
+      </div>
+    );
+  };
+
 
 export default function CreateProjectPage() {
 
    const initialFormData = {
       title: '',
-
       name:'',
       projectImage:'',
       description: '',
@@ -28,6 +97,7 @@ export default function CreateProjectPage() {
     
     };
     const [formData, setFormData] = useState(initialFormData);
+    
    
 useEffect(()=>{console.log(formData)},[formData])
 
@@ -40,12 +110,19 @@ useEffect(()=>{console.log(formData)},[formData])
       newValues[index] = value;
       setValues(newValues);
     };
+    const handleClear=(index)=>{
+      const newValues = values.filter((_, indexes) => indexes !== index);   
+      setValues(newValues);
+    }
     const handleChange2 = (index, field, value) => {
       const newValues = [...values2];
       newValues[index][field] = value;
       setValues2(newValues);
     };
-  
+    const handleClear2=(index)=>{
+      const newValues2 = values2.filter((_, indexes) => indexes !== index);   
+      setValues2(newValues2);
+    }
     const addTextField = () => {
       setValues([...values, ""]); // Add an empty string to the values array
     };
@@ -53,26 +130,68 @@ useEffect(()=>{console.log(formData)},[formData])
       setValues2([...values2, { name: '', link: '' }]); // Append a new object with name and link properties
     };
     var [profilepic,setpp] = useState(profileImage);
+    const[hoverIndex,setHoverIndex]=useState(null);
+
+    const handleMouseOver = (index) => {
+      setHoverIndex(index);
+    };
+  
+    // Function to handle mouse leaving an image
+    const handleMouseOut = () => {
+      setHoverIndex(null);
+    };
+  
+
+
+    const deleteImageFromCloudinary = async (publicId, type, index) => {
+      try {
+        console.log('deleting image')
+        const response = await fetch(`http://localhost:8080/image/deleteImage/`+publicId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }); 
+        var data=await response.json()
+        if(type==='pp'){
+        setpp(profileImage)
+        setFormData({...formData,url:'',imageName:''})}
+        else
+        {
+deleteItem(index)
+        }
+        console.log(data);
+        console.log('Image deletion response:', response.data);
+        // Handle further actions after deletion (e.g., updating UI state)
+      } catch (error) {
+        console.error('Error deleting image:', error);
+        // Handle error scenario
+      }
+    };
+
+
     const uploadImage = (files) => {
+      if(formData.imageName!=" "){
+        deleteImageFromCloudinary(formData.imageName)
+      }
       console.log("execution")
       const formData1 = new FormData();
       formData1.append("file",files[0]);
-      formData1.append("upload_preset","xgz5toim");
-  
-      Axios.post("https://api.cloudinary.com/v1_1/dxkhzuvmr/image/upload", formData1).then((res)=>{
-        console.log(res.data.secure_url);
-        console.log(res.data)
+      formData1.append("upload_preset","hv9vnkse");
+
+      Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/image/upload", formData1).then((res)=>{
+        // console.log(res.data.secure_url);
+        console.log(res.data);
         setpp(res.data.secure_url);
-        
         setFormData({
           ...formData,
           url: res.data.secure_url,
-          imageName: res.data.etag
+          imageName: res.data.public_id,
         });
-  
-        
       });
     };
+
+
     const uploadProjectImages = async (files) => {
       const uploadedImages = [];
       
@@ -81,14 +200,14 @@ useEffect(()=>{console.log(formData)},[formData])
         if (index < files.length) {
           const formData1 = new FormData();
           formData1.append("file", files[index]);
-          formData1.append("upload_preset", "xgz5toim");
+          formData1.append("upload_preset", "hv9vnkse");
           
           try {
             console.log(index)
-            const res = await Axios.post("https://api.cloudinary.com/v1_1/dxkhzuvmr/image/upload", formData1);
+            const res = await Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/image/upload", formData1);
             console.log("Uploaded image:", res.data);
             uploadedImages.push({
-              filename: res.data.etag,
+              filename: res.data.public_id,
               url: res.data.secure_url
             });
             
@@ -104,15 +223,40 @@ useEffect(()=>{console.log(formData)},[formData])
             projectImages: [...formData.projectImages, ...uploadedImages] // Concatenate with existing projectImages
           });
         }
-      };
+      }; 
       
       // Start uploading the first image
       await uploadImage(0);
     };
+
+
+    const deleteItem = (targetIndex) => {
+     
+      // Filter out the image at the targetIndex
+      const updatedProjectImages = formData.projectImages.filter((_, index) => index !== targetIndex);
+      
+      // Update the formData state with the new projectImages array
+      setFormData({
+        ...formData,
+        projectImages: updatedProjectImages
+      });
+      
+    };
+
+
+
     
     
     const [trigger,setTrigger]=useState(1)
     const handleSubmit = () => {
+      if(formData.name===''){
+        window.alert('Name is required');
+        return;
+      }
+      else if(formData.title===''){
+        window.alert('Title is required');
+        return ;
+      }
       // Assuming you have an API endpoint to send the data
       const updatedFormData = {
         ...formData,
@@ -125,6 +269,7 @@ useEffect(()=>{console.log(formData)},[formData])
 
     useEffect(() => {
       
+      if(trigger!==1){
       console.log(formData)
       fetch('http://localhost:8080/projects/addNewProject', {
         method: 'POST',
@@ -133,15 +278,26 @@ useEffect(()=>{console.log(formData)},[formData])
         },
         body: JSON.stringify(formData)
       })
-      .then(response => response.json())
+      .then(response => {response.json;console.log(1);})
       .then(data => {
+        console.log(2);
         console.log('Success:', data);
         // Handle success response
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.log(3);
+        console.error(error.message);
+        if (error.message.includes('duplicate key error')) {
+          window.alert('Duplicate error occurred. Please enter unique data.');
+        } else {
+          console.log(4);
+          console.error(error);
+          window.alert('er.');
+        }
         // Handle error
-      });
+      
+      });}
+
     },[trigger])
 
     const style = {
@@ -173,34 +329,40 @@ useEffect(()=>{console.log(formData)},[formData])
 </div>
 
 
-<div className="buttonContainer" style={{paddingLeft:20}}>
-<div>
-      
-   
-        
+<div className="buttonContainer" style={{paddingLeft:10}}>
+    <div>
         <input type="file" id="fileInput" name="fileInput" hidden onChange={(event)=>{
           uploadImage(event.target.files)
         }}/>
-        <label for="fileInput" variant="outline-dark" className="buttonHover" style={{ width: 250, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px',borderColor:'white' }}>
-         <p > Upload Project Logo </p></label>
-               
-    
-      </div>
+        <label for="fileInput" variant="outline-dark" className="buttonHover" style={{ width: 200, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px',borderColor:'white' }}>
+         <p  class="picture_upload"> Upload new Picture </p></label>
     </div>
-    
-      <div className="buttonContainer"style={{paddingLeft:90}} >
+</div>
 
-<Button variant="outline-light" style={{width:200}}  >
-       Remove Picture
+
+
+
+<div className="buttonContainer" style={{paddingLeft:20}} >
+
+<Button variant="outline-dark" onClick ={()=>{
+  deleteImageFromCloudinary(formData.imageName,'pp',0);
+  
+  
+}
+  } className="buttonHover"  style={{ width: 200, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px' }}  >
+<p  class="picture_upload"> Remove Picture </p>
       </Button></div>
+
+
+
 </div>
 <div className="E-mail" >
     <p style={{color:"white",margin:'0'}} >Project Name</p>
 </div>
 <div className="textfield">
 <TextField fullWidth  id="fullWidth" size="small"  sx={style}
-value={formData.title}
-onChange={(e)=> setFormData({...formData,title:e.target.value})}
+value={formData.name}
+onChange={(e)=> setFormData({...formData,name:e.target.value})}
  InputProps={{
     style: {
       color: 'white', // Text color
@@ -215,15 +377,16 @@ onChange={(e)=> setFormData({...formData,title:e.target.value})}
 />
 </div>
 
+
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
     <p style={{color:"white",margin:'0'}} >Project Title</p>
 </div>
-<div className="textfield">
-<TextField  fullWidth id="fullWidth" size="small"  sx={style}
-value={formData.name}
-onChange={(e)=> setFormData({...formData,name:e.target.value})}
+<div className="textfield" style={{ maxHeight: '100px', overflow: 'auto' }}>
+<TextField  fullWidth id="fullWidth" size="small"  sx={style }
+value={formData.title}
+onChange={(e)=> setFormData({...formData,title:e.target.value})}
  InputProps={{
     style: {
         
@@ -243,7 +406,10 @@ onChange={(e)=> setFormData({...formData,name:e.target.value})}
 <div className="E-mail" >
     <p style={{color:"white",margin:'0'}} >About This Project</p>
 </div>
-<div className="textfield">
+
+
+
+<div className="textfield1">
 <TextField  fullWidth id="fullWidth" size="small"  sx={style} multiline={true}
 value={formData.description}
 onChange={(e)=> setFormData({...formData,description:e.target.value})}
@@ -252,15 +418,21 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
         
       color: 'white', // Text color
       backgroundColor: '#3B3B3B', 
-  height:'100px'
-      
+  // height:'100px',
+  // overflowY:'auto',
+  // paddingTop:'0px',
+  // alignItems:'flex-start'
+
         },
+
     placeholder:"Type here"
   }} // Change text color
  InputLabelProps={{ style: { color: 'gray' } 
 }} // Change label color
 />
 </div>
+
+
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
@@ -366,7 +538,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 </div>
 <div style={{paddingLeft:64
 ,display:'flex',flexDirection:'row'
-,paddingRight:64
+,gap:'20px',paddingRight:64
 }}>
 
 <input
@@ -399,16 +571,44 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
   <AiOutlinePlusCircle size={36}></AiOutlinePlusCircle>
 </label>
 
-<div style={{ paddingLeft: 64, overflowX: "auto", whiteSpace: "nowrap" ,paddingTop:'10px',paddingRight:64,borderRadius:'10px'}}>
+
+
+
+
+
+<div style={{ overflowX: "auto", whiteSpace: "nowrap", paddingTop: '0px', borderRadius: '20px',width: 'calc(100% - 200px)' }}>
+
+
+
   {formData.projectImages.map((image, index) => (
-    <img
-      key={index}
-      src={image.url}
-      alt={`Project Image ${index + 1}`}
-      style={{ width: 100, height: 100, marginRight: 10 }}
-    />
+    <div key={index}  className="imageContainer" onMouseOver={() => handleMouseOver(index)} onMouseOut={handleMouseOut} style={{ display: 'inline-block', position: 'relative', marginRight: 10 }}>
+      <img
+        src={image.url}
+        alt={`Project Image ${index + 1}`}
+        style={{ width: 100, height: 100, borderRadius: '10px' }}
+ 
+      />
+      {hoverIndex==index&&  
+      <button
+        onClick={() =>{
+          deleteItem(index);
+          deleteImageFromCloudinary(formData.projectImages[index].filename,"demo",index);
+        }
+        }
+        className="deleteButton"
+        
+       
+      >
+        x
+      </button>
+}
+
+    </div>
   ))}
+
+
 </div>
+
 
 
          </div>
@@ -423,9 +623,11 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="E-mail" >
 <p style={{color:"white",margin:'0'}} className="editProfile">Open for Collaboration</p>
 
-<Button onClick={() => setFormData({...formData,openForCollaboration:!formData.openForCollaboration})} className="box" variant="dark" style={{ height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' ,marginLeft:10,margin:'0'}}>
+{/* <Button onClick={() => setFormData({...formData,openForCollaboration:!formData.openForCollaboration})} className="box" variant="dark" style={{ height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' ,marginLeft:10,margin:'0'}}>
       <h2 >+</h2>
-    </Button>
+    </Button> */}
+    
+<ParentComponent_collab formData={formData} setFormData={setFormData}/>
 </div>
 
 <div className="space"/>
@@ -434,9 +636,12 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="E-mail" >
 <p style={{color:"white",margin:'0'}} className="editProfile">Ongoing</p>
 
-<Button onClick={() => setFormData({...formData,ongoing:!formData.ongoing})} className="box"  variant="dark" style={{ height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' ,marginLeft:10,margin:'0'}}>
+
+<ParentComponent formData={formData} setFormData={setFormData}/>
+
+{/* <Button onClick={() => setFormData({...formData,ongoing:!formData.ongoing})} className="box"  variant="dark" style={{ height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' ,marginLeft:10,margin:'0'}}>
       <h2 >+</h2>
-    </Button>
+    </Button> */}
 </div>
 <div className="space">
 </div>
@@ -462,8 +667,14 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
                 backgroundColor: "#3B3B3B"
                 // Background color
               },
-              placeholder: "Username"
-            }} // Change text color
+              placeholder: "Username",
+              endAdornment: (
+                <IconButton onClick={()=>handleClear(index) } size="small" sx={{visibility:(index)?"visible":"hidden"}}>
+                  <ClearIcon  />
+                </IconButton>
+              ),
+            }}
+             // Change text color
             InputLabelProps={{ style: { color: "gray" } }} // Change label color
           />
         </div>
@@ -518,7 +729,12 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
           borderColor: "white",
           backgroundColor: "#3B3B3B"
         },
-        placeholder: "Link"
+        placeholder: "Link",
+        endAdornment: (
+          <IconButton onClick={()=>handleClear2(index) } size="small" sx={{visibility:(index)?"visible":"hidden"}}>
+            <ClearIcon  />
+          </IconButton>
+        ),
       }}
       InputLabelProps={{ style: { color: "gray" } }}
     />

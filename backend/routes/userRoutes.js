@@ -23,7 +23,8 @@ userRouter.post("/addNewUser", upload.array("images",1), async (req,res)=>{
         // } else {
         //     res.send("Can't add user");
         // }
-        res.send("here man")
+        console.log(1222)
+        res.send(username)
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");

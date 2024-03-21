@@ -196,7 +196,6 @@ async function saveDataToDatabase(tokenResponse) {
             fullname: existingUser.fullname
         }
     }
-    console.log(user.fullname);
     return user;
 }
 
@@ -206,11 +205,14 @@ async function saveDataToDatabase(tokenResponse) {
 //     let existingUser = await UserModel.findOne({ email: tokenResponse.account.username});
 //     if (!existingUser) {
 //         existingUser =new UserModel ({
+//         existingUser =new UserModel ({
 //             username: null,
 //             email: tokenResponse.account.username,
 //             fullname: tokenResponse.account.name
 //         });
+//         });
 //     }
+//     await existingUser.save();
 //     await existingUser.save();
 //     return existingUser;
 // }

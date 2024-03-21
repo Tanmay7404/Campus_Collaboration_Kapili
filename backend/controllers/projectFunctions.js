@@ -20,7 +20,7 @@ class ProjectController {
                     projectLink: project_details.projectLink
                 },
                 creators: [], // Assuming creators is an array of user IDs
-                endorsements: [],
+                endorsements: 0,
                 tags: [], // Assuming tags is an array of strings
                 ongoing: project_details.ongoing || false,
                 openForCollaboration:project_details.openForCollaboration||false,

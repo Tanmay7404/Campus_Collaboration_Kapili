@@ -155,6 +155,9 @@ app.use('/chats',chatRoutes);
 const loginRoutes=require("./routes/loginRoutes.js");
 app.use('/',loginRoutes);
 
+const imageRoutes=require("./routes/ImagesRoutes.js");
+app.use('/image', imageRoutes);
+
 //PORT
 const port = process.env.port || 8080;
 
