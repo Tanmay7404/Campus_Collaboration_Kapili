@@ -5,7 +5,7 @@ import starImg from "../../assets/images/star.svg";
 // import contactImg from "../../assets/images/contact.svg";
 // import CardExpanded from "./CardExpanded";
 import sampleUserCardContent from "./carduserdata";
-import './carduser.css'
+import './usercard.css'
 
 const UserCard = ({ user }) => {
 
@@ -27,53 +27,32 @@ const UserCard = ({ user }) => {
     };
 
     return (
-        <div id="cardwhole">
+        <div id="usercardwhole">
             <div className="user-card"  onClick={handleCardClick}>
                 <div id="upperpart">
                     <div id="imgi"> <img src={user.image}  alt="" /></div>
-
                     <div className="user-buttons">
-                        
                         <div className="but">
-                            <button onClick={handleGetInTouch} className="button">
-                                
-                                Get in Touch
-                            </button>
-
-
+                            <button onClick={handleGetInTouch} className="button">Get in Touch</button>
                         </div>
-
                         <div className="but">
-                            <button onClick={handleAddFriend} className="button">
-                            
+                            <button onClick={handleAddFriend} className="button">                   
                                 Add Friend
                             </button>
-
                         </div>
-                        
                     </div>
-
-                </div>
-                
-            
+                </div>            
                 <div id="downpart">
                     <div className="nameu">
                         <h1>{user.name}</h1>
                     </div>
-
                     <div className="username">
                         <h3>{user.username}</h3>
                     </div>
-
                     <div className="useremail">
                         <p>{user.email}</p>
                     </div>
-                    
-                    
-                    
-                    
-                </div>
-                
+                </div>       
             </div>
         </div>
     );

@@ -65,7 +65,7 @@ import React, { useState } from 'react';
 // import CreateProjectPage from './pages/createProject';
 // import EditCoursePage from './pages/editCourse';
 // import CreateCoursePage from './pages/createCourse';
-// import CreateProfilePage from './pages/createProfile';
+import CreateProfilePage from './pages/createProfile';
 // import EditProfilePage from './pages/editProfilePage';
 // import EditProjectPage from './pages/editProject';
 // import Global from './pages/Global';
@@ -86,8 +86,10 @@ import Explore from './pages/explore.jsx';
 import TestPage from './pages/testPage.jsx';
 // import Search from './pages/search.jsx'
 import { UserProvider } from './userContext.jsx';
-import Profile from './pages/profile.js';
+import Profile from './components/ProfilePage/profile.js';
 import SucessLogin from "./pages/sucessLogin.jsx"
+import UserCardList from './components/searchuser/usercardlist.js';
+// import CreateProjectPage from './pages/createCourse.js';
 
 function App() {
   return (
@@ -99,9 +101,9 @@ function App() {
           <Route path ="/explore" element = {<Explore/>}/>
           <Route path ="/chat" element = {<ChatpageCalling/>}/>
           <Route path = "/profile/:username" element = {<Profile/>} />
-          <Route path = "/search/*" element = {<TestPage/>} />
+          <Route path = "/search/*" element = {<UserCardList/>} />
         </Route>
-        <Route path = "/createProfile/:email/:fullname" element={<TestPage/>}/>
+        <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>
         <Route path = "/createProject" element={<TestPage/>}/>
         <Route path = "/createCourse" element={<TestPage/>}/>
         <Route path = "/editProfile/:username" element={<TestPage/>}/>

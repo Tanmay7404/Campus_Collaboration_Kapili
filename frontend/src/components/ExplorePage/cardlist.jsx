@@ -5,6 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import Card from './card.jsx';
 import "./cardlist.css";
+// import coursedata from '../coursecard/coursedata.js';
+import Coursecard from '../coursecard/coursecard.js';
 
 
 const CardList = ({data,setModalOpen}) => {
@@ -28,7 +30,7 @@ const CardList = ({data,setModalOpen}) => {
   }
 
   return (
-    <div>
+    <>
         <h1 className="project-heading">{data.text}</h1>
         <div className="swiper swiper1 mySwiper">
             <div className="swiper-wrapper">
@@ -42,21 +44,26 @@ const CardList = ({data,setModalOpen}) => {
                     }}
                     onResize={() => setDirection(getDirection())}
                 >
+                
                 {data.list_cards.map((card, index)=> {
                     return(
                         <div className="swiper-slide" key={index}>
-                            <SwiperSlide>                        
-                                <Card details = {card} setModalOpen = {setModalOpen}/>                 
+                            <SwiperSlide>  
+                              {(data.type=="Project"? 
+                              <Card details = {card} setModalOpen = {setModalOpen}/> : 
+                              <Coursecard course={card} />  )}                      
                             </SwiperSlide>
                         </div>
                     );
                 })}
+
+        
                 <div className="swiper-button-next next"></div>
                 <div className="swiper-button-prev"></div>
                 </Swiper>
             </div>
         </div>
-    </div>
+    </>
   );
 };
 

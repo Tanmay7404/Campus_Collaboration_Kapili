@@ -1,28 +1,4 @@
-@font-face {
-    font-family: "Lenxend";
-    src: url(./font/Lexend-VariableFont_wght.ttf);
-}
-
-*{
-    box-sizing: border-box;
-    color: white;
-    box-sizing: border-box;
-    padding : 0;
-    margin : 0;
-    font-family: "Lenxend";
-}
-
-
-#main{
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-#layer{
+#profilelayer{
     position: absolute;
     z-index: -4;
     top: 0;
@@ -31,7 +7,7 @@
     width: 100vw;
     background-color: #181818;
 }
-#layer1{
+#profilelayer1{
     height: 70vh;
     width: 100vw;
     z-index: -3;
@@ -39,9 +15,8 @@
     top: 0;
     left: 0;
     background-image: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0) 100%);
-
 }
-#layer2{
+#profilelayer2{
     height: 100vh;
     width: 100vw;
     position: absolute;
@@ -50,7 +25,7 @@
     left: 0;
     background-color: #0d0d0da8;
 }
-#ellips1{
+#profileellips1{
     height: 50vw;
     width: 50vw;
     position: absolute;
@@ -60,81 +35,31 @@
     right: -10vw;
     bottom: -10vh;
 }
-
-
-nav{
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 30px 50px;
-}
-#search{
-    border-bottom: 1px solid #FFFFFF;
-    width: 30vw;
-    border-radius: 8px;
-    padding: 12px 20px;
-    height: 44px;
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
-    color: #BCBCBC;
-    font-weight: 300;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-}
-#search input{
-    width: 100%;
-    margin-right: 30px;
-    padding: 0px 10px;
-    font-size: 16px;
-    background-color: #00000000;
-    border: none;
-    color: white;
-
-}
-input:focus {
-    outline: none;
-  }
-  #nav-part2 a{
-    text-decoration: none;
-    font-weight: 300;
-    font-size: 16px;
-    padding: 10px;
-}
-#nav-part2 a:nth-child(3){
-    background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) -19.8%, rgba(255, 255, 255, 0.256) 350.64%);
-    border-bottom: 1px solid #fff;
-    border-radius: 8px;
-}
-
-
-
-#page1{
+#profilepage1{
     flex: auto;
     display: flex;
     padding: 30px 50px;
     padding-top: 0px;
-    gap: 10px;
+    gap: 30px;
+    height: calc(100vh - 104.8px);
 }
 
-#left{
+
+#profileleft{
     display: flex;
     flex-direction: column;
     gap: 30px;
     width: 25%;
     min-width: 300px;
-    height:700px
 }
 
-#left>h1{
+#profileleft>h1{
     font-weight: 300;
     font-size: 40px;
     padding: 0;
     margin: 0;
 }
-#self-in{
+#profileleft #self-in{
     background-color: #272727;
     flex: auto;
     display: flex;
@@ -142,46 +67,60 @@ input:focus {
     align-items: center;
     padding: 0px 40px;
     justify-content: space-evenly;
+    overflow-y: scroll;
+}
+#profileleft #self-in::-webkit-scrollbar {
+    display: none;
 }
 
-#profile-picture{
+/* Hide scrollbar for IE, Edge and Firefox */
+#profileleft #self-in {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+}
+
+#profileleft #self-in #profile-picture{
     height: 200px;
     width:200px;
     border-radius: 50%;
 
 }
-#self2{
+#profileleft #self-in #self2{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
-#self2>h2{
+#profileleft #self-in #self2>h2{
     font-weight: 300;
     font-size: 28px;
 }
-#self2>h3{
+#profileleft #self-in #self2>h3{
     font-weight: 200;
     font-size: 14px;
     color: #BCBCBC;
 }
 
 
-#self3{
+#profileleft #self-in #self3{
     width: 100%;
     display: flex;
     justify-content: space-evenly;
 }
 
+#profileleft #self-in #self3>svg>path:hover{
+    fill: #FFFFFF;
+    cursor: pointer;
+}
 
-#self4{
+#profileleft #self-in #self4{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 
 }
 
-.tags{
+#profileleft #self-in #self4 .tags{
     font-size: 16px;
     font-weight: 300;
     border: 1px solid;
@@ -189,22 +128,22 @@ input:focus {
     border-radius: 4px;
     padding: 8px 12px;
 }
-.tags:hover {
+#profileleft #self-in #self4 .tags:hover {
     
     transition: 0.7s;
 }
 
-#self5{
+#profileleft #self-in #self5{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
 }
-#pencil{
+#profileleft #self-in #self5 #pencil{
     height: 20px;
 }
 
-#Edit{
+#profileleft #self-in #self5 #Edit{
     background-color: #111111;
     border: none;
     padding: 16px 20px;
@@ -214,13 +153,13 @@ input:focus {
     box-shadow: 0px 4px 4px 0px #00000040;
 
 }
-#Edit>span{
+#profileleft #self-in #self5 #Edit>span{
     color: #BCBCBC;
     font-weight: 300;
     font-size: 20px;
 }
 
-#self5>h3{
+#profileleft #self-in #self5>h3{
     font-weight: 300;
     font-size: 16px;
 }
@@ -229,13 +168,13 @@ input:focus {
 
 
 
-#right{
+#profileright{
     flex: auto;
     gap: 30px;
     display: flex;
     flex-direction: column;
 }
-#buttons>button{
+#profileright #buttons>button{
     font-weight: 300;
     font-size: 16px;
 
@@ -245,12 +184,12 @@ input:focus {
     cursor: pointer;
 
 }
-#buttons{
+#profileright #buttons{
     height: 50px;
     padding-top: 10px;
 }
 
-#now-selected{
+#profileright #buttons .now-selected{
     color: black;
     background-color: #fff;
     font-weight: 300;
@@ -261,7 +200,7 @@ input:focus {
     cursor: pointer;
 }
 
-#not-selected{
+#profileright #buttons .not-selected{
     color: #BCBCBC;
     background-color: rgba(255, 255, 255, 0);
     border: 1px solid #BCBCBC !important;
@@ -273,7 +212,7 @@ input:focus {
     cursor: pointer;
 }
 
-.not-selected:hover{
+#profileright #buttons .not-selected:hover{
     color: #fff;
     border: 1px solid #fff !important;
 }
@@ -286,7 +225,7 @@ input:focus {
     flex-wrap: wrap;
     overflow-y: scroll;
     gap: 20px;
-    /* background-color: red; */
+    
 }
 
 
@@ -399,15 +338,6 @@ input:focus {
 }
 
 
-#self3>svg>path:hover{
-    fill: #FFFFFF;
-    cursor: pointer;
-}
-
-#course:hover{
-    color: #fff;
-    border: 1px solid #fff !important;
-}
 
 
 

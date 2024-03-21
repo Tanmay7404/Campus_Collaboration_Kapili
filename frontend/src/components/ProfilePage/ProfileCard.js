@@ -3,19 +3,17 @@ import React from 'react';
 
 function ProfileCard({ name, imageUrl }) {
   const cardStyle = {
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
     border: '1px solid #ccc',
     borderRadius: '8px',
     padding: '20px',
-    width: '200px', // Adjust the width as needed
-    backgroundColor: 'rgb(19, 19, 19)'
+    width: "100%", // Adjust the width as needed
+    backgroundColor: 'rgb(1,1,1)'
   };
 
   const imageStyle = {
-    width: '100px', // Adjust the image size as needed
-    height: '100px',
+    width: '70%', // Adjust the image size as needed
+    height: '70%',
     borderRadius: '50%',
     objectFit: 'cover'
   };

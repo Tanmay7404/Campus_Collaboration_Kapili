@@ -64,68 +64,39 @@ const Card = ({details}) =>{
             {/* <img src = {details.profileImage} id="sp-profile" alt=""/>  */}
             
             <div >
-    {details.completed && <img src={comp} alt="Image A" id="sp-profile" />}
-    {!details.completed && details.open && <img src={open} alt="Image B" id="sp-profile"/>}
-    {!details.completed && !details.open && <img src={clk} alt="Image C" id="sp-profile"/>}
-</div>
+                {details.completed && <img src={comp} alt="Image A" id="sp-profile" />}
+                {!details.completed && details.open && <img src={open} alt="Image B" id="sp-profile"/>}
+                {!details.completed && !details.open && <img src={clk} alt="Image C" id="sp-profile"/>}
+            </div>
 
-        <div style={{ display: 'flex' }} className="profimg">
-            {details.profileImage.map((image, idx) => (
-                <img id="sp-profile"
-                    key={idx}
-                src={image}
-                alt={`Image ${idx}`}
-                style={{
-                    position: 'relative',
-                    left: `${-1 * idx}px`, // Adjust the overlap amount here
-                    zIndex: idx, // Increase z-index to make sure images overlap correctly
-                    marginRight: '-10px' // Adjust the spacing between images here
-                }}
-         />
+            <div style={{ display: 'flex' }} className="profimg">
+                {details.profileImage.map((image, idx) => (
+                    <img id="sp-profile"
+                        key={idx}
+                        src={image}
+                        alt={`Image ${idx}`}
+                        style={{
+                            position: 'relative',
+                            left: `${-1 * idx}px`, // Adjust the overlap amount here
+                            zIndex: idx, // Increase z-index to make sure images overlap correctly
+                            marginRight: '-10px' // Adjust the spacing between images here
+                        }}
+                    />
          
-    ))}
+                ))}
     
-        </div>
-        <div className="projpic">
-            <img src= {details.projectImage} className="sw-img" alt=""/>
-        </div>
+            </div>
+            <div className="projpic">
+                <img src= {details.projectImage} className="sw-img" alt=""/>
+            </div>
 
-        <div>
-            
-        </div>
-            
-            {/* <div className="image-container" style={{ position: 'relative', width: '100%', height: '100%' }}>
-        <img src={details.projectImage} className="sw-img" alt="" style={{ width: '100%', height: '100%' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, display: 'flex' }} className="profimg">
-            {details.profileImages.map((image, idx) => (
-                <img
-                    key={idx}
-                    src={image}
-                    alt={`Image ${idx}`}
-                    style={{
-                        position: 'relative',
-                        left: `${-1 * idx}px`, // Adjust the overlap amount here
-                        zIndex: idx, // Increase z-index to make sure images overlap correctly
-                        marginRight: '-10px' // Adjust the spacing between images here
-                    }}
-                />
-            ))}
-        </div>
-    </div> */}
             <div className="sw-details">
                 <div className="sw-details-1">
                     <h3>{details.projectname}</h3>
                     <p>{details.projecttitle}</p>
                 </div>
                 <div className="sw-details-2">
-                    {/* <div id="tags1">
-                        {details.tags.map((tag,idx)=>{
-                            return(
-                            <a href="#" id={tag.name} className="tags1" key={idx} style={{borderColor: tag.color, color: tag.color}} >{tag.name}</a>
-                            );
-                        })}
 
-                    </div> */}
                     <div id="tags1">
                     {details.tags.slice(0, 3).map((tag, idx) => {
                     return (

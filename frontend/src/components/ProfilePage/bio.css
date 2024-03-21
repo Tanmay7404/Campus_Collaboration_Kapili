@@ -1,134 +1,154 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300&display=swap');
 
-* {
-  font-family: 'Lexend', sans-serif;
-}
 
 :root {
-    --button-color: rgb(0, 51, 255); /* Define a CSS variable for button color */
-    --button-border-color: rgb(0, 51, 255); /* Define a CSS variable for button border color */
-  }
-  .containerPP {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-    background-color: black; }
-  
-  .contentPP {
-    width: 80%; /* 80% of the width */
-    height: 100%; 
-    background-color: #272727;
-    /* Fills the whole height */
-  }
- 
-  
-  .fillWidthDiv {
-    display: flex;
-    flex: 1;
+  --button-color: rgb(1, 1, 1); /* Define a CSS variable for button color */
+  --button-border-color: rgb(1,1,1); /* Define a CSS variable for button border color */
+}
+/* .containerPP {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
+  background-color: black; } */
 
-    height: 6%;
-    /* background-color: green; */
-    padding: 10px;
-    /* This makes the div fill the remaining width */
-    
-  }
-  .fillWidthDiv2{
-    height: 6%;
-    /* background-color: blue; */
-    padding-left: 64px;
-  }
+.rightcontentPP {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  width: 100%;
+  gap: 30px; 
+  background-color: #272727;
+  display: flex;
+  flex:auto;
+  flex-direction: column;
+  overflow-y: scroll;
+  /* Fills the whole height */
+}
 
-  .fillWidthDiv3{
-    display: flex;
-  
-    flex:content;
-    height: 15%;
-    /* background-color: red; */
-    padding-left: 64px;
-  }
-  
-  .buttonContainer{
-    display: flex;
-    align-items: center;
-    margin-Left:0;
-    margin-right: 0;
-        width:200px;
-        height:100%;
-        /* background-color: aquamarine; */
-      }
-.name{
-    display: flex;
-    flex: 1;
-    
-    height: fit-content;
-    /* background-color: rgb(247, 0, 255); */
-    padding-left: 64px;
+.rightcontentPP::-webkit-scrollbar {
+  display: none;
 }
-.space
-{
-    display: flex;
-    flex: 1;
-    
-    height: 1%;
-    /* background-color: rgb(255, 0, 85); */
-    padding-left: 64px;
-}
-.E-mail{
-    display: flex;
-    flex: 1;
-    height: 4%;
-    
-    /* background-color: rgb(200, 255, 0); */
-    padding-left: 64px;
-}
-.email1{
-    width:35%;
-    height: fit-content;
-}
-.box {
-    background-color: black ;
-    transition: background-color 0.3s ease;
-  }
-  
-  .box:hover {
-    background-color: white ;
-    color:black
-    /* Change to the desired color on hover */
-  }
-.email2{
-    width:100%;
-    height: fit-content;
 
-    padding-left: 15px;
-    padding-right: 64px
+/* Hide scrollbar for IE, Edge and Firefox */
+.rightcontentPP {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
 }
-.textfield {
+
+.rightcontentPP .rightcontent {
   display: flex;
   flex: auto;
-  overflow: visible;
-  flex-wrap: wrap;
-  padding-left: 64px;
-  padding-right: 64px;
-  word-wrap: break-word; /* Deprecated, consider using overflow-wrap instead */
-  overflow-wrap: break-word; /* Ensures breaking of long words to prevent overflow */
-  white-space: pre-wrap; /* Allows wrapping at normal whitespace while preserving whitespace */
+  flex-direction: column;
+  width: 80%;
+  margin: auto;
 }
 
-.customButton {
-  /* Your default button styles here */
-  color: var(--button-color)  !important;;
-  border-color: var(--button-border-color)  !important;;
+.rightcontentPP .buttonHover:hover {
+  background-color: white !important; /* Change hover color */
+  color:black !important; 
 }
-.blackbg{
+.rightcontentPP .close-icon {
+margin-left: auto; 
+
+/* Adjust right position as needed */
+}
+.rightcontentPP .close-icon:hover{
+  color:black
+}
+
+.rightcontentPP .profile-image {
+   /* Ensure the image fills the circular div */
+   width: 100px;
+  height: 100px; /* Ensure the image fills the circular div */
+  border-radius: 50%;
+}
+.rightcontentPP .imageContainer{
+display: flex;
+align-items: center;
+margin:0;
+  width:100px;
+  height:100%;
+  /* background-color: aquamarine; */
+}
+.rightcontentPP .buttonContainer{
+  display: flex;
+  align-items: center;
+  margin-Left:0;
+  margin-right: 0;
+  width:200px;
+  height:100%;
+  /* background-color: aquamarine; */
+}
+.rightcontentPP .buttonHover {
+  width: 200px; /* moved from inline style */
+  margin: 0; /* moved from inline style */
+  background-color: black; /* moved from inline style */
+  transition: background-color 0.3s ease; /* smooth transition for hover effect */
+}
+
+.rightcontentPP .buttonHover:hover {
+  background-color: #333; /* slightly lighter black on hover */
+}
+.rightcontentPP .name{
   display: flex;
   flex: 1;
-  height: 8%;
   
-  /* background-color: rgb(200, 255, 0); */
+  height: fit-content;
+  /* background-color: rgb(247, 0, 255); */
   padding-left: 64px;
-  padding-right: 64px;
+}
+
+.rightcontentPP .E-mail{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.rightcontentPP .box {
+  background-color: black ;
+  transition: background-color 0.3s ease;
+}
+
+.rightcontentPP .box:hover {
+  background-color: white ;
+  color:black
+  /* Change to the desired color on hover */
+}
+
+.rightcontentPP .textfield {
+
+/* overflow: visible; */
+
+word-wrap: break-word; /* Deprecated, consider using overflow-wrap instead */
+overflow-wrap: break-word; /* Ensures breaking of long words to prevent overflow */
+white-space: pre-wrap; /* Allows wrapping at normal whitespace while preserving whitespace */
 }
 
 
-  
+.rightcontentPP .blackbg{
+display: flex;
+flex: auto;
+height: 8%;
+
+/* background-color: rgb(200, 255, 0); */
+}
+.rightcontentPP #self4{
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+
+}
+
+
+
+
+/* Remove color change on hover and focus for outline buttons */
+.btn-outline-primary:hover,
+.btn-outline-secondary:hover,
+.btn-outline-primary:focus,
+.btn-outline-secondary:focus,
+.btn-outline-primary:active,
+.btn-outline-secondary:active {
+color: var(--button-color);
+border-color: var(--button-border-color);
+background-color: transparent;
+}
+

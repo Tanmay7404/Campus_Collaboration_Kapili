@@ -9,6 +9,8 @@ import sli1 from '../assets/images/slider-img3.jpeg';
 import sli2 from '../assets/images/slider-img1.png';
 import profile from '../assets/images/profile.jpeg';
 import UserContext from "../userContext.jsx";
+import profimage from '../assets/images/profile.jpeg'
+import courseimage from '../assets/images/swiggy.png'
 
 
 
@@ -47,6 +49,7 @@ const Explore = () => {
     explore: {
         allGroups: [
             {
+            type: "Project",
             text: "Ongoing Projects",
             list_cards: [
                     {
@@ -252,6 +255,7 @@ const Explore = () => {
             ]
         },
         {
+            type: "Project",
             text: "Completed Projects",
             list_cards: [
                     {
@@ -452,205 +456,240 @@ const Explore = () => {
             ]
         },
         {
+            type: "Course",
             text: "Completed Course",
             list_cards: [
                     {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage,profimage,profimage,profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" },{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:false
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage:[profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:false
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage:[profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:false
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage:[profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:false
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage:[profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    },
+                    {
+                        title: "Deep Learning Specialization",
+                        creatorimage: [profimage],
+                        courseimage: courseimage,
+                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                        rating:4,
+                        helpful:10,
+                        complete:true
+                    }
                     
                     
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],completed:true,
-                    open:false
-                },
-                {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
-                    
-                    
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],completed:true,
-                    open:false
-                },
-                {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
-                    
-                    
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],completed:true,
-                    open:false
-                },
-                {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
-                    
-                    
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],completed:true,
-                    open:false
-                },
-                {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
-                    
-                    
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],
-                    completed:true,
-                    open:false
-                }
-            ]
+                
+                
+                
+                ]
         }
         ]
     },

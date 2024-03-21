@@ -1,11 +1,11 @@
-#cardwhole{
+#usercardwhole{
   height: 355px;
   width: 335px;
   overflow: hidden;
   margin-bottom: 8px;
 }
 
-.user-card {
+#usercardwhole .user-card {
     width: 315px;
     height: 350px;
     overflow-y: auto;
@@ -19,32 +19,32 @@
     ;
   }
   
-#upperpart{
+  #usercardwhole #upperpart{
   display: flex;
   padding: 20px 15px 15px 15px;
 }
 
-  #imgi {
+#usercardwhole #imgi {
     height: 135px;
     width: 135px;
     overflow: hidden; /* To ensure the image doesn't exceed the container */
     border-radius: 50%; 
   }
   
-  #imgi img {
+  #usercardwhole  #imgi img {
     width: 100%;
     height: 100%;
     object-fit: cover; /* Preserve aspect ratio and cover the entire container */
   }
   
-  #user-details {
+  #usercardwhole #user-details {
     margin-left: 10px;
   }
   
-  .user-buttons{
+  #usercardwhole  .user-buttons{
     margin-left: 40px;
   }
-  .user-buttons button {
+  #usercardwhole .user-buttons button {
     margin-top: 10px;
     width: 100px;
     height: 40px;
@@ -52,24 +52,24 @@
     /* Add any additional styling for your buttons here */
   }
 
-  .button{
+  #usercardwhole .button{
     background-color: #111111;
   }
 
-  #downpart{
+  #usercardwhole #downpart{
     margin-top: 10px;
     margin-left: 20px;
   }
 
-.nameu{
+  #usercardwhole .nameu{
   margin-top: 10px;
 }
 
-.username{
+#usercardwhole .username{
   margin-top: 10px;
 }
 
-.useremail{
+#usercardwhole .useremail{
   margin-top: 10px;
   font-size:smaller;
   

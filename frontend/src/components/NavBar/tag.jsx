@@ -20,15 +20,12 @@ function Tag({ onTagClick, tagList, selectedSearch, setSelectedSearch}) {
   return (
     <div id='taglist'>
       <div className="box" key = "Search">
-        <div className="title">What To Search</div>
+        <div className="title">Search Filters</div>
         <div className="content">
           <Eachtag skill="Projects" selectedList={[selectedSearch]} color={"white"} changeTagList={()=>setSelectedSearch({tagname: "Projects", color:"white"})} />
           <Eachtag skill="Courses" selectedList={[selectedSearch]} color={"white"} changeTagList={()=>setSelectedSearch({tagname: "Courses", color:"white"})} />
           <Eachtag skill="Users" selectedList={[selectedSearch]} color={"white"} changeTagList={()=>setSelectedSearch({tagname: "Users", color:"white"})} />
         </div>
-      </div>
-        <div className="box" key = "SelectedTags">
-        <div className="title">Filter By Tags</div>
         <div className="content">
             {
               tagList.map((ele)=>{
@@ -38,7 +35,7 @@ function Tag({ onTagClick, tagList, selectedSearch, setSelectedSearch}) {
               })
             }
           </div>
-        </div>
+      </div>
         {
           all_tags.map((element)=>{
             return (

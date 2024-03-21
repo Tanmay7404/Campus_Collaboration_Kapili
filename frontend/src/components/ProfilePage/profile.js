@@ -14,6 +14,9 @@
     import image4 from '../../assets/images/swigy.png';
     import { Button } from 'react-bootstrap';
     const Profile = () => {
+      const handleLogOut = () => {
+        window.location.href = 'http://localhost:8080/logout';
+      };
       const [selectedButton, setSelectedButton] = useState('bio');
       
       const handleButtonClick = (buttonId) => {
@@ -86,14 +89,15 @@
       ];
         
       return (
-          <div id="main" >
-            <div id="layer"></div>
-            <div id="layer1"></div>
-            <div id="layer2"></div>
-            <div id="ellips1"></div>
+          <>
+            <div id="profilelayer"></div>
+            <div id="profilelayer1"></div>
+            <div id="profilelayer2"></div>
+            {/* <div id="profileellips1"></div> */}
             
-            <div id="page1">
-              <div id="left">
+            <div id="profilepage1">
+                
+              <div id="profileleft">
                 <h1>Profile</h1>
                 <div id="self-in">
                   <img src={profilePic} id="profile-picture" alt="" />
@@ -119,45 +123,28 @@
                                 <path d="M12.7335 0C11.1185 0 9.51931 0.318095 8.02726 0.936124C6.53521 1.55415 5.17949 2.46001 4.03753 3.60198C1.73122 5.90829 0.435547 9.03631 0.435547 12.2979C0.435547 17.7336 3.96505 22.3453 8.84733 23.981C9.46222 24.0793 9.65899 23.6981 9.65899 23.3661V21.2877C6.25246 22.0256 5.52689 19.6398 5.52689 19.6398C4.96118 18.2132 4.16182 17.832 4.16182 17.832C3.04271 17.0695 4.2479 17.0941 4.2479 17.0941C5.4777 17.1802 6.12949 18.3608 6.12949 18.3608C7.19941 20.2301 9.0072 19.6767 9.70818 19.3815C9.81886 18.5822 10.1386 18.0411 10.483 17.7336C7.75281 17.4262 4.88739 16.3685 4.88739 11.683C4.88739 10.318 5.35472 9.22344 6.15408 8.35029C6.0311 8.04284 5.60067 6.76386 6.27706 5.10364C6.27706 5.10364 7.31009 4.77159 9.65899 6.35803C10.6305 6.08747 11.6881 5.9522 12.7335 5.9522C13.7788 5.9522 14.8364 6.08747 15.808 6.35803C18.1569 4.77159 19.1899 5.10364 19.1899 5.10364C19.8663 6.76386 19.4358 8.04284 19.3129 8.35029C20.1122 9.22344 20.5795 10.318 20.5795 11.683C20.5795 16.3808 17.7018 17.4139 14.9594 17.7213C15.4021 18.1025 15.808 18.8527 15.808 19.9964V23.3661C15.808 23.6981 16.0047 24.0916 16.6319 23.981C21.5142 22.333 25.0314 17.7336 25.0314 12.2979C25.0314 10.6829 24.7133 9.08376 24.0953 7.59171C23.4772 6.09966 22.5714 4.74395 21.4294 3.60198C20.2874 2.46001 18.9317 1.55415 17.4397 0.936124C15.9476 0.318095 14.3485 0 12.7335 0Z" fill="#BCBCBC"/>
                             </svg></a>
                   </div>
-                  {/* <div id="self4">
-                    {userSkills.map((skill, index) => (
-                      <div key={index} className="tags">
-                        {skill}
-                      </div>
-                    ))}
-                  </div> */}
                   <div id="self5">
                     <button id="Edit">
                       <img src="../../assets/images/pencil.png" alt="" id="pencil" />
                       <p style={{textDecoration: 'none'}} >Edit Your Profile</p>
                     </button>
-                    <h3>Log Out</h3>
+                    <h3 onClick={handleLogOut}>Log Out</h3>
                   </div>
                 </div>
               </div>
-              <div id="right" style={{width:"600px"}}>
+              <div id="profileright" style={{width:"600px"}}>
                 <div id="buttons">
-                <Button style={{textDecoration: 'none'}}  id={selectedButton === 'bio' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('bio')}>Bio</Button>
-                <Button style={{textDecoration: 'none'}}  id={selectedButton === 'project' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('project')}>Projects</Button>
-                <Button style={{textDecoration: 'none'}}  id={selectedButton === 'course' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('course')}>Courses</Button>
+                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'bio' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('bio')}>Bio</Button>
+                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'project' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('project')}>Projects</Button>
+                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'course' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('course')}>Courses</Button> 
                 </div>
-                {selectedButton==='bio'&&(<Bio></Bio>)}
+                {selectedButton==='bio'&&(<Bio/>)}
                 {selectedButton==='project'&&(<Project projects={projects} />)}
                 {selectedButton==='course'&&(<Course courses={courses} />)}
 
-
-                {/* <Routes>
-                  <Route exact path="/" element={<Bio />} />
-                  <Route exact path="/Project" element={<Project projects={projects} />} />
-                  <Route exact path="/Course" element={<Course courses={courses} />} /> 
-                  <Route exact path="/CreateCoursePage" element={<CreateCoursePage projects={projects} />} /> 
-                  <Route exact path="/CreateProjectPage" element={<CreateProjectPage projects={projects}/>} />  
-                  <Route exact path="/EditProfile" element={<EditProfile projects={projects} name={userName} 
-                  email={userEmail} profilePic={profilePic} dept={userDepartment} userSkills={userSkills}/>} /> 
-                </Routes>  */}
               </div>
             </div>
-          </div>
+          </>
       );
     };
 
