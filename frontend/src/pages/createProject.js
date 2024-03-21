@@ -260,7 +260,7 @@ deleteItem(index)
       // Assuming you have an API endpoint to send the data
       const updatedFormData = {
         ...formData,
-        collaboratorName: [...values, "useremail@gmail.cpm"],
+        collaboratorName: [...values, "Simon"],
         links:values2
       };
       setFormData(updatedFormData);

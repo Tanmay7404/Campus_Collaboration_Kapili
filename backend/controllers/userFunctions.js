@@ -35,7 +35,21 @@ class UserController {
             throw new Error(error);
         }
     }
+async checkUsersExistence(usernames)
+{
+    try{
+        for(const user of usernames){
+        const user2 = await Model.findOne({ username: user });
 
+        if (!user2) {
+            throw new Error("User not found");
+
+        }
+    }
+    }catch (error) {
+        throw new Error(error);
+    }
+}
     async addFriend(userName, friendUserName) {
         try {
             // Step 1: Find the user by their username to get their user ID

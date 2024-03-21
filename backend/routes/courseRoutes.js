@@ -5,26 +5,39 @@ const CourseController = require("../controllers/courseFunctions.js");
 const Course = require("../models/courseModel.js");
 const getObjectId = require("../functions/getObjectId.js");
 const Tag = require("../models/tagModels.js");
+const UserController = require("../controllers/userFunctions.js");
 
 //WORKING
 courseRouter.post("/addCourse", async (req, res) => {
+    let course_id; // Declare course_id outside the try-catch block
+
     try {
+        var UC=new UserController()
+        await UC.checkUsersExistence(req.body.collaboratorName)
         let course_details = req.body;
         console.log(course_details);
-        const data = await new CourseController().addCourse(course_details);
+        var CC=new CourseController()
+        course_id = await CC.addCourse(course_details);
         let course_title = await Course.findOne({title : req.body.title});
         console.log(course_title);
-        let course_id = await getObjectId.courseNameToId(course_title.title);
-        if(req.body.tags!=null){
-        await new CourseController().addTags(course_id ,req.body.tags);}
-        console.log(data);
-        if (data) {
+        
+        //getObjectId.courseNameToId(course_title.title);
+        if(req.body.collaboratorName.length>0)
+        {
+            await CC.addCreators(course_id,req.body.collaboratorName)
+        }
+        if(req.body.tags){
+        await CC.addTags(course_id ,req.body.tags);}
+        if (course_id) {
             res.send("Updated");
         } else {
             res.send("Can't add course");
         }
     } catch (error) {
         console.error(error);
+        if (course_id) {
+            await Course.findByIdAndDelete(course_id);
+        }
         res.status(500).send("Internal Server Error");
     }
 });

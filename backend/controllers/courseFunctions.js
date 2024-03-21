@@ -2,6 +2,8 @@ const Course = require("../models/courseModel.js");
 const User = require("../models/userModel.js");
 const getObjectId = require("../functions/getObjectId.js");
 const Issue = require("../models/issueModel.js");
+const Chat = require("../models/chatModel.js");
+const ChatController = require("./chatFunctions.js");
 
 class CourseController {
     async addCourse(course_details) {
@@ -9,14 +11,18 @@ class CourseController {
             const course = new Course({
                 title: course_details.title,
                 description: course_details.description,
-                lessons: course_details.lessons,
-                createdAt: course_details.createdAt || Date.now(),            
+                createdAt: course_details.createdAt || Date.now(),    
+                courseImage:{url:course_details.url,filename:course_details.imageName},
+                courseInfo: {
+                    description: course_details.description,
+                    demoLinks: course_details.links,
+                    courseLink: course_details.courseImages
+                },        
                 tags: [],
                 enrolledUsers: [], 
                 feedbacks: [],
                 rating: 0,
                 issues: [],
-                helpful: []
             });
             await course.save();
             return course._id;
@@ -117,6 +123,49 @@ class CourseController {
             console.log(error); 
         }
         
+    }
+    async addCreators(course_id, creators) {
+        try {
+            var course = await Course.findById(course_id);
+            if (!course) {
+                throw new Error("Project not found");
+            }
+            if(!creators.length) {
+                console.log("creators empty")
+                return 0;
+            }
+            else if(creators.length){
+                var creatorsId = await getObjectId.userNameToIdList(creators);
+                course.creators = course.creators.concat(creatorsId);
+            
+
+               // let chat = course.chat;
+                var chatCC=new ChatController()
+                var chat=await chatCC.addChat({participants:creatorsId,courseName:course._id})
+                await chatCC.chatIdToUsers(chat,creatorsId)
+                course.chat=chat
+
+                console.log("chat: " +chat)
+                if (chat) {
+                    // let newChat = await Chat.findById(chat);
+                    // if (newChat) {
+                    //     newChat.participants.push(...creatorsId);
+                    //     await newChat.save();
+                    //     var x = await new ChatController().addMessage(newChat._id ,{sender: "System", message: " Users Added"});
+                    // } else {
+                    //     console.log("Chat not found");
+                    // }
+                } else {
+                    console.log("Chat not initialized");
+                }
+                await course.save();
+
+                return 1;
+            }
+            
+        } catch (error) {
+            throw error;
+        }
     }
 
     async addFeedback(course_title,feedback){

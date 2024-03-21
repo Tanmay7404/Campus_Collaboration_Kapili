@@ -5,12 +5,17 @@ const getObjectId = require("../functions/getObjectId.js");
 const ProjectController = require("../controllers/projectFunctions.js");
 const Project = require("../models/projectModel.js");
 const User = require("../models/userModel.js");
+const UserController = require("../controllers/userFunctions.js");
 //Api Routes Declare
 
 // WORKING
 projectRouter.post("/addNewProject", async (req,res)=>{
+   
+   let project_id;
     try {
         console.log(req.body)
+        var UC=new UserController()
+        await UC.checkUsersExistence(req.body.collaboratorName)
         var project_details = {
             title: req.body.title,
             name : req.body.name,
@@ -27,8 +32,8 @@ projectRouter.post("/addNewProject", async (req,res)=>{
 
         };
         var PC = new ProjectController();
-        var project_id = await PC.addProject(project_details);
-        if(req.body.creators){
+         project_id = await PC.addProject(project_details);
+        if(req.body.collaboratorName){
           await PC.addCreators(project_id,req.body.collaboratorName);
         }
         if(req.body.tags){
@@ -37,7 +42,10 @@ projectRouter.post("/addNewProject", async (req,res)=>{
         res.send(project_id);
     } catch (error) {
         console.error(error);
-        res.status(500).send("Internal Server Error");
+        if (project_id) {
+            await Project.findByIdAndDelete(project_id);
+        }
+        res.status(500).send("Internal Server Error :"+error.message);
     }
 });
 // WORKING

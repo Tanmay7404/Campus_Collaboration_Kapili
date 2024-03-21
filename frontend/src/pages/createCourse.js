@@ -18,14 +18,14 @@ export default function CreateCoursePage() {
 
    const initialFormData = {
       title: '',
-      projectImage:'',
+      courseImage:'',
       description: '',
       url:'',
       imageName:'',
       collaboratorName:[],
 
       links:[],
-      projectImages:[]
+      courseImages:[]
     
     };
     const [formData, setFormData] = useState(initialFormData);
@@ -124,7 +124,7 @@ deleteItem(index)
     };
 
 
-    const uploadProjectImages = async (files) => {
+    const uploadCourseImages = async (files) => {
       const uploadedImages = [];
       
       // Define a recursive function to upload images one by one
@@ -152,7 +152,7 @@ deleteItem(index)
           // All images have been uploaded, update the form data
           setFormData({
             ...formData,
-            projectImages: [...formData.projectImages, ...uploadedImages] // Concatenate with existing projectImages
+            courseImages: [...formData.courseImages, ...uploadedImages] // Concatenate with existing projectImages
           });
         }
       }; 
@@ -165,12 +165,12 @@ deleteItem(index)
     const deleteItem = (targetIndex) => {
      
       // Filter out the image at the targetIndex
-      const updatedProjectImages = formData.projectImages.filter((_, index) => index !== targetIndex);
+      const updatedCourseImages = formData.courseImages.filter((_, index) => index !== targetIndex);
       
-      // Update the formData state with the new projectImages array
+      // Update the formData state with the new courseImages array
       setFormData({
         ...formData,
-        projectImages: updatedProjectImages
+        courseImages: updatedCourseImages
       });
       
     };
@@ -188,7 +188,7 @@ deleteItem(index)
       // Assuming you have an API endpoint to send the data
       const updatedFormData = {
         ...formData,
-        collaboratorName: [...values, "useremail@gmail.cpm"],
+        collaboratorName: [...values, "Simon","Shushant"],
         links:values2
       };
       setFormData(updatedFormData);
@@ -454,7 +454,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
   multiple // Add the 'multiple' attribute here
   onChange={(event) => {
     console.log("event")
-    uploadProjectImages(event.target.files);
+    uploadCourseImages(event.target.files);
   }}
 />
 <label
@@ -485,7 +485,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 
 
 
-  {formData.projectImages.map((image, index) => (
+  {formData.courseImages.map((image, index) => (
     <div key={index}  className="imageContainer" onMouseOver={() => handleMouseOver(index)} onMouseOut={handleMouseOut} style={{ display: 'inline-block', position: 'relative', marginRight: 10 }}>
       <img
         src={image.url}
@@ -502,7 +502,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
       <button
         onClick={() =>{
           deleteItem(index);
-          deleteImageFromCloudinary(formData.projectImages[index].filename,"demo",index);
+          deleteImageFromCloudinary(formData.courseImages[index].filename,"demo",index);
         }
         }
         className="deleteButton"
@@ -580,7 +580,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="space"></div>
 
     <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Add Project Links</p>
+    <p style={{color:"white",margin:'0'}} >Add Course Links</p>
 </div>
 <div>
 {values2.map((value, index) => (

@@ -13,7 +13,8 @@ class ChatController {
                     messages: chat_details.messages,
                     lastMessage: chat_details.lastMessage,
                     lastMessageTime: chat_details.lastMessageTime || Date.now(),
-                    projectName: chat_details.projectName // Assuming projectName is a project ID
+                    projectName: chat_details.projectName,
+                    courseName:chat_details.courseName // Assuming projectName is a project ID
                 });
                 
                 await chat.save();
@@ -70,7 +71,21 @@ class ChatController {
             throw new Error(err);
         }
     }
-
+    async chatIdToUsers(chatId,users)
+    {
+        try{
+            for (const userId of users) {
+                // Add the chatId to the user's chatId list
+                var user=await User.findById(userId)
+                user.chats.push(chatId);
+    
+                // Save the updated user document
+                await user.save();
+            }
+    } catch(err){
+        throw new Error(err);
+    }
+    }
     async joiningUserToChatId(chatId,currUserId){
         try{
             var chat = await Chat.findById(chatId);

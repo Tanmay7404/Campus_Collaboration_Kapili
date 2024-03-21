@@ -23,6 +23,8 @@ const courseSchema = new mongoose.Schema({
   rating: {type: mongoose.Schema.Types.Decimal128},
   issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }],
   helpful: Number,
+  chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat' },
+
 });
 
 const Course = mongoose.model('Course', courseSchema);
