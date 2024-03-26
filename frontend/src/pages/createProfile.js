@@ -174,17 +174,17 @@ export default function CreateProfilePage() {
       </div>
   
       <div className="E-mail" >
-        <p style={{color:"white",paddingRight:'20px'}} >Full Name :</p>
+        <p style={{color:"white",fontSize:'1.05rem',paddingRight:'20px'}} >Full Name :</p>
         <p style={{color:"gray"}} >{fullname}</p>
       </div>
       <div className="space"></div>
       <div className="E-mail" >
-        <p style={{color:"white",paddingRight:'20px'}} >Email :</p>
+        <p style={{color:"white",fontSize:'1.05rem',paddingRight:'20px'}} >Email :</p>
         <p style={{color:"gray"}} >{email}</p>
       </div>   
       <div className="space"></div>
       <div className="E-mail" >
-          <p style={{color:"white"}} >Username</p>
+          <p style={{color:"white",fontSize:'1.05rem'}} >Username</p>
       </div>
       <div className="textfield">
         <TextField fullWidth  id="fullWidth" size="small" sx={style}
@@ -209,7 +209,7 @@ export default function CreateProfilePage() {
 
 
       <div className="E-mail">
-        <p style={{color:"white"}} >Department</p>
+        <p style={{color:"white",fontSize:'1.05rem'}} >Department</p>
       </div>
       <div className="textfield">
 
@@ -231,7 +231,7 @@ export default function CreateProfilePage() {
       <div className="space"></div>
 
       <div className="E-mail">
-        <p style={{color:"white"}} >Bio</p>
+        <p style={{color:"white",fontSize:'1.05rem'}} >Bio</p>
       </div>
       <div className="textfield">
 
@@ -255,7 +255,7 @@ export default function CreateProfilePage() {
 
 
       <div className="E-mail" >
-        <p style={{color:"white"}} className="editProfile">Skills</p>
+        <p style={{color:"white",fontSize:'1.05rem'}} className="editProfile">Skills</p>
       </div>
 
       <div className="textfield" >
@@ -340,9 +340,13 @@ export default function CreateProfilePage() {
         <div className="email2"><p style={{color:"gray"}} className="editProfile">URL</p></div>
       </div>
       <div className="name">
-        <div className="email1">
-        <p style={{color:'white'}}>LinkedIn</p>
+
+
+      <div className="email1" style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
+      <p style={{ margin: 0,fontSize:'1.05rem' }}>LinkedIn</p>
+      <i className="bi bi-linkedin" style={{ marginLeft: '8px',fontSize: '1.25rem' }}></i> 
       </div>
+
       <div className="email2">
         <TextField fullWidth id="fullWidth" size="small"  sx={style}
         value={formData.linkedinLink}
@@ -361,8 +365,9 @@ export default function CreateProfilePage() {
     </div>
     <div className="space"></div>
     <div className="name">
-      <div className="email1">
-        <p style={{color:'white'}}>Instagram</p>
+    <div className="email1" style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
+      <p style={{ margin: 0,fontSize:'1.05rem' }}>Instagram</p>
+      <i className="bi bi-instagram" style={{ marginLeft: '8px',fontSize: '1.25rem' }}></i> 
       </div>
       <div className="email2"><TextField fullWidth id="fullWidth" size="small"  sx={style}
       value={formData.instagramLink}
@@ -384,9 +389,10 @@ export default function CreateProfilePage() {
 
 </div>
 <div className="name">
-    <div className="email1">
-      <p style={{color:'white'}}>Github</p>
-    </div>
+<div className="email1" style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
+      <p style={{ margin: 0,fontSize:'1.05rem' }}>Github</p>
+      <i className="bi bi-github" style={{ marginLeft: '8px',fontSize: '1.25rem' }}></i> 
+      </div>
     <div className="email2"><TextField fullWidth id="fullWidth" size="small" 
      value={formData.githubLink}
      onChange={(event) => setFormData({ ...formData, githubLink: event.target.value })}
@@ -406,9 +412,10 @@ export default function CreateProfilePage() {
 <div className="space"/>
 
 <div className="name">
-    <div className="email1">
-      <p style={{color:'white'}}>Apple</p>
-    </div>
+<div className="email1" style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
+      <p style={{ margin: 0,fontSize:'1.05rem' }}>Apple</p>
+      <i className="bi bi-apple" style={{ marginLeft: '8px',fontSize: '1.25rem' }}></i> 
+      </div>
     <div className="email2"><TextField fullWidth id="fullWidth" size="small" 
      value={formData.appleLink}
      onChange={(event) => setFormData({ ...formData, appleLink: event.target.value })}
@@ -428,9 +435,10 @@ export default function CreateProfilePage() {
 <div className="space"/>
 
 <div className="name">
-<div className="email1">
-      <p style={{color:'white'}}>Facebook</p>
-    </div>
+<div className="email1" style={{ display: 'flex', alignItems: 'center', color: 'white' }}>
+      <p style={{ margin: 0,fontSize:'1.05rem' }}>Facebook</p>
+      <i className="bi bi-facebook" style={{ marginLeft: '8px',fontSize: '1.25rem' }}></i> 
+      </div>
     <div className="email2"><TextField fullWidth id="fullWidth" size="small" 
      value={formData.facebookLink}
      onChange={(event) => setFormData({ ...formData, facebookLink: event.target.value })}

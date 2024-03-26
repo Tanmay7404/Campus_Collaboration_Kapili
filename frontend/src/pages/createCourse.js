@@ -25,10 +25,47 @@ export default function CreateCoursePage() {
       collaboratorName:[],
 
       links:[],
-      courseImages:[]
+      courseImages:[],
+      level:''
     
     };
     const [formData, setFormData] = useState(initialFormData);
+
+    const [selectedDifficulty, setSelectedDifficulty] = useState('');
+  const[lastSelected,setlastSelected]=useState('');
+
+  const handleSelectDifficulty = (value,e) => {
+    // console.log(value);
+    // console.log(e);
+    // console.log(selectedDifficulty);
+
+    if(selectedDifficulty=='') {
+      setSelectedDifficulty(value);
+      setlastSelected(e.currentTarget);
+      setlastSelected(e);
+      setFormData({ ...formData, level:value });
+    }
+    else{
+      if(value!=selectedDifficulty){
+      // console.log(lastSelected);
+        setSelectedDifficulty(value);
+        lastSelected.style.color =lastSelected.style.backgroundColor;
+        lastSelected.style.backgroundColor = 'transparent';
+        setlastSelected(e);
+        setFormData({ ...formData, level:value });
+
+      }
+    }
+
+    
+    
+  };
+
+  const difficultyOptions = [
+    { label: 'Easy', value: 'easy', color: 'green' },
+    { label: 'Medium', value: 'medium', color: 'orange' },
+    { label: 'Hard', value: 'hard', color: 'red' },
+  ];
     
    
 useEffect(()=>{console.log(formData)},[formData])
@@ -152,7 +189,7 @@ deleteItem(index)
           // All images have been uploaded, update the form data
           setFormData({
             ...formData,
-            courseImages: [...formData.courseImages, ...uploadedImages] // Concatenate with existing projectImages
+            courseImages: [...formData.courseImages, ...uploadedImages] // Concatenate with existing courseImages
           });
         }
       }; 
@@ -184,7 +221,11 @@ deleteItem(index)
         if(formData.title===''){
         window.alert('Title is required');
         return ;
-      }
+        }
+        else if(formData.level===''){
+          window.alert('Level is Required');
+          return;
+        }
       // Assuming you have an API endpoint to send the data
       const updatedFormData = {
         ...formData,
@@ -286,7 +327,7 @@ deleteItem(index)
 </div>
 
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Course Title</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Course Title</p>
 </div>
 <div className="textfield" style={{ maxHeight: '100px', overflow: 'auto' }}>
 <TextField  fullWidth id="fullWidth" size="small"  sx={style }
@@ -309,7 +350,7 @@ onChange={(e)=> setFormData({...formData,title:e.target.value})}
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >About This Course</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >About This Course</p>
 </div>
 
 
@@ -341,7 +382,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
-<p style={{color:"white",margin:'0'}} className="editProfile">Skills</p>
+<p style={{color:"white",margin:'0',fontSize:'1.05rem'}} className="editProfile">Skills</p>
 </div>
 
 <div className="textfield" >
@@ -533,8 +574,58 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 </div>
 <div className="space">
 </div>
+
+<div className="E-mail">
+<div style={{ display: 'flex', alignItems: 'center', gap: '5px' }} >
+<div style={{ marginRight: '5px' }}> {/* Add margin to introduce gap */}
+    Level
+  </div> 
+      {difficultyOptions.map((option) => (
+        <div
+          key={option.value}
+          className={`btn m-2 ${selectedDifficulty === option.value ? 'btn-' + option.color : 'btn-outline-' + option.color}`}
+          style={{
+            borderRadius: '20px',
+            borderColor: option.color,
+            color: selectedDifficulty === option.value ? '#fff' : option.color,
+            cursor: 'pointer',
+            backgroundColor:'transparent',
+            padding: '5px 10px', // Decrease padding to reduce button size
+            fontSize: '14px',
+          }}
+          onMouseOver={(e) => {
+         
+            e.currentTarget.style.backgroundColor = option.color;
+            e.currentTarget.style.color = '#fff';
+          }}
+          onMouseOut={(e) => {
+            if (selectedDifficulty !== option.value) {
+              console.log(1);
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = option.color;
+            }
+            else{
+              console.log(2);
+              e.currentTarget.style.color = '#fff';
+              e.currentTarget.style.backgroundColor = option.color;
+            }
+          }}
+          onClick={(e) => handleSelectDifficulty(option.value,e.currentTarget)}
+        >
+          {option.label}
+        </div>
+      ))}
+    </div>
+
+</div>
+
+<div className="space">
+</div>
+<div className="space">
+</div>
+
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Add Collaborator</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Add Collaborator</p>
 </div>
 <div>
       {values.map((value, index) => (
@@ -575,12 +666,12 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <Button onClick={addTextField}className="box" variant="dark" style={{  height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <h2 >+</h2>
     </Button>
-<p style={{color:"white",marginLeft:10}} className="editProfile">Add more collaborator</p>
+<p style={{color:"gray",marginLeft:10}} className="editProfile">Add more collaborator</p>
 </div>
 <div className="space"></div>
 
     <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Add Course Links</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Add Project Links</p>
 </div>
 <div>
 {values2.map((value, index) => (
@@ -637,7 +728,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <Button onClick={addTextField2}className="box" variant="dark" style={{  height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <h2 >+</h2>
     </Button>
-<p style={{color:"white",marginLeft:10}} className="editProfile">Add more Links</p>
+<p style={{color:"gray",marginLeft:10}} className="editProfile">Add more Links</p>
 </div>
 <div className="space"></div>
 
@@ -649,7 +740,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="name">
 <div className="buttonContainer" >
 
-<Button variant="dark" className="buttonHover" style={{width:200, backgroundColor: 'black'}} onClick={handleSubmit} >
+<Button variant="dark" className="buttonHover" style={{width:200, backgroundColor: 'black',fontSize:'1.05rem'}} onClick={handleSubmit} >
        Create Course
       </Button></div>
       </div>

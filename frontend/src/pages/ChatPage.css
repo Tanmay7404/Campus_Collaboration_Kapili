@@ -188,23 +188,27 @@
     background-color: #3B3B3B;
     display: flex;
     align-items: center;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border-radius: 4px;
 }
-#typingBox input{
-    flex: auto;
-    border: none;
+#typingBox textarea {
     background-color: #3B3B3B;
-    color: #BCBCBC;
-    font-weight: 300;
-    font-size: 20px;
-    margin-right: 30px;
-    padding: 5px 5px;
-}
+    border: none; /* Removes the border */
+    outline: none;
+    width: 100%; /* Adjust width as needed */
+    max-height: 40px; /* Maximum height before scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+    resize: none;
+    margin-right: 10px; /* Disables the user's ability to resize the textarea */
+
+    
+  }
+
+
 
 #attach{
     display: flex;
-    gap: 10px;
+    gap: 20px;
 }
 
 #attach>svg:hover>path{

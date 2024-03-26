@@ -12,11 +12,6 @@ import UserContext from "../userContext.jsx";
 import profimage from '../assets/images/profile.jpeg'
 import courseimage from '../assets/images/swiggy.png'
 
-
-
-
-
-
 const Explore = () => {
     const [exploreData,setExploreData] = useState([])
     const {currUser} = useContext(UserContext);
@@ -53,7 +48,7 @@ const Explore = () => {
             text: "Ongoing Projects",
             list_cards: [
                     {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" }],
+                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" },{name: 'DSA',color:"#4EB0E7" }],
                     likes: 120,
                     ratings: 5.0,
                     projectImage: backg,
@@ -61,13 +56,48 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile,profile],
                     userName: 'Jane Done',
-                    
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}],  
+                    createdate:Date.now(),
+                    finishdate:Date.now(),
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay','sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"easy",
+                                    
                     
                     additionalImages: [sli1, sli2, backg],
                     
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                     feedbackHeading: 'Rating and Feedback',
                     feedbackArray: [
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
                         { heading: 'Tanmay Mittal',
                         image:profile,
                         text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -101,47 +131,12 @@ const Explore = () => {
                     projecttitle:'this is website for  collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
-                    
-                    
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],
-                    completed:false,
-                    open:true
-                },
-                {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
-                    
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}], 
+                    createdate:Date.now(),
+                    finishdate:Date.now(), 
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'], 
+                    level:"medium",  
+
                     
                     additionalImages: [sli1, sli2, backg],
                     
@@ -181,7 +176,55 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}],  
+                    createdate:Date.now(),
+                    finishdate:Date.now(),         
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"hard",         
                     
+                    additionalImages: [sli1, sli2, backg],
+                    
+                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    feedbackHeading: 'Rating and Feedback',
+                    feedbackArray: [
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        {
+                        heading: 'Priyanshu',
+                        image:profile,
+                        text:'hello',
+                        date:'22/22/2342',
+                        stars:4
+                        }
+                        ,
+                        {
+                        heading: 'Priyanshu',
+                        image:profile,
+                        text:'hellovtvgvbuv',
+                        date:'22/22/2342',
+                        stars:4
+                        }
+                    ],
+                    completed:false,
+                    open:true
+                },
+                {
+                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                    likes: 120,
+                    ratings: 5.0,
+                    projectImage: backg,
+                    projectname: 'folio',
+                    projecttitle:'this is website for camoous collabaoration',
+                    profileImage: [profile,profile],
+                    userName: 'Jane Done',
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}], 
+                    createdate:Date.now(),
+                    finishdate:Date.now(),    
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"hard",            
                     
                     additionalImages: [sli1, sli2, backg],
                     
@@ -221,6 +264,11 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}],
+                    createdate:Date.now(),
+                    finishdate:Date.now(),
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"hard",
                     
                     
                     additionalImages: [sli1, sli2, backg],
@@ -267,7 +315,11 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
-                    
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}], 
+                    createdate:Date.now(),
+                    finishdate:Date.now(), 
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"hard",                  
                     
                     additionalImages: [sli1, sli2, backg],
                     
@@ -306,46 +358,11 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
-                    
-                    
-                    additionalImages: [sli1, sli2, backg],
-                    
-                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-                    feedbackHeading: 'Rating and Feedback',
-                    feedbackArray: [
-                        { heading: 'Tanmay Mittal',
-                        image:profile,
-                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                        date:'22/09/2024',
-                        stars:5 },
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hello',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                        ,
-                        {
-                        heading: 'Priyanshu',
-                        image:profile,
-                        text:'hellovtvgvbuv',
-                        date:'22/22/2342',
-                        stars:4
-                        }
-                    ],completed:true,
-                    open:false
-                },
-                {
-                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                    likes: 120,
-                    ratings: 5.0,
-                    projectImage: backg,
-                    projectname: 'folio',
-                    projecttitle:'this is website for camoous collabaoration',
-                    profileImage: [profile,profile],
-                    userName: 'Jane Done',
-                    
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}],   
+                    createdate:Date.now(),
+                    finishdate:Date.now(),
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'], 
+                    level:"hard",             
                     
                     additionalImages: [sli1, sli2, backg],
                     
@@ -384,7 +401,11 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
-                    
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}],  
+                    createdate:Date.now(),
+                    finishdate:Date.now(),  
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"hard",                
                     
                     additionalImages: [sli1, sli2, backg],
                     
@@ -423,7 +444,54 @@ const Explore = () => {
                     projecttitle:'this is website for camoous collabaoration',
                     profileImage: [profile,profile],
                     userName: 'Jane Done',
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}],   
+                    createdate:Date.now(),
+                    finishdate:Date.now(),
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'], 
+                    level:"hard",              
                     
+                    additionalImages: [sli1, sli2, backg],
+                    
+                    aboutProjectText: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+                    feedbackHeading: 'Rating and Feedback',
+                    feedbackArray: [
+                        { heading: 'Tanmay Mittal',
+                        image:profile,
+                        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                        date:'22/09/2024',
+                        stars:5 },
+                        {
+                        heading: 'Priyanshu',
+                        image:profile,
+                        text:'hello',
+                        date:'22/22/2342',
+                        stars:4
+                        }
+                        ,
+                        {
+                        heading: 'Priyanshu',
+                        image:profile,
+                        text:'hellovtvgvbuv',
+                        date:'22/22/2342',
+                        stars:4
+                        }
+                    ],completed:true,
+                    open:false
+                },
+                {
+                    tags: [{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+                    likes: 120,
+                    ratings: 5.0,
+                    projectImage: backg,
+                    projectname: 'folio',
+                    projecttitle:'this is website for camoous collabaoration',
+                    profileImage: [profile,profile],
+                    userName: 'Jane Done',
+                    projectlinks:[{name:'github',link:'ahscvh'},{name:'openAi',link:'ckdhbs'}], 
+                    createdate:Date.now(),
+                    finishdate:Date.now(),    
+                    contributor:['sushant','soumya','simon','wahid','pratay','rishi','tanmay','pratay'],
+                    level:"hard",               
                     
                     additionalImages: [sli1, sli2, backg],
                     

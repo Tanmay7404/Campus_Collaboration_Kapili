@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter } from "react-router-dom";
+import CreateProfilePage from './pages/createProfile';
+import CreateCoursePage from './pages/createCourse';
+import CreateProjectPage from './pages/createProject';
 // import ChatpageCalling from './pages/ChatpageCalling';
 
 

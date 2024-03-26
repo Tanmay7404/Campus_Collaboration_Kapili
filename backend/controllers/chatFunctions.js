@@ -34,10 +34,10 @@ class ChatController {
             }
             const senderId= new ObjectId (messageDetails.sender)
             chat.messages.push({
-                
                 senderName:messageDetails.senderName,
                 message: messageDetails.message,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                img:messageDetails.img,
             });
 
             chat.lastMessage = messageDetails.message;

@@ -7,13 +7,14 @@ import clip from '../assets/images/clip.svg';
 import logo from '../assets/images/logo.svg';
 import search from '../assets/images/search.svg';
 import io from 'socket.io-client';
+import Axios from 'axios';
 import  { useEffect ,useRef} from 'react';
 const socket=io('http://localhost:8080')
 const ChatPage = ({  currentUser }) => {
   const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
  const [userObjectId,setUserObjectId]=useState(currentUser.id)
- const [chatList,setChatList]=useState([])
+ const [chatList,  setChatList]=useState([])
  
  const [userFriends, setUserFriends] = useState([]);
  const [people, setPeopleData] = useState([]);
@@ -131,6 +132,7 @@ useEffect(() => {
       return updatedPeople; // Return the updated state
     });
   };
+
  
   const updateMessageForPerson = (personName, newMessage) => {
 
@@ -141,7 +143,6 @@ useEffect(() => {
         console.error(`Person with name '${personName}' not found.`);
         return prevPeople; // Return the original state if person not found
       }
-  
       // Create a new array with the updated person object
       const updatedPeople = [...prevPeople];
 
@@ -156,11 +157,10 @@ useEffect(() => {
   };
 
   const updateMessageForChatId = (chatId, newMessage) => {
-
     setPeopleData(prevPeople => {
       // Find the index of the person in the people array
       const index = prevPeople.findIndex(person => person.chatId === chatId);
-      if (index === -1) {
+      if (index ===-1) {
         console.error(` ChatID '${chatId}' not found.`);
         return prevPeople; // Return the origi  nal state if person not found
       }
@@ -169,9 +169,8 @@ useEffect(() => {
       const updatedPeople = [...prevPeople];
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString();
-if(updatedPeople[index].messages.length>0){
-  console.log('im wrong')
-
+      if(updatedPeople[index].messages.length>0){
+      console.log('im wrong')
       updatedPeople[index] = {
         ...updatedPeople[index], // Copy the existing person object
         messages: [...updatedPeople[index].messages,newMessage],
@@ -181,7 +180,6 @@ if(updatedPeople[index].messages.length>0){
     console.log('here man')
    updatedPeople[index] = {
     ...updatedPeople[index], // Copy the existing person object
-  
     lastMessageTime:formattedDate  // Update the messages array by appending new messages
   };}
       return updatedPeople; // Return the updated state
@@ -191,7 +189,7 @@ if(updatedPeople[index].messages.length>0){
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/user/getUserChatList/' + currentUser.name, {
+        const response = await fetch('http://localhost:8080/user/getUserChatList/'+currentUser.name, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -206,9 +204,9 @@ if(updatedPeople[index].messages.length>0){
         // console.log(121)
 
          setCount(prev=>prev+1)
-        for (const peep of data)
-        {
+        for (const peep of data){
           socket.emit("join_room",peep.chatId)
+          
         }
         //setUserFriends(data);
       } catch (error) {
@@ -236,9 +234,7 @@ if(updatedPeople[index].messages.length>0){
           headers: {
             'Content-Type': 'application/json',
           }
-          // You can include additional headers or body if needed
         });
-  
         const data = await response.json();
         setGlobalPeople(data.profiles)
         setCurrChatId(data.chatId)
@@ -279,9 +275,9 @@ useEffect(() => {
 console.log('socker')
   socket.on('receive_message', message => {
     console.log('received message')
-if(selectedPersonRef.current){ 
-      if(selectedPersonRef.current.chatId===message.chatId){setChatList(prevMessages => [...prevMessages, message.message])};
-}
+    if(selectedPersonRef.current){ 
+          if(selectedPersonRef.current.chatId===message.chatId){setChatList(prevMessages => [...prevMessages, message.message])};
+    }
 updateMessageForChatId(message.chatId,message.message)
      setCount(prev=>prev+1)
       // updateMessageForPerson(.name,{
@@ -312,7 +308,6 @@ updateMessageForChatId(message.chatId,message.message)
   return () => {
     socket.off('receive_message');
     socket.off('receive_global_message');
-
   };
 }, [socket]);
 
@@ -331,8 +326,71 @@ updateMessageForChatId(message.chatId,message.message)
   };
 
  const [currChatId,setCurrChatId]=useState("")
+ const [currentImage,setcurrentImage]=useState("")
+
+
+//  const uploadImage = async (files) => {
+//   try {
+//     console.log("execution");
+//     const formData1 = new FormData();
+//     formData1.append("file", files[0]);
+//     formData1.append("upload_preset", "hv9vnkse");
+
+//     const res = await Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/image/upload", formData1);
+//     console.log(res.data);
+//     setcurrentImage(res.data.secure_url);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
+
+
+
+const uploadChatImages = async (files) => {
+
+  const uploadImage = async (index) => {
+    if (index < files.length) {
+      const formData1 = new FormData();
+      formData1.append("file", files[index]);
+      formData1.append("upload_preset", "hv9vnkse");
+      try {
+        console.log(index)
+        const res = await Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/image/upload", formData1);
+        console.log(res.data);
+        setcurrentImage(res.data.secure_url);
+        await uploadImage(index + 1);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+    }
+    await uploadImage(0);
+  }; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+useEffect(()=>{
+  if(currentImage!==""){
+    console.log(currentImage);
+    handleSubmit();
+  }
+},[currentImage])
+
 
   const handleSubmit = async (e) => {
+    console.log(7);
     try {
       // First fetch
       var link="http://localhost:8080/chats/addMessage/"+currChatId
@@ -346,8 +404,10 @@ updateMessageForChatId(message.chatId,message.message)
           sender:userObjectId ,
           senderName:currentUser.name,
           message: currentMessage,
+          img:currentImage,
         }),
       });
+      
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString();
 
@@ -356,7 +416,8 @@ updateMessageForChatId(message.chatId,message.message)
         const newMessage = {
           senderName: currentUser.name,
           message: currentMessage,
-          timestamp: formattedDate 
+          timestamp: formattedDate,
+          img:currentImage
         };
         socket.emit("send_global_message",{room:currChatId,message:newMessage,username:currentUser.name})
       
@@ -366,26 +427,34 @@ updateMessageForChatId(message.chatId,message.message)
         });
       }
       else{
-   updateMessageForPerson(selectedPerson.name,{
-    senderName:currentUser.name,
-    message:currentMessage,
-    timestamp:formattedDate
-   })
-   const newMessage = {
-    senderName: currentUser.name,
-    message: currentMessage,
-    timestamp: formattedDate 
-  };
-  setCount(prev=>prev+1)
+          updateMessageForPerson(selectedPerson.name,{
+            senderName:currentUser.name,
+            message:currentMessage,
+            timestamp:formattedDate,
+            img:currentImage
 
-  setChatList(prevList => {
-    
-    return [...prevList, newMessage];
-  });
-  socket.emit("send_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
-      const secondData = await secondResponse.json();
-      // Handle success response for the second fetch
-      }
+          })
+          const newMessage = {
+            senderName: currentUser.name,
+            message: currentMessage,
+            timestamp: formattedDate,
+            img:currentImage
+          };
+          setCount(prev=>prev+1)
+          
+
+          setChatList(prevList => {
+            
+            return [...prevList, newMessage];
+          });
+            socket.emit("send_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
+            // const secondData = await secondResponse.json();
+          // Handle success response for the second fetch
+      }   
+      if(currentMessage!=="") setCurrentMessage("");
+      else if(currentImage!=="")setcurrentImage("");
+            
+
     } catch (error) {
       console.error('Error:', error);
       // Handle error for both fetch calls
@@ -421,6 +490,11 @@ updateMessageForChatId(message.chatId,message.message)
               <input type="text" name="" id="chats-search" placeholder="Search Chats" />
               <img src={search} alt="" />
             </div>)}
+
+
+
+
+
             {!global&&(
             <div id="persons">
               {people.map((person) => (
@@ -434,10 +508,12 @@ updateMessageForChatId(message.chatId,message.message)
                 </div>
               ))}
             </div>)}
-</div>
+
+
+
+          </div>
           <div id="right">
           {!global&&(
-
             <div id="chatinf">
               <img
                 src={selectedPerson?.profilePic}
@@ -455,23 +531,22 @@ updateMessageForChatId(message.chatId,message.message)
             </div>
                )}
                 {global&&(
+                  <div id="chatinf">
+                    <img
+                      src={selectedPerson?.profilePic}
+                      className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
+                      alt=""
+                    />
+                    <span
+                      id="Name"
+                      style={{ textAlign: selectedPerson?.id === currentUser.id ? 'right' : 'left' }}
+                    >
+                      Global Chat
+                    </span>
+                  
 
-<div id="chatinf">
-  <img
-    src={selectedPerson?.profilePic}
-    className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
-    alt=""
-  />
-  <span
-    id="Name"
-    style={{ textAlign: selectedPerson?.id === currentUser.id ? 'right' : 'left' }}
-  >
-    Global Chat
-  </span>
- 
-
-</div>
-   )}
+                  </div>
+                )}
             <div id="chats" style={{height:'65vh'}} ref={divRef}>
               {!global&&chatList?.map((message, index) => (
                 <div
@@ -527,13 +602,27 @@ updateMessageForChatId(message.chatId,message.message)
                       
                     </inf>
                   ) : null}
+
+                    {message.message&&
                   <div
                     className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
                     // className="chat"
                     style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
                   >
-                    <p>{message.message}</p>
-                  </div>
+                    <p>{ message.message}</p>
+                  </div>}
+                  {message.img&&
+                  <div
+                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    // className="chat"
+                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                  >
+                    <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                  </div>}
+
+
+
+
                 </div>
               ))}
                {global&&globalChats?.map((message, index) => (
@@ -590,24 +679,43 @@ updateMessageForChatId(message.chatId,message.message)
                       
                     </inf>
                   ) : null}
+                  {message.message&&
                   <div
                     className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
                     // className="chat"
                     style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
                   >
-                    <p>{message.message}</p>
-                  </div>
+                    <p>{ message.message}</p>
+                  </div>}
+                  {message.img&&
+                  <div
+                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    // className="chat"
+                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                  >
+                    <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                  </div>}
                 </div>
               ))}
               
             </div>
             <div id="typingBox" >
-              <input type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}             onKeyDown={handleKeyPress}
-/>
+               <textarea type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}onKeyDown={handleKeyPress}/>
               <div id="attach">
-                <button onClick={()=>{handleSubmit()}}>send</button>
-                <img src={clip} id="clip" alt="" />
+              <div onClick={() => {handleSubmit()}}>
+                  <i className="bi bi-send clickable-icon" style={{ fontSize: '25px', marginBottom: '9px'  }}></i>
               </div>
+              <div>
+                <input type="file" id="fileInput3" name="fileInput3" hidden  multiple  onChange={(event) => {
+                  uploadChatImages(event.target.files);
+
+                }}/>
+                <label htmlFor="fileInput3" style={{ cursor: 'pointer' }}>
+                  <i className="bi bi-images clickable-icon" style={{ fontSize: '25px', marginBottom: '9px' }}></i>
+                </label>
+              </div>
+
+              </div>  
             </div>
           </div>
         </div>
@@ -617,3 +725,4 @@ updateMessageForChatId(message.chatId,message.message)
 };
 
 export default ChatPage;
+

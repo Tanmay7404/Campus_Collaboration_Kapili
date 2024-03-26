@@ -64,25 +64,28 @@
     fill: #fff;
   }
   
-  #inf{
+
+
+  #inf1{
     z-index: 3;
     position: absolute;
-    left: 40px;
-    bottom: 40px;
-    height: 150px;
-    width: 400px;
+    left: 60px;
+    bottom: 30px;
+    height: 195px;
+    width: 800px;
     color: #FFFFFF;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
   #inf h1{
-    font-family: "Lenxend";
+    font-family: "Impact";
+    text-transform: uppercase;
     font-weight: 400;
   
   }
   #inf2{
-    padding: 10px;
+    padding: 0px;
     display: flex;
     gap: 20px;
     height: 40px;
@@ -116,8 +119,8 @@
   }
   
   #profile-picture{
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
     object-fit: cover;
     border: 2px solid white;
     border-radius: 50%;
@@ -159,6 +162,7 @@
   
   
   
+  
   #details-main .swiper-slide{
     position: relative;
     margin: 20px 0px;
@@ -174,8 +178,9 @@
   #details-main .swiperImg{
      position: relative;
      height: 100%;
-     width:90%;
+     width:100%;
      object-fit: cover;
+     margin-right: 5px;
   
   }
   
@@ -193,13 +198,17 @@
     line-height: 20px;
     letter-spacing: 0.03em;
     text-align: justify;
-    margin: 20px 0;
+    margin-top: 20px;
+    margin-right: 5px;
+    margin-bottom: 20px;
+    margin-left: 0px;
   }
   
   #tags{
     display: flex;
     align-items: center;
     gap: 12px;
+    margin-right: 5px;
   }
   
   .tags{
@@ -400,6 +409,50 @@
     line-height: 20px;
   
   }
+
+  .clickable-icon {
+    font-size: 40px;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out; 
+  }
+  
+  .clickable-icon:hover {
+    color:#007bff; 
+  }
+  .clickable-area:hover .clickable-icon,
+  .clickable-area:hover div {
+  color: #007bff; 
+  }
+
+  /* styles.css */
+.project-link {
+  color: inherit; /* Inherits the color from the parent element */
+  text-decoration: none; /* No underline by default */
+  transition: text-decoration 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.project-link:hover {
+  text-decoration: underline;
+  color:blue /* Adds an underline on hover */
+}
+
+h1#projectName {
+  font-size: 3rem;
+  margin-bottom: 0;
+  transform: translateY(30px);
+  text-transform: uppercase;
+}
+h1#modalText {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  color: #d4cbcb;
+  transform: translateY(10px);
+
+}
+
+
+
+  
   
   
   /* ----------------for popup card----------------------------------------*/

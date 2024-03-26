@@ -18,6 +18,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 
 
 
+
 const ToggleSwitch_collab = ({ formData, setFormData }) => {
 
   const toggleOngoing_collab = () => {
@@ -93,10 +94,49 @@ export default function CreateProjectPage() {
       ongoing:false,
       openForCollaboration:false,
       links:[],
-      projectImages:[]
+      projectImages:[],
+      level:''
     
     };
     const [formData, setFormData] = useState(initialFormData);
+    
+
+
+  const [selectedDifficulty, setSelectedDifficulty] = useState('');
+  const[lastSelected,setlastSelected]=useState('');
+
+  const handleSelectDifficulty = (value,e) => {
+    // console.log(value);
+    // console.log(e);
+    // console.log(selectedDifficulty);
+
+    if(selectedDifficulty=='') {
+      setSelectedDifficulty(value);
+      setlastSelected(e.currentTarget);
+      setlastSelected(e);
+      setFormData({ ...formData, level:value });
+    }
+    else{
+      if(value!=selectedDifficulty){
+      // console.log(lastSelected);
+        setSelectedDifficulty(value);
+        lastSelected.style.color =lastSelected.style.backgroundColor;
+        lastSelected.style.backgroundColor = 'transparent';
+        setlastSelected(e);
+        setFormData({ ...formData, level:value });
+
+      }
+    }
+
+    
+    
+  };
+
+  const difficultyOptions = [
+    { label: 'Easy', value: 'easy', color: 'green' },
+    { label: 'Medium', value: 'medium', color: 'orange' },
+    { label: 'Hard', value: 'hard', color: 'red' },
+  ];
     
    
 useEffect(()=>{console.log(formData)},[formData])
@@ -158,7 +198,7 @@ useEffect(()=>{console.log(formData)},[formData])
         setFormData({...formData,url:'',imageName:''})}
         else
         {
-deleteItem(index)
+          deleteItem(index)
         }
         console.log(data);
         console.log('Image deletion response:', response.data);
@@ -257,6 +297,11 @@ deleteItem(index)
         window.alert('Title is required');
         return ;
       }
+      else if(formData.level===''){
+        window.alert('Level is required');
+        return ;
+      }
+
       // Assuming you have an API endpoint to send the data
       const updatedFormData = {
         ...formData,
@@ -323,19 +368,20 @@ deleteItem(index)
 <div className="space"></div>
 <div className="space"></div>
 <div className="fillWidthDiv3" >
+  
     <div className="imageContainer">
-
-<img src={profilepic} alt="Profile" className="profile-image"  />
-</div>
+      <img src={profilepic} alt="Profile" className="profile-image"  />
+    </div>
 
 
 <div className="buttonContainer" style={{paddingLeft:10}}>
     <div>
         <input type="file" id="fileInput" name="fileInput" hidden onChange={(event)=>{
           uploadImage(event.target.files)
-        }}/>
+        }}
+        />
         <label for="fileInput" variant="outline-dark" className="buttonHover" style={{ width: 200, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px',borderColor:'white' }}>
-         <p  class="picture_upload"> Upload new Picture </p></label>
+         <p  class="picture_upload" > Upload new Picture </p></label>
     </div>
 </div>
 
@@ -346,18 +392,16 @@ deleteItem(index)
 
 <Button variant="outline-dark" onClick ={()=>{
   deleteImageFromCloudinary(formData.imageName,'pp',0);
-  
-  
 }
   } className="buttonHover"  style={{ width: 200, height: 50, backgroundColor: 'black',display:'flex',justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px' }}  >
-<p  class="picture_upload"> Remove Picture </p>
+<p  class="picture_upload" > Remove Picture </p>
       </Button></div>
 
 
 
 </div>
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Project Name</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Project Name</p>
 </div>
 <div className="textfield">
 <TextField fullWidth  id="fullWidth" size="small"  sx={style}
@@ -381,7 +425,7 @@ onChange={(e)=> setFormData({...formData,name:e.target.value})}
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Project Title</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Project Title</p>
 </div>
 <div className="textfield" style={{ maxHeight: '100px', overflow: 'auto' }}>
 <TextField  fullWidth id="fullWidth" size="small"  sx={style }
@@ -404,11 +448,8 @@ onChange={(e)=> setFormData({...formData,title:e.target.value})}
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >About This Project</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >About This Project</p>
 </div>
-
-
-
 <div className="textfield1">
 <TextField  fullWidth id="fullWidth" size="small"  sx={style} multiline={true}
 value={formData.description}
@@ -418,13 +459,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
         
       color: 'white', // Text color
       backgroundColor: '#3B3B3B', 
-  // height:'100px',
-  // overflowY:'auto',
-  // paddingTop:'0px',
-  // alignItems:'flex-start'
-
         },
-
     placeholder:"Type here"
   }} // Change text color
  InputLabelProps={{ style: { color: 'gray' } 
@@ -436,7 +471,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="space"></div>
 <div className="space"></div>
 <div className="E-mail" >
-<p style={{color:"white",margin:'0'}} className="editProfile">Tags</p>
+<p style={{color:"white",margin:'0',fontSize:'1.05rem'}} className="editProfile">Tags</p>
 </div>
 
 <div className="textfield" >
@@ -576,17 +611,15 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 
 
 
-<div style={{ overflowX: "auto", whiteSpace: "nowrap", paddingTop: '0px', borderRadius: '20px',width: 'calc(100% - 200px)' }}>
-
-
-
+<div style={{ overflowX: "auto", whiteSpace: "nowrap", paddingTop: '0px', borderRadius: '20px',width: 'calc(100% - 200px)' }} 
+ 
+>
   {formData.projectImages.map((image, index) => (
-    <div key={index}  className="imageContainer" onMouseOver={() => handleMouseOver(index)} onMouseOut={handleMouseOut} style={{ display: 'inline-block', position: 'relative', marginRight: 10 }}>
+    <div key={index}  className="imageContainer" onMouseOver={() => handleMouseOver(index)} onMouseOut={handleMouseOut} style={{ display: 'inline-block', position: 'relative', marginRight: 10,cursor:'pointer' }}>
       <img
         src={image.url}
         alt={`Project Image ${index + 1}`}
         style={{ width: 100, height: 100, borderRadius: '10px' }}
- 
       />
       {hoverIndex==index&&  
       <button
@@ -596,12 +629,10 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
         }
         }
         className="deleteButton"
-        
-       
       >
         x
       </button>
-}
+      }
 
     </div>
   ))}
@@ -647,8 +678,73 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 </div>
 <div className="space">
 </div>
+<div className="E-mail">
+<div style={{ display: 'flex', alignItems: 'center', gap: '5px' }} >
+<div style={{ marginRight: '5px' }}> {/* Add margin to introduce gap */}
+    Level
+  </div> 
+      {difficultyOptions.map((option) => (
+        <div
+          key={option.value}
+          className={`btn m-2 ${selectedDifficulty === option.value ? 'btn-' + option.color : 'btn-outline-' + option.color}`}
+          style={{
+            borderRadius: '20px',
+            borderColor: option.color,
+            color: selectedDifficulty === option.value ? '#fff' : option.color,
+            cursor: 'pointer',
+            backgroundColor:'transparent',
+            padding: '5px 10px', // Decrease padding to reduce button size
+            fontSize: '14px',
+          }}
+          onMouseOver={(e) => {
+         
+            e.currentTarget.style.backgroundColor = option.color;
+            e.currentTarget.style.color = '#fff';
+          }}
+          onMouseOut={(e) => {
+            if (selectedDifficulty !== option.value) {
+              console.log(1);
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = option.color;
+            }
+            else{
+              console.log(2);
+              e.currentTarget.style.color = '#fff';
+              e.currentTarget.style.backgroundColor = option.color;
+            }
+          }}
+          onClick={(e) => handleSelectDifficulty(option.value,e.currentTarget)}
+        >
+          {option.label}
+        </div>
+      ))}
+    </div>
+
+
+  
+
+
+
+  
+</div>
+
+
+
+
+
+
+<div className="space">
+</div>
+<div className="space">
+</div>
+
+
+
+
+
 <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Add Collaborator</p>
+
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Add Collaborator</p>
 </div>
 <div>
       {values.map((value, index) => (
@@ -687,14 +783,14 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
     <div className="E-mail" >
 
 <Button onClick={addTextField}className="box" variant="dark" style={{  height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-      <h2 >+</h2>
+      <h2 > +</h2>
     </Button>
-<p style={{color:"white",marginLeft:10}} className="editProfile">Add more collaborator</p>
+<p style={{color:"gray",marginLeft:10}} className="editProfile">Add more collaborator</p>
 </div>
 <div className="space"></div>
 
     <div className="E-mail" >
-    <p style={{color:"white",margin:'0'}} >Add Project Links</p>
+    <p style={{color:"white",margin:'0',fontSize:'1.05rem'}} >Add Project Links</p>
 </div>
 <div>
 {values2.map((value, index) => (
@@ -751,7 +847,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <Button onClick={addTextField2}className="box" variant="dark" style={{  height: 25, width: 25, borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
       <h2 >+</h2>
     </Button>
-<p style={{color:"white",marginLeft:10}} className="editProfile">Add more Links</p>
+<p style={{color:"gray",marginLeft:10}} className="editProfile">Add more Links</p>
 </div>
 <div className="space"></div>
 
@@ -763,7 +859,7 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 <div className="name">
 <div className="buttonContainer" >
 
-<Button variant="dark" className="buttonHover" style={{width:200, backgroundColor: 'black'}} onClick={handleSubmit} >
+<Button variant="dark" className="buttonHover" style={{width:200, backgroundColor: 'black',fontSize:'1.05rem'}} onClick={handleSubmit} >
        Create Project
       </Button></div>
       </div>

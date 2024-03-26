@@ -13,6 +13,11 @@ import ReactDOM from 'react-dom';
 const Card = ({details}) =>{
     
     const [modalOpen, setModalOpen] = useState(false);
+    const difficultyOptions = [
+        { label: 'Easy', value: 'easy', color: 'green' },
+        { label: 'Medium', value: 'medium', color: 'orange' },
+        { label: 'Hard', value: 'hard', color: 'red' },
+      ];
 
     const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
@@ -47,12 +52,21 @@ const Card = ({details}) =>{
                     likes = {details.likes} 
                     ratings = {details.ratings} 
                     modalImage = {details.projectImage} 
-                    modalText = {details.projectTitle} 
+                    modalText = {details.projecttitle} 
+                    projectname={details.projectname}
                     contactImage = {details.profileImage} 
                     contactName = {details.userName} 
                     additionalImages = {details.additionalImages} 
                     aboutProjectText = {details.aboutProjectText} 
                     feedbackArray = {details.feedbackArray}
+                    open={details.open}
+                    completed={details.completed}
+                    projectlinks={details.projectlinks}
+                    createdate={details.createdate}
+                    finishdate={details.finishdate}
+                    contributor={details.contributor}
+                    level={details.level}
+
                     closeModal={closeModal}
                 />
             </div>
@@ -92,7 +106,30 @@ const Card = ({details}) =>{
 
             <div className="sw-details">
                 <div className="sw-details-1">
-                    <h3>{details.projectname}</h3>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{fontSize:'1.5rem'}}>{details.projectname}</div>
+                        <div> {/* This div will now be on the right */}
+                            {difficultyOptions.map((option) => (
+                            details.level === option.value && (
+                                <div
+                                key={option.value}
+                                className={`btn m-2 ${details.level === option.value ? 'btn-' + option.color : 'btn-outline-' + option.color}`}
+                                style={{
+                                    borderRadius: '20px',
+                                    borderColor: option.color,
+                                    color: '#fff',
+                                    cursor: 'pointer',
+                                    backgroundColor: option.color,
+                                    padding: '5px 10px', // Decrease padding to reduce button size
+                                    fontSize: '14px',
+                                }}
+                                >
+                                {option.label}
+                                </div>
+                            )
+                            ))}
+                        </div>  
+                    </div>
                     <p>{details.projecttitle}</p>
                 </div>
                 <div className="sw-details-2">
