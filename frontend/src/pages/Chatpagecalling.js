@@ -32,30 +32,30 @@ const currentUser3 = {
 const Chatpagecalling = () => {
  const {currUser}=useContext(UserContext)
 //  const currUser="Simon"
-  useEffect(()=>{
-    const fetchData = async () => {
-      try {
-    const response = await fetch('http://localhost:8080/user/getUserChatPage/' + currUser, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-      // You can include additional headers or body if needed
-    });
+  // useEffect(()=>{
+  //   const fetchData = async () => {
+  //     try {
+  //   const response = await fetch('http://localhost:8080/user/getUserChatPage/' + currUser, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     }
+  //     // You can include additional headers or body if needed
+  //   });
 
-    const data = await response.json();
-   setSelectedUser(data)
-    console.log(data)
+  //   const data = await response.json();
+  //  setSelectedUser(data)
+  //   console.log(data)
 
-  }
-    catch (error) {
-      console.error('Error fetching userId:', error);
-    }
-  }
+  // }
+  //   catch (error) {
+  //     console.error('Error fetching userId:', error);
+  //   }
+  // }
 
-  fetchData()
+  // fetchData()
 
-  },[])
+  // },[])
   const [selectedUser, setSelectedUser] = useState(null);
   const handleUserSelection = (user) => {
     console.log(user)

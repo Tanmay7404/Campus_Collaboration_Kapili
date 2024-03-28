@@ -15,7 +15,38 @@ import courseimage from '../assets/images/swiggy.png'
 const Explore = () => {
     const [exploreData,setExploreData] = useState([])
     const {currUser} = useContext(UserContext);
+    const {onGoingProjects,setOnGoingProjects}=useState([])
+    const {completetdProjects,setCompletedProjects}=useState([])
+
     console.log(currUser);
+
+    useEffect(()=>{
+async function fetchOngoingAndCompletedProjects(){
+    try {
+        const response = await fetch("http://localhost:8080/projects/ongoingProjects/"+currUser, {
+            method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
+        });
+        const res = await response.json();
+       setOnGoingProjects(res)
+        const response2 = await fetch("http://localhost:8080/projects/completedProjects/"+currUser, {
+            method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
+        });
+        const res2 = await response.json();
+        setCompletedProjects(res2   )
+
+console.log(res)
+console.log(res2)
+
+    }
+    catch(err){
+
+    }
+
+}
+
+fetchOngoingAndCompletedProjects()
+
+    },[])
     useEffect(() => {
         async function fetchData() {
             try {

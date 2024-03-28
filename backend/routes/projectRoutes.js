@@ -135,6 +135,72 @@ projectRouter.get("/commonProjects" ,async (req,res)=>{
         res.send("ERROR");
     }
 })
+projectRouter.get("/ongoingProjects/:username", async (req, res) => {
+    try {
+        // Find the user based on the request parameter
+        const username = req.params.username;
+        let UC = new UserController();
+        const user = await UC.getUserByUsername(username);
+        const userProjects = user.projects;
+
+        // Find ongoing projects without user's ones
+        let ongoingProjects = await Project.find({ 
+            ongoing: true,
+            _id: { $nin: userProjects } // Exclude user's projects
+        });
+
+        const updatedProjects = await Promise.all(ongoingProjects.map(async project => {
+            const creatorUsernames = await UC.userIdToNameAndProfileList(project.creators);
+            const creators = creatorUsernames.map(creator => ({
+                username: creator.username,
+                profilePic: creator.profilePic
+            }));
+
+            return { ...project.toObject(), creators: creators };
+        }));
+
+        // Log the updated projects
+        // Return the updated projects
+        res.json(updatedProjects);
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+projectRouter.get("/completedProjects/:username", async (req, res) => {
+    try {
+        // Find the user based on the request body
+        const username = req.params.username;
+        const user = await new UserController().getUserByUsername(username);
+        let UC=new UserController()
+
+        const userProjects=user.projects
+        // Find ongoing projects
+        let completedProjects = await Project.find({   ongoing: false,
+            _id: { $nin: userProjects }  });
+            const updatedProjects = await Promise.all(completedProjects.map(async project => {
+                const creatorUsernames = await  UC.userIdToNameAndProfileList(project.creators);
+                console.log(creatorUsernames)
+                const creators = creatorUsernames.map((creator, index) => ({
+                    username: creatorUsernames[index].username,
+                    profilePic: creatorUsernames[index].profilePic
+                }));
+
+                return { ...project.toObject(), creators: creators };
+            }));
+        // You may want to sort, filter, or manipulate the data further
+        // based on user preferences or any other criteria
+        console.log(updatedProjects)
+        // Return the ongoing projects
+        res.send(updatedProjects);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 projectRouter.post("/addfeedbacks" ,async (req,res)=>{
     let projectName = req.body.name;
     let feedback = req.body.feedback;

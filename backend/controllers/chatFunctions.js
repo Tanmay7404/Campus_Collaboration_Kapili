@@ -44,13 +44,51 @@ class ChatController {
             chat.lastMessageTime = Date.now();
 
             await chat.save();
+            return chat.messages[chat.messages.length - 1]._id;
+        } catch (err) {
+            console.error(err);
+            return 0;
+        }
+    }
+    async deleteMessage(chatId, messageId) {
+        try {
+            // Find the chat by its ID
+            const chat = await Chat.findById(chatId);
+            if (!chat) {
+                console.error("Chat not found");
+                return 0;
+            }
+            // Find the index of the message in the messages array
+            console.log(chat.messages[0]._id.toString())
+            const messageIndex = chat.messages.findIndex(message =>   message._id.toString() === messageId );
+            
+            if (messageIndex === -1) {
+                console.error("Message not found");
+                return 0;
+            }
+    
+            // Remove the message from the messages array
+            chat.messages.splice(messageIndex, 1);
+    
+            // Update lastMessage and lastMessageTime if needed
+            if (chat.messages.length > 0) {
+                chat.lastMessage = chat.messages[chat.messages.length - 1].message;
+                chat.lastMessageTime = chat.messages[chat.messages.length - 1].timestamp;
+            } else {
+                // If there are no more messages, reset lastMessage and lastMessageTime
+                chat.lastMessage = null;
+                chat.lastMessageTime = null;
+            }
+            console.log("deleted successully")
+            // Save the updated chat
+            await chat.save();
             return 1;
         } catch (err) {
             console.error(err);
             return 0;
         }
     }
-
+    
     async findChatFromUsers(users){
         try{
             var userIds =await getObjectId.userNameToIdList(users);

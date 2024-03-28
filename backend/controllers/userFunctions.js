@@ -81,7 +81,30 @@ async checkUsersExistence(usernames)
             throw new Error(error);
         }
     }
-
+    async  userIdToNameAndProfileList(userIdList) {
+        try {
+            // Find users with matching IDs
+            const users = await Model.find({ _id: { $in: userIdList } });
+    
+            // Check if all user IDs were found
+            if (users.length === userIdList.length) {
+                // Map user objects to their usernames
+                const userInfoList = users.map(user => ({
+                    username: user.username,
+           
+                   profilePic: user.profileInfo.profilePicture.url
+                }));
+                return userInfoList;
+            } else {
+                throw new Error("Some Users Not Found");
+            }
+        } catch (error) {
+            // Handle errors, such as database errors or invalid input
+            console.error(error);
+            throw new Error("Internal Server Error");
+        }
+    }
+    
     async addSkills(userName, skills) {
         try {
             // Step 1: Find the user by their username

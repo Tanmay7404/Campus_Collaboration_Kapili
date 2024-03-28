@@ -6,8 +6,6 @@ const ChatController = require("../controllers/chatFunctions.js");
 const ProjectController = require("../controllers/projectFunctions.js");
 // Api Routes Declare
 const getObjectId = require("../functions/getObjectId.js");
-
-
 chatRouter.post("/addNewChat", async (req, res) => {
     try {
         var chat_details = req.body;
@@ -30,10 +28,31 @@ chatRouter.post("/addMessage/:chatId", async (req, res) => {
         const messageDetails = req.body;
         const data = await new ChatController().addMessage(chatId, messageDetails);
         
-        if (data === 1) {
-            res.send("Message added successfully");
+        if (data) {
+            console.log(data)
+            res.send(data);
         } else {
             res.status(404).send("Chat not found or unable to add message");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+
+chatRouter.post("/deleteMessage/:chatId/:messageId", async (req, res) => {
+    try {
+        const chatId = req.params.chatId;
+        const messageId = req.params.messageId;
+    
+
+        const data = await new ChatController().deleteMessage(chatId, messageId);
+        
+        if (data === 1) {
+            res.send("Message deleted successfully");
+        } else {
+            res.status(404).send("Chat not found or unable to delete message");
         }
     } catch (error) {
         console.error(error);

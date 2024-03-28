@@ -16,6 +16,7 @@ app.use(express.static("public"));
 app.use(cors());
 
 
+//const {spamDetection} = require("./functions/spam_detection");
 
 const server = http.createServer(app);
 // const io = socketIo(server);
@@ -81,14 +82,16 @@ const ROOMS = require("./models/roomModel.js");
 // }
  //var Rooms= document.rooms;
 // Async function to ensure the database connection and document retrieval
+let hashlist
 async function initialize() {
     try {
         const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
         mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
 
 
-        const loadHashList = require("./functions/spam_detection/loadHashList.js");
-        hashlist = loadHashList();
+        // const loadHashList = require("./functions/spam_detection/loadHashList.js");
+        // const hashlist = await loadHashList();
+        
 
 
         // Find or create document
@@ -120,10 +123,28 @@ io.on('connection', socket => {
         console.log('Client disconnected');
     });
     socket.on('send_chat_message',  async(data) => {
- 
+        
 
+        
         socket.broadcast.to(data.room).emit('receive_message', { message: data.message, name: data.username ,chatId:data.room})
       });
+//     socket.on('check_spam',async(data)=> {
+//    if( spamDetection(data.message)==true)
+//    {
+// socket.emit('checked_spam',async(data)=>{
+    
+// })
+//    }else
+//    {
+
+//    }
+    
+//     })
+    //   socket.on('delete_chat_message',  async(data) => {
+ 
+
+    //     socket.broadcast.to(data.room).emit('delete_message', { message: data.message, name: data.username ,chatId:data.room})
+    //   });
       socket.on('send_global_message',  async(data) => {
  console.log("global global")
 
