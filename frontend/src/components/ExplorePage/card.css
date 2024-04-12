@@ -128,3 +128,17 @@
     z-index: 2;
 }
 
+
+
+.icon-hover-effect {
+    font-size: 1.7rem;
+    color: #c8bebe; /* Initial color */
+    transition: color 0.2s; /* Smooth transition for the color */
+  }
+  
+  .icon-hover-effect:hover {
+    color: white; /* Dark color on hover */
+  }
+  
+  
+

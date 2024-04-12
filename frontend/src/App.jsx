@@ -61,7 +61,6 @@
 import { Link, Route, Routes} from 'react-router-dom';
 import './App.css';
 import React, { useState } from 'react';
-// import ChatPage from './pages/ChatPage.js';
 // import CreateProjectPage from './pages/createProject';
 // import EditCoursePage from './pages/editCourse';
 // import CreateCoursePage from './pages/createCourse';
@@ -73,6 +72,7 @@ import CreateProfilePage from './pages/createProfile';
 // import CardList from './components/searchuser/cardlist';
 // import GlobalChat from './pages/GlobalChat';
 import ChatpageCalling from './pages/Chatpagecalling';
+import ChatPage from './pages/ChatPage.js';
 
 //Import from Pages
 
@@ -86,30 +86,33 @@ import Explore from './pages/explore.jsx';
 import TestPage from './pages/testPage.jsx';
 // import Search from './pages/search.jsx'
 import { UserProvider } from './userContext.jsx';
+import UserdataState from './userdataState.js';
 import Profile from './components/ProfilePage/profile.js';
 import SucessLogin from "./pages/sucessLogin.jsx"
 import UserCardList from './components/searchuser/usercardlist.js';
-// import CreateProjectPage from './pages/createCourse.js';
+import CreateProjectPage from './pages/createProject.js';
 
 function App() {
   return (
     <UserProvider>
+      <UserdataState>
       <Routes>
         <Route path ="/login" element= {<Login/>}/>
         <Route path = "/sucesslogin/:username" element = {<SucessLogin/>}/>
         <Route element ={<Navbar/>}>
           <Route path ="/explore" element = {<Explore/>}/>
-          <Route path ="/chat" element = {<ChatpageCalling/>}/>
+          <Route path ="/chat/:username" element = {<ChatPage/>}/>
           <Route path = "/profile/:username" element = {<Profile/>} />
           <Route path = "/search/*" element = {<UserCardList/>} />
         </Route>
         <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>
-        <Route path = "/createProject" element={<TestPage/>}/>
+        <Route path = "/createProject" element={<CreateProjectPage/>}/>
         <Route path = "/createCourse" element={<TestPage/>}/>
         <Route path = "/editProfile/:username" element={<TestPage/>}/>
         <Route path = "/editProject/:projectname" element={<TestPage/>}/>
         <Route path = "/editCourse/:coursename" element={<TestPage/>}/>
       </Routes>
+      </UserdataState>
     </UserProvider>
     // <>
     // <Home/>

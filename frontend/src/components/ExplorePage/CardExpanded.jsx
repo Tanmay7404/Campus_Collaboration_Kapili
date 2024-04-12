@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import like from "../../assets/images/like.svg";
 import cross from "../../assets/images/cross.svg";
 import star from "../../assets/images/star.svg";
@@ -8,6 +8,9 @@ import FeedbackComponent from "./feedback.jsx";
 import DemoSwiper from "./DemoSwiper.jsx";
 import "./CardExpanded.css";
 import TextField from '@mui/material/TextField';
+import UserContext from "../../userContext.jsx";
+import UserdataContext from "../../userdataContext.js";
+
 
 
 
@@ -18,8 +21,6 @@ const CardExpanded = ({
   modalImage,
   modalText,
   projectname,
-  contactImage,
-  contactName,
   additionalImages,
   aboutProjectText,
   feedbackArray,
@@ -28,12 +29,30 @@ const CardExpanded = ({
   projectlinks,
   createdate,
   finishdate,
-  contributor,
   level,
-  closeModal
+  creator,
+  closeModal,
+  setongoingData,
+  setcompletedData,
+  likedproj,
+  setlikedproj
 }) => {
+  console.log(typeof (ratings))
   var [flag,setFlag] = useState(0);
-  var [rating,setRating] = useState(0);
+  const[feed,setfeed]=useState(false);
+  const {currUser} = useContext(UserContext);
+  const{userdata}=useContext(UserdataContext);
+  const[isliked,setisliked]=useState(false);
+ 
+
+  const initialfeedbackData={
+    projectname:projectname,
+    img:userdata.profileInfo.profilePicture.url,
+    rating:0,
+    text:''
+  };
+  const [feedbackData,setfeedbackData]=useState(initialfeedbackData);
+  // useEffect(()=>{console.log(feedbackData)},[feedbackData])
   function feedback(){
 
     if(flag===0){
@@ -43,11 +62,258 @@ const CardExpanded = ({
       setFlag(0);
     }
   }
-  function writeFeedback(){
-      // var feedback = {
-      //   projectName: 
-      // }
+
+
+
+  
+
+
+  function checkFeedbackForCurrentUser(feedbackArray, currUser) {
+    feedbackArray.forEach((feedback) => {
+      if (feedback.reviewer === currUser) {
+        setfeed(true);
+      }
+    });
   }
+
+
+
+  
+
+useEffect(()=>{
+  console.log(likedproj);
+  setisliked(likedproj.some(project => project === projectname));
+},[likedproj])
+
+  useEffect(() => {
+    checkFeedbackForCurrentUser(feedbackArray, currUser);
+  }, [feedbackArray, currUser]);
+
+  useEffect(()=>{
+    
+
+  },[])
+
+
+  const handleLike = () => {
+    console.log('1no');
+    if (isliked) {
+      console.log('no')
+      fetch(`http://localhost:8080/user/removeLikedProject/`+currUser, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ projectname: projectname })
+      })
+      .then(response => {
+        if (response.ok) {
+          
+          fetch(`http://localhost:8080/projects/addLikes`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ projectname: projectname,endorsements:likes-1 })
+          })
+          .then(response=>{
+            if(response.ok){
+              setlikedproj(prevList => {
+                return prevList.filter(proj => proj !== projectname);
+              });
+              if(completed==true){
+                setongoingData(prevData=>{
+                  return prevData.map(project=>{
+                    if(project.name==projectname){
+                      var lik=project.endorsements;
+                      return{
+                        ...project,
+                        endorsements:lik-1
+    
+                      };
+                    }
+                    return project;
+                  });
+                });
+              }
+              else{
+                setcompletedData(prevData=>{
+                  return prevData.map(project=>{
+                    if(project.name==projectname){
+                      var lik=project.endorsements;
+                      return{
+                        ...project,
+                        endorsements:lik-1
+    
+                      };
+                    }
+                    return project;
+                  });
+                });
+    
+              }
+            }
+            else { window.alert('Failed to remove project from liked projects');}
+
+          })
+          .catch(error => {
+           console.error('Error:', error);
+          });
+
+        } else {
+          window.alert('Failed to remove project from liked projects');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    } 
+    else {
+      console.log(userdata.likedProjects)
+      console.log('yes')
+      fetch(`http://localhost:8080/user/addLikedProject/`+currUser, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ projectname: projectname })
+      })
+      .then(response => {
+        if (response.ok) {
+
+          fetch(`http://localhost:8080/projects/addLikes`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ projectname: projectname,endorsements:likes+1 })
+          })
+          .then(response=>{
+            if(response.ok){
+              setlikedproj(prevList=>{
+                return [...prevList,projectname];
+              });
+              if(completed==true){
+                setongoingData(prevData=>{
+                  return prevData.map(project=>{
+                    if(project.name==projectname){
+                      var lik=project.endorsements;
+                      return{
+                        ...project,
+                        endorsements:lik+1
+              
+                      };
+                    }
+                    return project;
+                  });
+                });
+              }
+              else{
+                setcompletedData(prevData=>{
+                  return prevData.map(project=>{
+                    if(project.name==projectname){
+                      var lik=project.endorsements;
+                      return{
+                        ...project,
+                        endorsements:lik+1
+              
+                      };
+                    }
+                    return project;
+                  });
+                });
+              
+              }
+            }
+            else {
+              window.alert('Failed to remove project from liked projects');
+            }
+
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+        } else {
+          window.alert('Failed to remove project from liked projects');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  };
+
+  
+  const handleClick = () => {
+    if (feedbackData.rating === 0) {
+      window.alert('Rating is required');
+      return;
+    } else if (feedbackData.text === '') {
+      window.alert('Text is required');
+      return;
+    }
+  
+    fetch('http://localhost:8080/projects/addfeedback/' + currUser, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(feedbackData)
+    })
+    .then(response => {
+      window.alert('Submitted');
+      const feed = {
+        reviewer: currUser,
+        img: userdata.profileInfo.profilePicture.url,
+        message: {
+          rating: feedbackData.rating,
+          text: feedbackData.text,
+          timestamp: Date.now()
+        }
+      };
+  
+      if (completed===true) {
+        // Updating ongoingData with new feedback
+        setongoingData(prevData => {
+          return prevData.map(project => {
+            if (project.name === projectname) {
+              var n=project.feedbacks.length;
+              rate=(ratings*n+feedbackData.rating)/(n+1);
+              return {
+                ...project,
+                feedbacks: [...project.feedbacks, feed],
+                rating:rate.toString()
+                
+              };
+            }
+            return project;
+          });
+        });
+      }
+      else{
+        setcompletedData(prevData => {
+          return prevData.map(project => {
+            if (project.name === projectname) {
+              var n=project.feedbacks.length;
+              rate=(project.rating*n+feedbackData.rating)/(n+1);
+              return {
+                ...project,
+                feedbacks: [...project.feedbacks, feed],
+                rating:rate.toString()
+              };
+            }
+            return project;
+          });
+        });
+
+
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  };
+  
 
   const formattedCreateDate = new Date(createdate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric'});
   const formattedFinishDate = new Date(finishdate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric'});
@@ -58,9 +324,57 @@ const CardExpanded = ({
   ];
 
 
+
+
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+
+
+
+
+
+  function toggleShareOptions() {
+    const shareOptions = document.getElementById('shareOptions');
+    shareOptions.style.display = shareOptions.style.display === 'none' ? 'block' : 'none';
+  }
+  
+  function closeShareOptions() {
+    const shareOptions = document.getElementById('shareOptions');
+    shareOptions.style.display = 'none';
+  }
+  function shareOnWhatsApp() {
+    const projectUrl = encodeURIComponent('localhost');
+    window.open(`https://api.whatsapp.com/send?text=Check out this project: ${projectUrl}`);
+  }
+  function shareOnTelegram() {
+    const projectUrl = encodeURIComponent('YOUR_PROJECT_URL');
+    window.open(`https://t.me/share/url?url=${projectUrl}&text=Check out this project`);
+  }
+  function shareOnTwitter() {
+    const projectUrl = encodeURIComponent('YOUR_PROJECT_URL');
+    const text = encodeURIComponent("Check out this project: ");
+    window.open(`https://twitter.com/intent/tweet?text=${text}${projectUrl}`);
+  }
+
+  function shareOnLinkedIn() {
+      const projectUrl = encodeURIComponent('YOUR_PROJECT_URL');
+      const title = encodeURIComponent("Check out this project");
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${projectUrl}&title=${title}`);
+    
+  }
+  function copyLinkToClipboard() {
+    const projectUrl = 'YOUR_PROJECT_URL'; // Replace with the actual URL you want to copy
+    navigator.clipboard.writeText(projectUrl).then(() => {
+      alert("Link copied to clipboard. You can now paste it anywhere!");
+    }).catch(err => {
+      console.error('Failed to copy the link to clipboard:', err);
+      alert("Sorry, the link could not be copied.");
+    });
+  }
+  
+  
 
   const onMouseDown = (e) => {
     setIsDragging(true);
@@ -101,11 +415,17 @@ const CardExpanded = ({
               <div id="inf2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
   <div style={{ display: 'flex', gap: '10px' }}> {/* Adjusted for proper alignment of children */}
     <div id="like">
-      <img src={like} alt="" /> {likes}
+      
+
+        <i
+        className={`bi ${isliked ? 'bi-heart-fill' : 'bi-heart'} clickable-icon`}
+        style={{ color: 'red', fontSize: '1.4rem' }}
+        onClick={handleLike}
+      ></i> {likes}
     </div>
-    {/* <div id="line"></div> Commented out but you can uncomment and adjust as needed */}
     <div id="rate">
       <img src={star} alt="" /> {ratings}
+
     </div>
   </div>
   <div> {/* This div will now be on the right */}
@@ -139,44 +459,50 @@ const CardExpanded = ({
           </div>
           <div id="deltails-page1">
             <div id="contactor">
-              <div id="profile">
-                <img src={contactImage} id="profile-picture" alt="" />
-                <span id="name" />
-                <div style={{ height: '50px', display: 'flex',alignItems: 'center',justifyContent: 'flex-start',fontSize: '1.2rem' }}>
-                <a href={`/profile/${contactName}`} className="project-link" >
-                    {contactName}
-                  </a>
-                </div>
-              </div>
-              <div id="linker"> 
-              {/* <div className="clickable-area" style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => console.log(7)}>
-                <i className="bi bi-chat-left-dots-fill clickable-icon" style={{ fontSize: '30px' }}></i>
-                <div>Get In Touch</div> 
-              </div> */}
               
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+              <i class="bi bi-calendar-month" style={{fontSize:'40px', marginRight:'25px'} }></i>
               <div>
-                  {open && ( 
+              <div><span style={{ color: '#7a7777' }}>Created Date:</span> {formattedCreateDate}</div>
+              <div>{!completed&&(
+            <div><span style={{ color: '#7a7777' }}>Completed Date:</span> {formattedFinishDate}</div>
+            )}
+            {completed&&(
+            <div><span style={{ color: '#7a7777' }}>Completed Date:</span>  Ongoing</div>
+            )}
+            
+            </div>
+            </div>
+            </div>
+              <div id="linker"> 
+              <div>
+                  {open && completed&& ( 
                     <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => console.log(7)}>
-                      <i className="bi bi-people-fill clickable-icon" style={{ fontSize: '30px' }}></i>
+                      <i className="bi bi-person-plus-fill clickable-icon" style={{ fontSize: '30px' }}></i>
                       <div>Collaborate</div>
                     </div>
                   )}
               </div>
 
-              <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => console.log(7)}>
-                <i className="bi bi-chat-left-dots-fill clickable-icon" style={{ fontSize: '30px' }}></i>
-                <div style={{ marginRight: '5px' }}>Get In Touch</div> 
+              <div id="shareOptions" style={{ display: 'none', position: 'fixed', bottom: '20%', right: '20%', backgroundColor: '3B3B3B', border: '1px solid #ccc', borderRadius: '10px', padding: '20px', textAlign: 'center', zIndex: 1000 }}>
+                  <i class="bi bi-x-lg" style={{position: 'absolute',cursor: 'pointer',top:'5px',right:'5px'}}onClick={closeShareOptions}></i>
+                <div style={{ marginBottom: '10px' }}>
+                  <a href="#" onClick={(e) => { e.preventDefault(); shareOnWhatsApp(); }}><i className="bi bi-whatsapp" style={{ fontSize: '24px',marginRight:'5px' }}></i></a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); shareOnTelegram(); }}><i className="bi bi-telegram" style={{ fontSize: '24px' }}></i></a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); shareOnTwitter(); }}><i className="bi bi-twitter-x" style={{ fontSize: '24px' }}></i></a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); shareOnLinkedIn(); }}><i className="bi bi-linkedin" style={{ fontSize: '24px' }}></i></a>
+                  <a href="#" onClick={(e) => { e.preventDefault(); copyLinkToClipboard(); }}><i className="bi bi-clipboard-check-fill" style={{ fontSize: '24px' }}></i></a>
+                </div>
               </div>
-               
-              
+
+
+              <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={toggleShareOptions}>
+                <i className="bi bi-send clickable-icon" style={{ fontSize: '30px' }}></i>
+                <div style={{ marginRight: '5px' }}>Share</div> 
+              </div>
 
               </div>
             </div>
-
-            
-
-           
-
             <div id="display-img">
                 <DemoSwiper additionalImages = {additionalImages}/>
             </div>
@@ -189,7 +515,7 @@ const CardExpanded = ({
                 <div id="description-part2">{aboutProjectText}</div>
               </div>
               <div 
-                style={{
+                style={{                                  
                   overflowX: 'auto',
                   whiteSpace: 'nowrap',
                   cursor: 'pointer',
@@ -246,19 +572,33 @@ const CardExpanded = ({
               <i className="bi bi-star-fill" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i>
               Rating and Feedback
             </div>
-                        <div id="ratting">
-                            <img src={contactImage} className="feedback-pic" alt="" />
+
+
+
+            
+
+
+
+
+
+
+
+
+                     {!feed&&( 
+                      <div>
+                     <div id="ratting">
+                            <img src={userdata.profileInfo.profilePicture.url} className="feedback-pic" alt="" />
                             <div className="profile-id">
-                                <div className="profile-name">Sushant81</div>
+                                <div className="profile-name">{currUser}</div>
                                 <form id="submiting" action="#" style={{display: (flag===1) ? "flex" : "none"}}>
                                     <div className="stars">
-                                      <img src={(rating>0)?star:unstar} className="star star-s" data-rating="1" alt="" onClick={()=>setRating(1)}/>
-                                      <img src={(rating>1)?star:unstar} className="star star-s" data-rating="2" alt="" onClick={()=>setRating(2)}/>
-                                      <img src={(rating>2)?star:unstar} className="star star-s" data-rating="3" alt="" onClick={()=>setRating(3)}/>
-                                      <img src={(rating>3)?star:unstar} className="star star-s" data-rating="4" alt="" onClick={()=>setRating(4)}/>
-                                      <img src={(rating>4)?star:unstar} className="star star-s" data-rating="5" alt="" onClick={()=>setRating(5)}/>
+                                      <img src={(feedbackData.rating>0)?star:unstar} className="star star-s" data-rating="1" alt="" onClick={()=>setfeedbackData({...feedbackData,rating:1})}/>
+                                      <img src={(feedbackData.rating>1)?star:unstar} className="star star-s" data-rating="2" alt="" onClick={()=>setfeedbackData({...feedbackData,rating:2})}/>
+                                      <img src={(feedbackData.rating>2)?star:unstar} className="star star-s" data-rating="3" alt="" onClick={()=>setfeedbackData({...feedbackData,rating:3})}/>
+                                      <img src={(feedbackData.rating>3)?star:unstar} className="star star-s" data-rating="4" alt="" onClick={()=>setfeedbackData({...feedbackData,rating:4})}/>
+                                      <img src={(feedbackData.rating>4)?star:unstar} className="star star-s" data-rating="5" alt="" onClick={()=>setfeedbackData({...feedbackData,rating:5})}/>
                                     </div>
-                                    <input type="date" id="date" value=""/>
+                                    {/* <input type="date" id="date" value=""/> */}
                                 </form>
                             </div>
                             <div id="addFeedbackButton">
@@ -269,111 +609,107 @@ const CardExpanded = ({
                                 </div>
                             </div>
                         </div>
-<div id="text" style={{
-    display: (flag == 1) ? "flex" : "none",
-    flexDirection: "row", // Align items in a line
-    alignItems: "stretch", // Stretch items to fill the container
-    gap: "0", // No space between the TextField and the send button
-    backgroundColor: '#1B1B1B', // Match the background color of the TextField
-    borderRadius: '4px', // Match your design preference for border radius
-}}>
-    <TextField 
-        fullWidth 
-        id="fullWidth" 
-        size="medium" 
-        multiline={true} 
-        variant="outlined"
-        
-        sx={{
-            // ...style,
-            borderColor: 'rgb(27, 27, 27)', // Border color for the TextField
-            '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                    borderColor: 'rgb(27, 27, 27)', // Apply white border
-                },
-                '&:hover fieldset': {
-                    borderColor: 'rgb(27, 27, 27)', // Apply white border on hover
-                },
-                '&.Mui-focused fieldset': {
-                    borderColor: 'rgb(27, 27, 27)', // Apply white border when focused
-                },
-            }
-        }}
-        InputProps={{
-            style: {
-                color: 'white',
-                backgroundColor: '#1B1B1B',
-                borderTopLeftRadius: '4px', // Top left border radius
-                borderBottomLeftRadius: '4px', // Bottom left border radius
-                borderRight: 'none', // Hide the right border to merge with the send button
-            },
-            placeholder: "Describe your view..."
-        }}
-        InputLabelProps={{ style: { color: 'gray' } }}
-    />
-    <div style={{
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "center",
-        padding: '0 12px', // Padding for the send button
-        backgroundColor: '#1B1B1B', // Match the background color of the TextField
-        borderTopRightRadius: '4px', // Top right border radius
-        borderBottomRightRadius: '4px', // Bottom right border radius
-        // border: '1px solid white', // Apply white border
-        borderLeft: 'none', // Hide the left border to merge with the TextField
-        
-    }} onClick={() => console.log(7)}>
-       <i className="bi bi-send clickable-icon" style={{ fontSize: '25px', marginBottom: '9px' }}></i>
+                      
+                        <div id="text" style={{
+                            display: (flag == 1) ? "flex" : "none",
+                            flexDirection: "row", // Align items in a line
+                            alignItems: "stretch", // Stretch items to fill the container
+                            gap: "0", // No space between the TextField and the send button
+                            backgroundColor: '#1B1B1B', // Match the background color of the TextField
+                            borderRadius: '4px', // Match your design preference for border radius
+                        }}>
+                            <TextField 
+                                fullWidth 
+                                id="fullWidth" 
+                                size="medium" 
+                                multiline={true} 
+                                variant="outlined"
+                                value={feedbackData.text}
+                                onChange={(e)=> setfeedbackData({...feedbackData,text:e.target.value})}
+                                
 
-    </div>
-    
-</div>
+                                
+                                sx={{
+                                    // ...style,
+                                    borderColor: 'rgb(27, 27, 27)', // Border color for the TextField
+                                    '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: 'rgb(27, 27, 27)', // Apply white border
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: 'rgb(27, 27, 27)', // Apply white border on hover
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'rgb(27, 27, 27)', // Apply white border when focused
+                                        },
+                                    }
+                                }}
+                                InputProps={{
+                                    style: {
+                                        color: 'white',
+                                        backgroundColor: '#1B1B1B',
+                                        borderTopLeftRadius: '4px', // Top left border radius
+                                        borderBottomLeftRadius: '4px', // Bottom left border radius
+                                        borderRight: 'none', // Hide the right border to merge with the send button
+                                    },
+                                    placeholder: "Describe your view..."
+                                }}
+                                InputLabelProps={{ style: { color: 'gray' } }}
+                            />
+                            <div style={{
+                                display: "flex",
+                                alignItems: "flex-end",
+                                justifyContent: "center",
+                                padding: '0 12px', // Padding for the send button
+                                backgroundColor: '#1B1B1B', // Match the background color of the TextField
+                                borderTopRightRadius: '4px', // Top right border radius
+                                borderBottomRightRadius: '4px', // Bottom right border radius
+                                borderLeft: 'none', // Hide the left border to merge with the TextField
+                                
+                            }} onClick={handleClick}>
+                              <i className="bi bi-send clickable-icon" style={{ fontSize: '25px', marginBottom: '9px' }}></i>
 
-
-
-
-              
+                            </div>
+                            
+                        </div>
+                        </div>
+                        )}
                 <div>
-                    <FeedbackComponent feedbackArray={feedbackArray}/>
+
+                <FeedbackComponent feedbackArray={feedbackArray}/>
                 </div>   
                 
               
             </div>
             
-            <div style={{ borderTop: '.5px  solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>
-            <div>
-              <h3>Additional Information</h3>
-            <div>
-
-              <span style={{ color:'#7a7777' }}>Contributors:</span>
-              {contributor.map((name, index) => (
-                <span key={index}>
-                  <a href={`/profile/${name}`} className="project-link" >
-                    {name}
-                  </a>
-                  {index < contributor.length - 1 ? ', ' : ''}
-                </span>
-              ))}
-
-
-            </div>
-            <div><span style={{ color: '#7a7777' }}>Created Date:</span> {formattedCreateDate}</div>
-            <div>{completed&&(
-            <div><span style={{ color: '#7a7777' }}>Completed Date:</span> {formattedFinishDate}</div>
-            )}
-            {!completed&&(
-            <div><span style={{ color: '#7a7777' }}>Completed Date:</span>  Ongoing</div>
-            )}
-            
-            </div>
-
-
-
-
-
-
-
-            </div>
+           <div>
+            <div style={{fontSize:"1.3rem", marginTop:'15px',marginBottom:'15px'}}> <i class="bi bi-people-fill" style={{fontSize:'1.5rem',marginRight:'0.5rem'}}></i> Contributors</div>
+            <div style={{
+              overflowY: 'auto',
+              whiteSpace: 'nowrap',
+              cursor: 'pointer',
+              maxHeight:'300px'
+              }}
+              >
+{
+  creator.map((image, index) => (
+    <>
+      <a href={`/profile/${image.username}`} className="profile-link">
+        <div id="profile">
+          <img src={image.profilePic} id="profile-picture" alt="" />
+          <div className="profile-details">
+            <span>{image.username}</span>
+          </div>
+        </div>
+      </a>
+      {index < creator.length - 1 && <div style={{ borderTop: '.5px solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>}
+    </>
+  ))
+}            
+              </div>
+              </div>
+              <div style={{ borderTop: '.5px  solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>
+           
           </div>
         </div>
     </div>
@@ -381,3 +717,18 @@ const CardExpanded = ({
 };
 
 export default CardExpanded;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

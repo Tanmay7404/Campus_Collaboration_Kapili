@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import './profile.css';
 // import Project from './project.js';
@@ -7,7 +7,10 @@ import './profile.css';
 import profilePic from '../assets/images/profile.jpg';
 import Bio from '../components/ProfilePage/bio'
 import Project from '../components/ProfilePage/project'
+import UserdataContext from '../userdataContext';
+
 const Profile = () => {
+  const{userdata}=useContext(UserdataContex);
   const handleLogOut = () => {
     window.location.href = 'http://localhost:8080/logout';
   };

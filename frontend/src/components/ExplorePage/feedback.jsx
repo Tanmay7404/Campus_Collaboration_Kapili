@@ -1,9 +1,24 @@
-import React,{useState}from 'react';
+import React,{useState,useContext,useEffect}from 'react';
 import star from '../../assets/images/star.svg'; // Import your star image
 import unstar from '../../assets/images/unstared.svg'; 
 // Import your unstar image
+import UserContext from '../../userContext';
+
+
+
 
 const FeedbackComponent = ({ feedbackArray }) => {
+  const{currUser}=useContext(UserContext);
+  console.log(currUser);
+  console.log('sss');
+  const currentUserIndex = feedbackArray.findIndex(feedback => feedback.reviewer === currUser);
+
+  if (currentUserIndex >= 0) {
+    const currentUserReview = feedbackArray.splice(currentUserIndex, 1)[0];
+    feedbackArray.unshift(currentUserReview);
+  }
+  
+  console.log(currentUserIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);
@@ -38,7 +53,8 @@ const FeedbackComponent = ({ feedbackArray }) => {
   return (
     <div id="feedbacks"  style={{
       overflowY: 'auto', // Enables vertical scrolling
-      height: '500px',
+      height: 'auto', // Sets height to grow with content
+      maxHeight: '500px',
       cursor: 'pointer',
     }}
     onMouseDown={onMouseDown}
@@ -46,28 +62,29 @@ const FeedbackComponent = ({ feedbackArray }) => {
     onMouseUp={onMouseUp}
     onMouseLeave={onMouseLeave}
     >
-      {feedbackArray.map((feedback, index) => (
+      {feedbackArray.map((feedback, index) => ( 
+        
         <div key={index} id={`feed${index + 1}`}>
           <inf>
-            <img src={feedback.image} className="feedback-pic" alt="" />
+            <img src={feedback.img} className="feedback-pic" alt="" />
             <div className="profile-id">
-              <div className="profile-name">{feedback.heading}</div>
+              <div className="profile-name">{feedback.reviewer}</div>
               <form>
                 <div className="stars">
                   {Array.from({ length: 5 }, (_, i) => (
                     <img
                       key={i}
-                      src={i < feedback.stars ? star : unstar}
+                      src={i < feedback.message.rating ? star : unstar}
                       className="star"
                       alt=""
                     />
                   ))}
                 </div>
-                <span id="date">{feedback.date}</span>
+                <span id="date">{new Date(feedback.message.timestamp).toLocaleDateString('en-GB')}</span>
               </form>
             </div>
           </inf>
-          <p>{feedback.text}</p>
+          <p>{feedback.message.text}</p>
         </div>
       ))}
     </div>
@@ -75,3 +92,5 @@ const FeedbackComponent = ({ feedbackArray }) => {
 };
 
 export default FeedbackComponent;
+
+

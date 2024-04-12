@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useContext } from 'react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import logoImg from "../../assets/images/logo.png";
 import searchSVG from "../../assets/images/search.svg";
 import './navbar.css';
 import Tag from "./tag.jsx";
+import UserContext from '../../userContext.jsx';
 
 const Navbar = (props) => {
+  const{currUser}=useContext(UserContext);
   const [showTag, setShowTag] = useState(false);
   const searchRef = useRef(null);
   const tagRef = useRef(null);
@@ -54,7 +56,8 @@ const Navbar = (props) => {
         </div>
         <div id="nav-part2">
           <NavLink to="/explore" className="nav-link">Explore</NavLink>
-          <NavLink to="/chat" className="nav-link">Chats</NavLink>
+          {/* <NavLink to="/chat/" className="nav-link">Chats</NavLink> */}
+          <NavLink to={`/chat/${currUser}`} className="nav-link">Chats</NavLink>
           <NavLink to="/profile/username" className="nav-link">Profile</NavLink>
         </div>
       </nav>

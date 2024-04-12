@@ -174,8 +174,7 @@ userRouter.get("/getuserfriends/:username" , async (req,res)=>{
     
     } catch (error) {
         res.send(error);
-    }
-   
+    }
 })
 userRouter.get('/getUser/:username', async (req, res) => {
     try {
@@ -190,6 +189,21 @@ userRouter.get('/getUser/:username', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+userRouter.get("/likedProjects/:username", async (req, res) => {
+    try {
+        // Find the user based on the request parameter
+        const username = req.params.username;
+        const UC = new UserController();
+        const user = await UC.getUserByUsername(username);
+        const likedProjects = user.likedProjects;
+
+        res.send(likedProjects);
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
@@ -245,6 +259,39 @@ userRouter.get('/getUserChatList/:username', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+userRouter.post("/addLikedProject/:username", async (req, res) => {
+    try {
+        
+        const username=req.params.username;             
+        let projectname = req.body.projectname;
+        const data = await new UserController().addLikedProject(username, projectname);
+        if (data === 1) {
+            res.send("Project added to liked projects successfully");
+        } else if (data === 0) {
+            res.send("Failed to add project to liked projects");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+userRouter.post("/removeLikedProject/:username", async (req, res) => {
+    console.log(req.body.projectname);
+    try {
+        const username=req.params.username;
+        let projectname = req.body.projectname;
+        const data = await new UserController().removeLikedProject(username, projectname);
+        if (data === 1) {
+            res.send("Project removed from liked projects successfully");
+        } else if (data === 0) {
+            res.send("Failed to remove project from liked projects");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
     }
 });
 module.exports = userRouter;

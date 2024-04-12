@@ -247,8 +247,8 @@ useEffect(()=>{console.log(formData)},[formData])
             const res = await Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/image/upload", formData1);
             console.log("Uploaded image:", res.data);
             uploadedImages.push({
-              filename: res.data.public_id,
-              url: res.data.secure_url
+              fileName: res.data.public_id,
+              link: res.data.secure_url
             });
             
             // Upload next image recursively
@@ -305,9 +305,10 @@ useEffect(()=>{console.log(formData)},[formData])
       // Assuming you have an API endpoint to send the data
       const updatedFormData = {
         ...formData,
-        collaboratorName: [...values, "Simon"],
+        collaboratorName: [...values, "Simon"],// curruser has to be added
         links:values2
       };
+      console.log(updatedFormData)
       setFormData(updatedFormData);
       setTrigger(prevTrigger => prevTrigger + 1); // Update trigger separately
     };

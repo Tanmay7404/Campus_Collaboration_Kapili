@@ -21,6 +21,7 @@ class ProjectController {
                 },
                 creators: [], // Assuming creators is an array of user IDs
                 endorsements: 0,
+                level:project_details.level,
                 tags: [], // Assuming tags is an array of strings
                 ongoing: project_details.ongoing || false,
                 openForCollaboration:project_details.openForCollaboration||false,
@@ -148,15 +149,30 @@ class ProjectController {
                 throw new Error("User or Project not found");
             }
             let data = {
-                reviewer : user._id,
+                reviewer : userName,
+                img:feedback.img,
                 message : {
-                    rating : feedback.message.rating,
-                    text : feedback.message.text,
+                    rating : feedback.rating,
+                    text : feedback.text,
                 }
             }
             project.feedbacks.push(data);
             var n = project.feedbacks.length;
             project.rating = (project.rating * (n - 1) + data.message.rating) / n;
+            await project.save();
+            return 1;
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+
+    async addLikes(projectName, likes) {
+        try {
+            let project = await Project.findOne({name : projectName});
+            if (!project) {
+                throw new Error("User or Project not found");
+            }
+            project.endorsements=likes;
             await project.save();
             return 1;
         } catch(err){

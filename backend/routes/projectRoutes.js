@@ -10,6 +10,7 @@ const UserController = require("../controllers/userFunctions.js");
 
 // WORKING
 projectRouter.post("/addNewProject", async (req,res)=>{
+    console.log(req.body.level);
    
    let project_id;
     try {
@@ -23,6 +24,7 @@ projectRouter.post("/addNewProject", async (req,res)=>{
             projectLink: req.body.links,
             demoLinks:req.body.projectImages,
             ongoing: req.body.ongoing,
+            level:req.body.level,   
             projectImage: {
                 url: req.body.url, // Set the image URL from the request body
                 filename: req.body.imageName // You might need to get the filename from the request body as well
@@ -89,14 +91,19 @@ projectRouter.put("/editProjects" ,async (req,res)=>{
     
 })
 
-projectRouter.post("/addfeedbacks" , async(req,res)=>{
-    let project = req.body.projectId;
-    let feedback = {
-        reviewer : req.body.username,    
+projectRouter.post("/addfeedback/:username" , async(req,res)=>{
+    const username = req.params.username;
+
+    console.log(req.body);
+    console.log(username);
+    console.log(0);
+    let project = req.body.projectname;
+    let feedback = {  
         rating : req.body.rating,
-        text : req.body.text,               
+        text : req.body.text,  
+        img:req.body.img,             
     }
-    let addedFeedback = new ProjectController().addFeedback(project , feedback);
+    let addedFeedback = new ProjectController().addFeedback(project ,username, feedback);
     if(addedFeedback == 1){
         res.send("ADDED FEEDBACK");
     }
@@ -104,6 +111,23 @@ projectRouter.post("/addfeedbacks" , async(req,res)=>{
         res.send("ERROR")
     }
 })
+
+projectRouter.post("/addLikes" , async(req,res)=>{
+    const projectname = req.body.projectname;
+    let likes = req.body.endorsements;
+    let addedLikes = new ProjectController().addLikes(projectname ,likes);
+    if(addedLikes == 1){
+        res.send("ADDED FEEDBACK");
+    }
+    else {
+        res.send("ERROR")
+    }
+})
+
+
+
+
+
 
 projectRouter.get("/popularProjects" , async(req,res)=>{
     try {
@@ -155,13 +179,12 @@ projectRouter.get("/ongoingProjects/:username", async (req, res) => {
                 username: creator.username,
                 profilePic: creator.profilePic
             }));
+            // console.log(updatedProjects);
 
             return { ...project.toObject(), creators: creators };
         }));
-
-        // Log the updated projects
-        // Return the updated projects
-        res.json(updatedProjects);
+        // console.log(updatedProjects);
+        res.send(updatedProjects);
     } catch (error) {
         // Handle errors
         console.error(error);
@@ -192,8 +215,9 @@ projectRouter.get("/completedProjects/:username", async (req, res) => {
             }));
         // You may want to sort, filter, or manipulate the data further
         // based on user preferences or any other criteria
-        console.log(updatedProjects)
+        
         // Return the ongoing projects
+        console.log(updatedProjects);
         res.send(updatedProjects);
     } catch (error) {
         console.error(error);
@@ -201,9 +225,9 @@ projectRouter.get("/completedProjects/:username", async (req, res) => {
     }
 });
 
-projectRouter.post("/addfeedbacks" ,async (req,res)=>{
-    let projectName = req.body.name;
-    let feedback = req.body.feedback;
-    let data = addFeed
-})
+// projectRouter.post("/addfeedbacks" ,async (req,res)=>{
+//     let projectName = req.body.name;
+//     let feedback = req.body.feedback;
+//     let data = addFeed
+// })
 module.exports = projectRouter;

@@ -112,18 +112,38 @@
     align-items: center;
   }
   
-  #profile{
+  .profile-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  #profile {
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition */
     display: flex;
     align-items: center;
-    gap: 15px;
+    padding: 2px; /* Ensure there's space around elements */
   }
-  
-  #profile-picture{
-    height: 60px;
-    width: 60px;
-    object-fit: cover;
-    border: 2px solid white;
-    border-radius: 50%;
+
+  #profile:hover {
+    background-color: #3e3e3e; /* Light grey background on hover */
+  }
+
+  #profile-picture {
+    margin-right: 40px; /* Separation from the text */
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Circular image */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: Adds shadow to image to lift it off the background */
+  }
+
+  .profile-details {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    font-size: 1.2rem;
   }
   
   #profile span{
@@ -191,7 +211,7 @@
     font-size: 24px;
     margin: 30px 0;
   }
-  #description-part2{
+  #description-part2 {
     color: #BCBCBC;
     font-weight: 300;
     font-size: 16px;
@@ -202,8 +222,9 @@
     margin-right: 5px;
     margin-bottom: 20px;
     margin-left: 0px;
-  }
-  
+    word-wrap: break-word; /* Add this line */
+}
+
   #tags{
     display: flex;
     align-items: center;
@@ -253,6 +274,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+
   }
   #feedbacks-ratting h1{
     font-weight: 500;
@@ -266,6 +288,7 @@
     width: 40px;
     object-fit: cover;
     border-radius: 50%;
+    
   }
   
   
@@ -273,6 +296,7 @@
     display: flex;
     background-color: #1B1B1B;
     align-items: center;
+    margin-bottom: 15px;
     
   }
   #addFeedbackButton{
@@ -305,7 +329,7 @@
   
   .stars {
     cursor: pointer;
-    padding-right: 15px;
+    padding-right: 5px;
   }
   
   .star{
@@ -449,6 +473,9 @@ h1#modalText {
   transform: translateY(10px);
 
 }
+
+
+
 
 
 

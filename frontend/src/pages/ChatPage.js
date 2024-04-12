@@ -8,14 +8,21 @@ import logo from '../assets/images/logo.svg';
 import search from '../assets/images/search.svg';
 import io from 'socket.io-client';
 import Axios from 'axios';
-import  { useEffect ,useRef} from 'react';
+import  { useEffect ,useRef,useContext} from 'react';
+import UserdataContext from '../userdataContext';
 const socket=io('http://localhost:8080')
-const ChatPage = ({  currentUser }) => {
+const ChatPage = () => {
+  
+  const{userdata}=useContext(UserdataContext);
+
+  console.log(49);
+  console.log(userdata._id);
+  console.log(59);
   const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
- const [userObjectId,setUserObjectId]=useState(currentUser.id)
+ const [userObjectId,setUserObjectId]=useState(userdata._id)
  const [chatList,  setChatList]=useState([])
- 
+ const [searchQuery, setSearchQuery] = useState('');
  const [userFriends, setUserFriends] = useState([]);
  const [people, setPeopleData] = useState([]);
  const selectedPersonRef = useRef(selectedPerson);
@@ -23,13 +30,32 @@ const ChatPage = ({  currentUser }) => {
  const [globalChats,setGlobalChats]=useState([]);
  const [globalPeople,setGlobalPeople]=useState([]);
  const divRef = useRef(null);
+
+ const handleSearch = (e) => {
+ 
+  setSearchQuery(e.target.value);
+};
+
+const filteredPeople = people.filter((person, index) => {
+  if (person.name!=undefined) {
+    console.log(person.name);
+
+    return person.name.toLowerCase().includes(searchQuery.toLowerCase())
+  } 
+});
+useEffect(()=>{
+  console.log(searchQuery)
+
+},[searchQuery])
+
+
  //const [getAllPeople,]
  useEffect(() => {
    selectedPersonRef.current = selectedPerson;
  }, [selectedPerson]);
 const fetchUserFriends = async () => {
   try {
-    const response = await fetch('http://localhost:8080/user/getuserfriends/'+currentUser.name, {
+    const response = await fetch('http://localhost:8080/user/getuserfriends/'+userdata.username, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -54,12 +80,12 @@ console.log(person)
     //   },
     //   body: JSON.stringify({
     //     currUserId:selectedPerson?.name,
-    //      friendId: currentUser.name,
+    //      friendId: userdata.username,
     //   }),
     // });
     // const userData = await firstResponse.json();
 
-    // const UserResponse = await fetch('http://localhost:8080/getUser/'+currentUser.name, {
+    // const UserResponse = await fetch('http://localhost:8080/getUser/'+userdata.username, {
     //   method: 'GET',
     //   headers: {
     //     'Content-Type': 'application/json',
@@ -69,7 +95,7 @@ console.log(person)
     setCurrChatId(person.chatId)
     
     // const userId = (await UserResponse.json())._id;
-    // const UserResponseasd = await fetch('http://localhost:8080/chats/getTotalChats/'+currentUser.name, {
+    // const UserResponseasd = await fetch('http://localhost:8080/chats/getTotalChats/'+userdata.username, {
     //   method: 'GET',
     //   headers: {
     //     'Content-Type': 'application/json',
@@ -189,7 +215,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/user/getUserChatList/'+currentUser.name, {
+        const response = await fetch('http://localhost:8080/user/getUserChatList/'+userdata.username, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -229,7 +255,7 @@ useEffect(() => {
       try {
         if(global==true && globalPeople.length===0){
 
-        const response = await fetch('http://localhost:8080/user/getGlobalChatList/' + currentUser.name, {
+        const response = await fetch('http://localhost:8080/user/getGlobalChatList/' + userdata.username, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -281,7 +307,7 @@ console.log('socker')
 updateMessageForChatId(message.chatId,message.message)
      setCount(prev=>prev+1)
       // updateMessageForPerson(.name,{
-      //   senderName:currentUser.name,
+      //   senderName:userdata.username,
       //   message:currentMessage,
       //   timestamp:formattedDate
       //  })
@@ -289,14 +315,14 @@ updateMessageForChatId(message.chatId,message.message)
   socket.on('receive_global_message', message => {
     console.log('global received message')
     console.log(131)
-    console.log(currentUser.name)
+    console.log(userdata.username)
     console.log(message.name)
     console.log(131)
     console.log(12)
-      if(currentUser.name!==message.name){setGlobalChats(prevMessages => [...prevMessages, message.message])};
+      if(userdata.username!==message.name){setGlobalChats(prevMessages => [...prevMessages, message.message])};
 
       // updateMessageForPerson(.name,{
-      //   senderName:currentUser.name,
+      //   senderName:userdata.username,
       //   message:currentMessage,
       //   timestamp:formattedDate
       //  })
@@ -390,9 +416,8 @@ useEffect(()=>{
 
 
   const handleSubmit = async (e) => {
-    console.log(7);
     try {
-      // First fetch
+
       var link="http://localhost:8080/chats/addMessage/"+currChatId
       // Second fetch
       const secondResponse = await fetch(link, {
@@ -402,7 +427,7 @@ useEffect(()=>{
         },
         body: JSON.stringify({
           sender:userObjectId ,
-          senderName:currentUser.name,
+          senderName:userdata.username,
           message: currentMessage,
           img:currentImage,
         }),
@@ -414,12 +439,12 @@ useEffect(()=>{
       if(global){
         console.log("global")
         const newMessage = {
-          senderName: currentUser.name,
+          senderName: userdata.username,
           message: currentMessage,
           timestamp: formattedDate,
           img:currentImage
         };
-        socket.emit("send_global_message",{room:currChatId,message:newMessage,username:currentUser.name})
+        socket.emit("send_global_message",{room:currChatId,message:newMessage,username:userdata.username})
       
         setGlobalChats(prevList => {
     
@@ -428,26 +453,24 @@ useEffect(()=>{
       }
       else{
           updateMessageForPerson(selectedPerson.name,{
-            senderName:currentUser.name,
+            senderName:userdata.username,
             message:currentMessage,
             timestamp:formattedDate,
             img:currentImage
 
           })
           const newMessage = {
-            senderName: currentUser.name,
+            senderName: userdata.username,
             message: currentMessage,
             timestamp: formattedDate,
             img:currentImage
           };
           setCount(prev=>prev+1)
-          
-
           setChatList(prevList => {
             
             return [...prevList, newMessage];
           });
-            socket.emit("send_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
+            socket.emit("send_chat_message",{room:currChatId,message:newMessage,username:userdata.username})
             // const secondData = await secondResponse.json();
           // Handle success response for the second fetch
       }   
@@ -485,9 +508,18 @@ useEffect(()=>{
                 setGlobal(true)
               }}>Global</button>
             </div>
-            {!global&&(
+
+
+
+            
+            {/* {!global&&( */}
+              {(
             <div id="search2">
-              <input type="text" name="" id="chats-search" placeholder="Search Chats" />
+              <input type="text" name="" id="chats-search" placeholder="Search Chats" 
+              value={searchQuery}
+              onChange={handleSearch}
+              
+              />
               <img src={search} alt="" />
             </div>)}
 
@@ -495,9 +527,20 @@ useEffect(()=>{
 
 
 
-            {!global&&(
-            <div id="persons">
-              {people.map((person) => (
+            {!global && (
+        <div id="persons">
+          {searchQuery === ''
+            ? people.map((person) => (
+                <div
+                  key={person.id}
+                  className="person"
+                  onClick={() => handlePersonClick(person)}
+                >
+                  <img src={person.profilePic} alt="" className="profilePic" />
+                  {person.name}
+                </div>
+              ))
+            : filteredPeople.map((person) => (
                 <div
                   key={person.id}
                   className="person"
@@ -507,7 +550,8 @@ useEffect(()=>{
                   {person.name}
                 </div>
               ))}
-            </div>)}
+        </div>
+      )}
 
 
 
@@ -517,12 +561,12 @@ useEffect(()=>{
             <div id="chatinf">
               <img
                 src={selectedPerson?.profilePic}
-                className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
+                className={`profilePic ${selectedPerson?.id === userdata._id ? 'me' : ''}`}
                 alt=""
               />
               <span
                 id="Name"
-                style={{ textAlign: selectedPerson?.id === currentUser.id ? 'right' : 'left' }}
+                style={{ textAlign: selectedPerson?.id === userdata._id ? 'right' : 'left' }}
               >
                 {selectedPerson?.name}
               </span>
@@ -534,12 +578,12 @@ useEffect(()=>{
                   <div id="chatinf">
                     <img
                       src={selectedPerson?.profilePic}
-                      className={`profilePic ${selectedPerson?.id === currentUser.id ? 'me' : ''}`}
+                      className={`profilePic ${selectedPerson?.id === userdata._id ? 'me' : ''}`}
                       alt=""
                     />
                     <span
                       id="Name"
-                      style={{ textAlign: selectedPerson?.id === currentUser.id ? 'right' : 'left' }}
+                      style={{ textAlign: selectedPerson?.id === userdata._id ? 'right' : 'left' }}
                     >
                       Global Chat
                     </span>
@@ -551,46 +595,46 @@ useEffect(()=>{
               {!global&&chatList?.map((message, index) => (
                 <div
                   key={index}
-                  className={`front ${message.senderName=== currentUser.name ? currentUser.name : ''}`}
+                  className={`front ${message.senderName=== userdata.username ? userdata.username : ''}`}
                 >
                   {!index || (message.senderName !== chatList[index-1]?.senderName) ? (
                     <inf
                     style={{
-                      textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                      textAlign: message.senderName === userdata.username ? 'right' : 'left',
                       
                     }}
 
                     >
                       <img
                         src={
-                          message.senderName === currentUser.name
-                            ? currentUser.profilePic
+                          message.senderName === userdata.username
+                            ? userdata.profileInfo.profilePicture.url
                             : people.find((p) => p.name === message.senderName)?.profilePic
                         }
-                        className={`profilePic ${message.senderName === currentUser.name ? 'me' : ''}`}
+                        className={`profilePic ${message.senderName === userdata.username ? 'me' : ''}`}
                         alt=""
                         style={{
-                          float: message.senderName === currentUser.name ? 'right' : 'left',
+                          float: message.senderName === userdata.username ? 'right' : 'left',
                         }}
                       />
                       
                       <inf2
                         style={{
-                          textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                          textAlign: message.senderName === userdata.username ? 'right' : 'left',
                         }}
 
                       >
                         <div
                           id="Name"
                           style={{
-                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                            textAlign: message.senderName === userdata.username ? 'right' : 'left',
                           }}
                         >
-                          {message.senderName === currentUser.name ? 'Me' : people.find((p) => p.name === message.senderName)?.name}
+                          {message.senderName === userdata.username ? 'Me' : people.find((p) => p.name === message.senderName)?.name}
                         </div>
                         <inf3
                           style={{
-                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                            textAlign: message.senderName === userdata.username ? 'right' : 'left',
                           }}
                         >
                           <span className="date">{new Date(message.timestamp).toLocaleDateString()}</span>
@@ -605,17 +649,17 @@ useEffect(()=>{
 
                     {message.message&&
                   <div
-                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
-                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                   >
                     <p>{ message.message}</p>
                   </div>}
                   {message.img&&
                   <div
-                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
-                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                   >
                     <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
                   </div>}
@@ -626,48 +670,49 @@ useEffect(()=>{
                 </div>
               ))}
                {global&&globalChats?.map((message, index) => (
+                console.log(message.senderName),
                 <div
                   key={index}
-                  className={`front ${message.senderName=== currentUser.name ? currentUser.name : ''}`}
+                  className={`front ${message.senderName=== userdata.username ? userdata.username : ''}`}
                 >
                   {!index || (message.senderName !== globalChats[index-1]?.senderName) ? (
                     <inf
                     style={{
-                      textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                      textAlign: message.senderName === userdata.username ? 'right' : 'left',
                       
                     }}
 
                     >
                       <img
                         src={
-                          message.senderName === currentUser.name
-                            ? currentUser.profilePic
+                          message.senderName === userdata.username
+                            ? userdata.profileInfo.profilePicture.url
                             : globalPeople.find((p) => p.name === message.senderName)?.profilePic
                         }
-                        className={`profilePic ${message.senderName === currentUser.name ? 'me' : ''}`}
+                        className={`profilePic ${message.senderName === userdata.username ? 'me' : ''}`}
                         alt=""
                         style={{
-                          float: message.senderName === currentUser.name ? 'right' : 'left',
+                          float: message.senderName === userdata.username ? 'right' : 'left',
                         }}
                       />
                       
                       <inf2
                         style={{
-                          textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                          textAlign: message.senderName === userdata.username ? 'right' : 'left',
                         }}
 
                       >
                         <div
                           id="Name"
                           style={{
-                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                            textAlign: message.senderName === userdata.username ? 'right' : 'left',
                           }}
                         >
-                          {message.senderName === currentUser.name ? 'Me' : globalPeople.find((p) => p.name === message.senderName)?.name}
+                          {message.senderName === userdata.username ? 'Me' : globalPeople.find((p) => p.name === message.senderName)?.name}
                         </div>
                         <inf3
                           style={{
-                            textAlign: message.senderName === currentUser.name ? 'right' : 'left',
+                            textAlign: message.senderName === userdata.username ? 'right' : 'left',
                           }}
                         >
                           <span className="date">{new Date(message.timestamp).toLocaleDateString()}</span>
@@ -681,17 +726,17 @@ useEffect(()=>{
                   ) : null}
                   {message.message&&
                   <div
-                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
-                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                   >
                     <p>{ message.message}</p>
                   </div>}
                   {message.img&&
                   <div
-                    className={`chat ${message.senderName === currentUser.name ? 'me' : ''}`}
+                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
-                    style={{ textAlign: message.senderName === currentUser.name ? 'right' : 'left' }}
+                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                   >
                     <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
                   </div>}

@@ -7,7 +7,7 @@ const ExplorePg3 = (props) => {
     return (
         <div id ="page3">
             {props.allGroups.map((dataItem, index) => (
-                <CardList key={index} data={dataItem} setModalOpen = {props.setModalOpen} />
+                <CardList key={index} data={dataItem} setModalOpen = {props.setModalOpen} setongoingData={props.setongoingData} setcompletedData={props.setcompletedData} likedproj={props.likedproj} setlikedproj={props.setlikedproj}/>
             ))}
         </div>
     );

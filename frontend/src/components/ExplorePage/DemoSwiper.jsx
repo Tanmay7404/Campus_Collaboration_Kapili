@@ -5,6 +5,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 
 const DemoSwiper = ({additionalImages}) => {
+
+
   const [direction, setDirection] = useState(getDirection());
 
   useEffect(() => {
@@ -33,9 +35,10 @@ const DemoSwiper = ({additionalImages}) => {
       onResize={() => setDirection(getDirection())}
     >
       {additionalImages.map((image, index) => (
+        
         <div className="swiper-wrapper">
           <SwiperSlide key={index}>                        
-            <img src={image} alt={`Slide ${index}` } className="swiperImg"/>                   
+            <img src={image.link} alt={`Slide ${index}` } className="swiperImg"/>                   
           </SwiperSlide>
         </div>
       ))}
