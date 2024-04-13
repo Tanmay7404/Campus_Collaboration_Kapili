@@ -15,8 +15,9 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cors());
 
+const loadHashList = require("./functions/spam_detection/loadHashList.js");
 
-//const {spamDetection} = require("./functions/spam_detection");
+    const {spamDetection} = require("./functions/spam_detection/spamDetection.js");
 
 const server = http.createServer(app);
 // const io = socketIo(server);
@@ -83,14 +84,14 @@ const ROOMS = require("./models/roomModel.js");
  //var Rooms= document.rooms;
 // Async function to ensure the database connection and document retrieval
 let hashlist
+let room
 async function initialize() {
     try {
         const url = "mongodb+srv://Tanmay:Tanmay@kapilicampuscollaborati.nnisj09.mongodb.net/Campus_DB?retryWrites=true&w=majority";
         mongoose.connect(url).then(() => console.log("Database Connected Successfully")).catch(err => console.log("Database not connected",err));
 
 
-        // const loadHashList = require("./functions/spam_detection/loadHashList.js");
-        // const hashlist = await loadHashList();
+        hashlist = await loadHashList();
         
 
 
@@ -101,6 +102,7 @@ async function initialize() {
             });
             await document.save();
         }
+        room=document.rooms
         // Export variables
        module.exports = { hashlist, Rooms: document.rooms };
        
@@ -124,16 +126,44 @@ io.on('connection', socket => {
     });
     socket.on('send_chat_message',  async(data) => {
         
+       let a=await spamDetection(data.message.message,hashlist);
+ console.log(a)
+if( ( a==0))
+{
+console.log('checked_spam')
+socket.emit('checked_spam',{ message: data.message, name: data.username ,chatId:data.room})}else{
 
-        
-        socket.broadcast.to(data.room).emit('receive_message', { message: data.message, name: data.username ,chatId:data.room})
+        socket.broadcast.to(data.room).emit('receive_message', { message: data.message, name: data.username ,chatId:data.room})}
       });
 //     socket.on('check_spam',async(data)=> {
 //    if( spamDetection(data.message)==true)
 //    {
-// socket.emit('checked_spam',async(data)=>{
+
+//    }else
+//    {
+
+//    }
     
-// })
+//     })
+
+      socket.on('delete_chat_message',  async(data) => {
+ 
+
+        io.to(data.room).emit('delete_message', { message: data.message, name: data.username ,chatId:data.room})
+      });
+      socket.on('send_global_message',  async(data) => {
+        let a=await spamDetection(data.message.message,hashlist);
+        console.log(a)
+       if( ( a==0))
+       {
+socket.emit('checked_spam',{ message: data.message, name: data.username ,chatId:data.room})
+
+}else{
+        socket.broadcast.to(data.room).emit('receive_global_message', { message: data.message, name: data.username ,chatId:data.room})}
+      });
+
+//     socket.on('check_spam',async(data)=> {
+  
 //    }else
 //    {
 
@@ -145,11 +175,9 @@ io.on('connection', socket => {
 
     //     socket.broadcast.to(data.room).emit('delete_message', { message: data.message, name: data.username ,chatId:data.room})
     //   });
-      socket.on('send_global_message',  async(data) => {
- console.log("global global")
 
-        socket.broadcast.to(data.room).emit('receive_global_message', { message: data.message, name: data.username ,chatId:data.room})
-      });
+
+
      
 });
 
@@ -177,6 +205,7 @@ const loginRoutes=require("./routes/loginRoutes.js");
 app.use('/',loginRoutes);
 
 const imageRoutes=require("./routes/ImagesRoutes.js");
+const { healthcare_v1 } = require("googleapis");
 app.use('/image', imageRoutes);
 
 //PORT
@@ -197,4 +226,4 @@ initialize().then(() => {
 
 // });
 
-//module.exports = {hashlist,Rooms};
+// module.exports = {hashlist,room};

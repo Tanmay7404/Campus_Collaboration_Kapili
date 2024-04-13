@@ -38,6 +38,7 @@ class ChatController {
                 message: messageDetails.message,
                 timestamp: Date.now(),
                 img:messageDetails.img,
+                messageType:messageDetails.messageType
             });
 
             chat.lastMessage = messageDetails.message;

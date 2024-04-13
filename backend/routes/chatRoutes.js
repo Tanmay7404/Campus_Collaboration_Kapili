@@ -78,17 +78,21 @@ chatRouter.post("/addParticipants/:chatId", async (req, res) => {
     }
 });
 
-chatRouter.post("/collaborateProject", async(req,res)=>{
-    var projectId = req.body.projectId;
-    var currUserName = req.body.currUserId;
+chatRouter.post("/collaborateProject/:chatId/:currUsername", async(req,res)=>{
+    try {
+    var chatId = req.params.chatId;
+    var currUserName = req.params.currUsername;
 
     var CC = new ChatController()
-    var chatId = await new ProjectController().chatIdFromProjectId(projectId);
-    var x = await new ChatController().addMessage(newChat._id,{sender: currUserName, message: ("I Want To Collaborate!!")});
+    var x = await CC.addMessage(chatId,{senderName: currUserName, message: ("I Want To Collaborate!!"),messageType:2});
 
     //SEE WHAT TO RETURN
     // var chats = CC.getAllChatsOfUser(currUserId);
-    res.send(1);
+    res.send("done");
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+}
 })
 
 chatRouter.post("/getInTouch", async(req,res)=>{

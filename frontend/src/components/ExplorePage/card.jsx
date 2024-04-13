@@ -6,6 +6,7 @@ import open from"../../assets/images/collab.jpg"
 import comp from "../../assets/images/completed.jpeg"
 import { Tooltip } from 'bootstrap';
 
+import { useSearchParams } from "react-router-dom";
 
 import "./card.css";
 // import Modal from 'react-modal';
@@ -15,9 +16,22 @@ import ReactDOM from 'react-dom';
 
 const Card = ({details,setongoingData,setcompletedData,likedproj,setlikedproj}) =>{
     console.log(typeof Number (details.rating))
-  
-    
     const [modalOpen, setModalOpen] = useState(false);
+
+    let [searchParams, setSearchParams] = useSearchParams();
+    let [query, setQuery] = useState(
+     searchParams.get("name")
+   );
+   useEffect(()=>
+{
+    console.log("card"+ query)
+if(details.name===query)
+{
+setModalOpen(true)
+}
+},[])
+
+
     useEffect(() => {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         const tooltipList = tooltipTriggerList.map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl));
@@ -28,8 +42,12 @@ const Card = ({details,setongoingData,setcompletedData,likedproj,setlikedproj}) 
         { label: 'Hard', value: 'hard', color: 'red' },
       ];
 
-    const openModal = () => setModalOpen(true);
-    const closeModal = () => setModalOpen(false);
+    const openModal = () => {setModalOpen(true)
+    setSearchParams({name:details.name})
+    };
+    const closeModal = () => {setModalOpen(false);
+    setSearchParams({name:null})
+    }
 
     const modalContent = (
         <div style={{
@@ -73,11 +91,13 @@ const Card = ({details,setongoingData,setcompletedData,likedproj,setlikedproj}) 
                     finishdate={details.completedAt}
                     level={details.level}
                     creator={details.creators}
+                    _id={details._id}
                     closeModal={closeModal}
                     setongoingData={setongoingData}
                     setcompletedData={setcompletedData}
                     likedproj={likedproj}
                     setlikedproj={setlikedproj}
+                    chatId={details.chat}
                 />
             </div>
         </div>

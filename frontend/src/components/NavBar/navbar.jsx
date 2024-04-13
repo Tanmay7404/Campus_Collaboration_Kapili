@@ -54,6 +54,7 @@ const Navbar = (props) => {
           <input type="text" placeholder="Search" />
           <img src={searchSVG} alt="" />
         </div>
+        
         <div id="nav-part2">
           <NavLink to="/explore" className="nav-link">Explore</NavLink>
           {/* <NavLink to="/chat/" className="nav-link">Chats</NavLink> */}

@@ -31,11 +31,13 @@ const CardExpanded = ({
   finishdate,
   level,
   creator,
+  _id,
   closeModal,
   setongoingData,
   setcompletedData,
   likedproj,
-  setlikedproj
+  setlikedproj,
+  chatId
 }) => {
   console.log(typeof (ratings))
   var [flag,setFlag] = useState(0);
@@ -93,7 +95,17 @@ useEffect(()=>{
     
 
   },[])
+  const sendCollaborate=async ()=>
+  {
+    console.log("collaborate")
+    const response = await fetch('http://localhost:8080/chats/collaborateProject/'+chatId+"/"+userdata.username, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
 
+  }
 
   const handleLike = () => {
     console.log('1no');
@@ -278,7 +290,7 @@ useEffect(()=>{
           return prevData.map(project => {
             if (project.name === projectname) {
               var n=project.feedbacks.length;
-              rate=(ratings*n+feedbackData.rating)/(n+1);
+             let rate=(ratings*n+feedbackData.rating)/(n+1);
               return {
                 ...project,
                 feedbacks: [...project.feedbacks, feed],
@@ -477,7 +489,7 @@ useEffect(()=>{
               <div id="linker"> 
               <div>
                   {open && completed&& ( 
-                    <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => console.log(7)}>
+                    <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => {sendCollaborate()}}>
                       <i className="bi bi-person-plus-fill clickable-icon" style={{ fontSize: '30px' }}></i>
                       <div>Collaborate</div>
                     </div>

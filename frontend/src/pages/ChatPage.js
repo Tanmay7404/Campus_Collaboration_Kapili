@@ -10,14 +10,16 @@ import io from 'socket.io-client';
 import Axios from 'axios';
 import  { useEffect ,useRef,useContext} from 'react';
 import UserdataContext from '../userdataContext';
+// import * as tf from '@tensorflow/tfjs'
+import {load } from '@tensorflow-models/toxicity'
+import { useSearchParams } from "react-router-dom";
+
+
 const socket=io('http://localhost:8080')
 const ChatPage = () => {
   
   const{userdata}=useContext(UserdataContext);
 
-  console.log(49);
-  console.log(userdata._id);
-  console.log(59);
   const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
  const [userObjectId,setUserObjectId]=useState(userdata._id)
@@ -30,6 +32,11 @@ const ChatPage = () => {
  const [globalChats,setGlobalChats]=useState([]);
  const [globalPeople,setGlobalPeople]=useState([]);
  const divRef = useRef(null);
+ const model=useRef(null);
+ let [searchParams, setSearchParams] = useSearchParams();
+ let [query, setQuery] = useState(
+  searchParams.get("name")
+);
 
  const handleSearch = (e) => {
  
@@ -38,40 +45,110 @@ const ChatPage = () => {
 
 const filteredPeople = people.filter((person, index) => {
   if (person.name!=undefined) {
-    console.log(person.name);
+   // console.log(person.name);
 
     return person.name.toLowerCase().includes(searchQuery.toLowerCase())
   } 
 });
-useEffect(()=>{
-  console.log(searchQuery)
-
-},[searchQuery])
 
 
+
+
+
+ useEffect(()=>{
+  async function loadModel(){
+    try {
+      const threshold = 0.9;
+      model.current = await load(threshold);
+    } catch (error) {
+      console.error('Error loading model:', error);
+    }
+  }
+  loadModel()
+  },[])
+ 
  //const [getAllPeople,]
  useEffect(() => {
    selectedPersonRef.current = selectedPerson;
+
  }, [selectedPerson]);
-const fetchUserFriends = async () => {
-  try {
-    const response = await fetch('http://localhost:8080/user/getuserfriends/'+userdata.username, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-      // You can include additional headers or body if needed
-    });
+// const fetchUserFriends = async () => {
+//   try {
+//     const response = await fetch('http://localhost:8080/user/getuserfriends/'+currentUser.name, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       }
+//       // You can include additional headers or body if needed
+//     });
 
   
-    const data = await response.json();
-    setUserFriends(data);
-  } catch (error) {
-    console.error('Error fetching user friends:', error);
-  }
-};
+//     const data = await response.json();
+//     setUserFriends(data);
+//   } catch (error) {
+//     console.error('Error fetching user friends:', error);
+//   }
+// };
+const acceptUserCollaborate = async(curr) => {
+  const link = "http://localhost:8080/projects/addNewCollaborator/" + curr.senderName+"/"+curr.name ;
+  console.log(link);
+  const response = await fetch(link, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(),
+  });
+  const link3 = "http://localhost:8080/chats/deleteMessage/" + currChatId + "/" + curr._id;
+      console.log(link3);
+      const deleteResponse = await fetch(link3, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(),
+      });
+      setChatList(currentChatList => {
+        const updatedChatList = currentChatList.filter(msg => msg._id !== curr._id);
+        return updatedChatList;
+     
+    });
+     setPeopleData(prevPeople => {
+       const updatedPeople = prevPeople.map(person => {
+         if (person.chatId === currChatId) {
+           const updatedMessages = person.messages.filter(msg => msg._id !== curr._id);
+           return { ...person, messages: updatedMessages };
+         }
+         return person;
+       });
+  
+  
+       return updatedPeople;
+     });
+
+}
+const rejectUserCollaborate = async(curr) => {
+  setChatList(currentChatList => {
+    const updatedChatList = currentChatList.filter(msg => msg._id !== curr._id);
+    return updatedChatList;
+ 
+});
+ setPeopleData(prevPeople => {
+   const updatedPeople = prevPeople.map(person => {
+     if (person.chatId === currChatId) {
+       const updatedMessages = person.messages.filter(msg => msg._id !== curr._id);
+       return { ...person, messages: updatedMessages };
+     }
+     return person;
+   });
+
+
+   return updatedPeople;
+ });
+}
   const handlePersonClick = async(person) => {
     setSelectedPerson(person);
+      setSearchParams({name:person.name})
 console.log(person)
     // const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
     //   method: 'POST',
@@ -159,7 +236,6 @@ useEffect(() => {
     });
   };
 
- 
   const updateMessageForPerson = (personName, newMessage) => {
 
     setPeopleData(prevPeople => {
@@ -215,6 +291,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("fetching")
         const response = await fetch('http://localhost:8080/user/getUserChatList/'+userdata.username, {
           method: 'GET',
           headers: {
@@ -234,6 +311,15 @@ useEffect(() => {
           socket.emit("join_room",peep.chatId)
           
         }
+
+        const pson=await data.findIndex(person=>person.name==query);
+        console.log(pson);
+        console.log("query"+query)
+        if(pson!=-1)
+        {
+          //setSelectedPerson(pson)
+          handlePersonClick(data[pson]);
+        }
         //setUserFriends(data);
       } catch (error) {
         console.error('Error fetching user friends:', error);
@@ -248,6 +334,7 @@ useEffect(() => {
     if(divRef.current){
       divRef.current?.lastElementChild?.scrollIntoView();
     }
+    console.log("global "+global)
   },[chatList,globalChats,global]);
 
   useEffect(() => {
@@ -264,10 +351,7 @@ useEffect(() => {
         const data = await response.json();
         setGlobalPeople(data.profiles)
         setCurrChatId(data.chatId)
-        console.log(121)
-        console.log(data)
-        console.log(121)
-       //  setCount(prev=>prev+1)
+      
         socket.emit("join_room",data.chatId)
         const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${data.chatId}`, {
           method: 'GET',
@@ -313,12 +397,6 @@ updateMessageForChatId(message.chatId,message.message)
       //  })
   });
   socket.on('receive_global_message', message => {
-    console.log('global received message')
-    console.log(131)
-    console.log(userdata.username)
-    console.log(message.name)
-    console.log(131)
-    console.log(12)
       if(userdata.username!==message.name){setGlobalChats(prevMessages => [...prevMessages, message.message])};
 
       // updateMessageForPerson(.name,{
@@ -330,13 +408,74 @@ updateMessageForChatId(message.chatId,message.message)
   // socket.on('messages', messages => {
   //     setMessages(messages);
   // });
+  socket.on('checked_spam', message => {
+    //if not spam then proceed
+    deleteChatGlobalAndUser(message)
+    
+});
+  
+  socket.on('delete_message', message => {
+ 
+      console.log("received")
+      console.log(message)
+  //     setChatList(currentChatList => {
+  //       const updatedChatList = currentChatList.filter(msg => msg._id !== message.message._id);
+  //       return updatedChatList;
+     
+  //  });
+  deleteChatGlobalAndUser(message)
+  //  };
+
+});
+
 
   return () => {
     socket.off('receive_message');
     socket.off('receive_global_message');
+    socket.off('delete_message');
+    socket.off('checked_spam');
+
+       // socket.off('delete_chat_message')
+
   };
 }, [socket]);
+function deleteChatGlobalAndUser(message) {
+  console.log("deleteing")
+ 
+   console.log("global mdoe")
+    setGlobalChats(currentChatList=>{
+     console.log(currentChatList)
 
+     const updatedChatList = currentChatList.filter(msg => msg._id !== message.message._id);
+
+      return updatedChatList;
+    })
+ 
+    setChatList(currentChatList => {
+      const updatedChatList = currentChatList.filter(msg => msg._id !== message.message._id);
+      return updatedChatList;
+   
+  });
+   setPeopleData(prevPeople => {
+
+     const updatedPeople = prevPeople.map(person => {
+       if (person.chatId === message.chatId) {
+
+         console.log('person here')
+console.log(person)
+         console.log('here')
+         const updatedMessages = person.messages.filter(msg => msg._id !== message.message._id);
+         console.log(updatedMessages)
+         return { ...person, messages: updatedMessages };
+       }
+       return person;
+     });
+  
+
+     return updatedPeople;
+   });
+  
+}
   
   const [currentMessage, setCurrentMessage] = useState(""); // Initialize with the first person
   
@@ -394,25 +533,63 @@ const uploadChatImages = async (files) => {
   }; 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 useEffect(()=>{
   if(currentImage!==""){
     console.log(currentImage);
     handleSubmit();
   }
 },[currentImage])
+
+const [currentMessageList, setCurrentMessageList] = useState([]);
+
+
+const checkToxicity = async (currentMessage, newMessage, message_id) => {
+  try {
+    const predictions = await model.current.classify([currentMessage]);
+    console.log(predictions[6].results[0].match);
+    if (predictions[6].results.match === true ||predictions[4].results.match === true ||predictions[5].results.match === true) {
+      socket.emit("delete_chat_message", {
+        room: currChatId,
+        message: newMessage,
+        username: userdata.username
+      });
+      const link = "http://localhost:8080/chats/deleteMessage/" + currChatId + "/" + message_id;
+      console.log(link);
+      const deleteResponse = await fetch(link, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(),
+      });
+
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle error
+  }
+};
+
+const handleMessageClassification = async () => {
+  for (const message of currentMessageList) {
+    await checkToxicity(message.currentMessage, message.newMessage, message.message_id);
+    setCurrentMessageList(prevList => prevList.filter(msg => msg.message_id !== message.message_id));
+
+    // Remove the message from the list after classification
+    console.log(141)
+    console.log(message)
+    console.log(141)
+
+  }
+};
+
+// This effect will trigger whenever currentMessageList changes
+useEffect(() => {
+  if (currentMessageList.length > 0) {
+    handleMessageClassification();
+  }
+}, [currentMessageList]);
+
 
 
   const handleSubmit = async (e) => {
@@ -430,9 +607,12 @@ useEffect(()=>{
           senderName:userdata.username,
           message: currentMessage,
           img:currentImage,
+          messageType:1
+
         }),
       });
-      
+      const message_id = await secondResponse.json();
+
       const currentDate = new Date();
       const formattedDate = currentDate.toISOString();
 
@@ -442,7 +622,9 @@ useEffect(()=>{
           senderName: userdata.username,
           message: currentMessage,
           timestamp: formattedDate,
-          img:currentImage
+          img:currentImage,
+          _id:message_id,
+          messageType:1
         };
         socket.emit("send_global_message",{room:currChatId,message:newMessage,username:userdata.username})
       
@@ -456,14 +638,20 @@ useEffect(()=>{
             senderName:userdata.username,
             message:currentMessage,
             timestamp:formattedDate,
-            img:currentImage
+            img:currentImage,
+            _id:message_id,
+            messageType:1
+
 
           })
           const newMessage = {
             senderName: userdata.username,
             message: currentMessage,
             timestamp: formattedDate,
-            img:currentImage
+            img:currentImage,
+            _id:message_id,
+            messageType:1
+
           };
           setCount(prev=>prev+1)
           setChatList(prevList => {
@@ -476,7 +664,50 @@ useEffect(()=>{
       }   
       if(currentMessage!=="") setCurrentMessage("");
       else if(currentImage!=="")setcurrentImage("");
-            
+      
+      setCurrentMessageList(prevList => [
+        ...prevList,
+        {
+          currentMessage,
+          newMessage: {
+            senderName: userdata.username,
+            message: currentMessage,
+            timestamp: formattedDate,
+            img: currentImage,
+            _id: message_id,
+            messageType:1
+
+
+          },
+          message_id
+        }
+      ]);
+      // Handle success response for the second fetch
+      
+
+      // const predictions=model.current.classify([currentMessage])
+      // console.log(predictions)
+      // let p=true
+      // if(p===true)
+      // {
+
+      //  socket.emit("delete_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
+
+      //   var link="http://localhost:8080/chats/deleteMessage/"+currChatId+"/"+message_id
+      //   // Second fetch
+      //   console.log(link)
+      //   const deleteResponse = await fetch(link, {
+      //     method: 'POST',
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify({
+      //       sender:userObjectId ,
+      //       senderName:currentUser.name,
+      //       message: currentMessage,
+      //     }),
+      //   });
+      // }      
 
     } catch (error) {
       console.error('Error:', error);
@@ -647,7 +878,7 @@ useEffect(()=>{
                     </inf>
                   ) : null}
 
-                    {message.message&&
+                    {message.message&&message.messageType!=2&&
                   <div
                     className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
@@ -655,13 +886,30 @@ useEffect(()=>{
                   >
                     <p>{ message.message}</p>
                   </div>}
-                  {message.img&&
+                  {message.img&&message.messageType!=2&&
                   <div
                     className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
                     style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                   >
                     <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                  </div>}
+                  {message.message&&message.messageType==2&&
+                  <div
+                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
+                    // className="chat"
+                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
+                  >
+                    
+                                        <p>{ message.message}</p>
+                                        <div   >
+
+                                        <button onClick={()=>{
+                                          console.log(selectedPerson.name)
+                                          acceptUserCollaborate({senderName:message.senderName,name:selectedPerson.name,_id:message._id})}}>Accept</button>
+                                          <button onClick={()=>{rejectUserCollaborate({senderName:message.senderName,name:selectedPerson.name,_id:message._id})}}>Decline</button>
+                                        </div>
+
                   </div>}
 
 
@@ -670,7 +918,6 @@ useEffect(()=>{
                 </div>
               ))}
                {global&&globalChats?.map((message, index) => (
-                console.log(message.senderName),
                 <div
                   key={index}
                   className={`front ${message.senderName=== userdata.username ? userdata.username : ''}`}
@@ -724,7 +971,7 @@ useEffect(()=>{
                       
                     </inf>
                   ) : null}
-                  {message.message&&
+                  {message.message&&message.messageType!=2&&
                   <div
                     className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
@@ -732,7 +979,7 @@ useEffect(()=>{
                   >
                     <p>{ message.message}</p>
                   </div>}
-                  {message.img&&
+                  {message.img&&message.messageType!=2&&
                   <div
                     className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                     // className="chat"
@@ -740,6 +987,22 @@ useEffect(()=>{
                   >
                     <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
                   </div>}
+                  {message.message&&message.messageType==2&&
+                  <div
+                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
+                    // className="chat"
+                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
+                  >
+                    <div>
+                                            <button onClick={()=>{}}>Accept</button>
+                                          <button onClick={()=>{}}>Decline</button>
+                                          
+                                          </div>
+                                        <p>{ message.message}</p>
+                                        
+
+                  </div>}
+
                 </div>
               ))}
               

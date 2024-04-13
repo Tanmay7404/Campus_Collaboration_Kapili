@@ -50,6 +50,7 @@ projectRouter.post("/addNewProject", async (req,res)=>{
         res.status(500).send("Internal Server Error :"+error.message);
     }
 });
+
 // WORKING
 projectRouter.delete("/deleteProjects" ,async (req,res)=>{
     try {
@@ -112,6 +113,19 @@ projectRouter.post("/addfeedback/:username" , async(req,res)=>{
     }
 })
 
+projectRouter.post("/addNewCollaborator/:username/:projectName" , async(req,res)=>{
+    const username = req.params.username;
+    const projectName = req.params.projectName;
+
+    let addedUser =await new ProjectController().addNewCollaborators(projectName ,username);
+ 
+    if(addedUser == 1){
+        res.send("ADDED addedUser");
+    }
+    else {
+        res.send("ERROR")
+    }
+})
 projectRouter.post("/addLikes" , async(req,res)=>{
     const projectname = req.body.projectname;
     let likes = req.body.endorsements;

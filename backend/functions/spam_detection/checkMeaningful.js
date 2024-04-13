@@ -1,28 +1,27 @@
 const fs = require('fs').promises;
-const {hashlist} = require("server.js") ;
 
 //This is the main algorithm which takes a sentence and
 //return true/false whether it is an valid sentence or not
 //INPUT:string including whitespaces
 //OUTPUT:bool
-function checkMeaningfull(str)
+function checkMeaningfull(str,hashlist)
 {
   console.log(str);
 
-  str.toLowerCase();
+  str=str.toLowerCase()
   let tokens=[];
   let s="";
   let sum=0;
   for (let i = 0; i < str.length; i++) {
     if (str.charCodeAt(i)>=97&&str.charCodeAt(i)<=97+25) {s+=str[i];}
     else {
-      if (s!="") {sum+=isValidEnglish(s);console.log(s);
+      if (s!="") {sum+=isValidEnglish(s,hashlist);console.log(s);
           tokens.push(s);}
       s="";
     }
 
   }
-  if (s!="") {sum+=isValidEnglish(s); tokens.push(s);}
+  if (s!="") {sum+=isValidEnglish(s,hashlist); tokens.push(s);}
   console.log(sum);
   console.log(tokens.length);
 
@@ -39,7 +38,7 @@ function checkMeaningfull(str)
 //return true/false whether it is an valid word or not
 //INPUT:string
 //OUTPUT:bool
-function isValidEnglish(str) {
+function isValidEnglish(str,hashlist) {
   let target = 0;
   for (let i = 0; i < str.length; i++) {
     if (str.charCodeAt(i) >= 97) {

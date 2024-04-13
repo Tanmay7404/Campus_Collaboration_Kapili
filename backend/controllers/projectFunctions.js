@@ -166,6 +166,23 @@ class ProjectController {
         }
     }
 
+    async addNewCollaborators(projectName, userName ) {
+        try {
+            let user = await User.findOne({username : userName });
+            let project = await Project.findOne({name : projectName});
+            if (!user || !project) {
+                throw new Error("User or Project not found");
+            }
+           
+            project.creators.push(user);
+        
+            await project.save();
+            return 1;
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+
     async addLikes(projectName, likes) {
         try {
             let project = await Project.findOne({name : projectName});
