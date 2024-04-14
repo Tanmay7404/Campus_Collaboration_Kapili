@@ -183,17 +183,50 @@ class ProjectController {
         }
     }
 
-    async addLikes(projectName, likes) {
+    // async addLikes(projectName, likes) {
+    //     try {
+    //         let project = await Project.findOne({name : projectName});
+    //         if (!project) {
+    //             throw new Error("User or Project not found");
+    //         }
+    //         project.endorsements=likes;
+    //         await project.save();
+    //         return 1;
+    //     } catch(err){
+    //         throw new Error(err);
+    //     }
+    // }
+
+
+    async addLikedProject(username, projectname,likes) {
         try {
-            let project = await Project.findOne({name : projectName});
-            if (!project) {
-                throw new Error("User or Project not found");
-            }
+            const project = await Project.findOne({name:projectname });
+            if (!project) return 0;
+            project.likedUsers.push(username);
             project.endorsements=likes;
+
             await project.save();
             return 1;
-        } catch(err){
-            throw new Error(err);
+        } catch (error) {
+            console.error(error);
+            return 0;
+        }
+    }
+    async removeLikedProject(username, projectname,likes) {
+        console.log('final')
+        try {
+            const project = await Project.findOne({name:projectname });
+            if (!project) return 0;
+
+            project.likedUsers = project.likedUsers.filter(users => users !== username);
+            project.endorsements=likes;
+            
+            console.log(project)
+            await project.save();
+            return 1;
+        } catch (error) {
+            console.error(error);
+            return 0;
         }
     }
 

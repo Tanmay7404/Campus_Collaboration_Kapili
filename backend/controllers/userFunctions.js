@@ -378,34 +378,7 @@ async checkUsersExistence(usernames)
 
 
 
-    async addLikedProject(username, projectname) {
-        try {
-            const user = await Model.findOne({username: username });
-            if (!user) return 0;
 
-            user.likedProjects.push(projectname);
-            await user.save();
-            return 1;
-        } catch (error) {
-            console.error(error);
-            return 0;
-        }
-    }
-    async removeLikedProject(username, projectname) {
-        console.log('final')
-        try {
-            const user = await Model.findOne({username: username });
-            if (!user) return 0;
-
-            user.likedProjects = user.likedProjects.filter(project => project !== projectname);
-            console.log(user)
-            await user.save();
-            return 1;
-        } catch (error) {
-            console.error(error);
-            return 0;
-        }
-    }
     
 
 }

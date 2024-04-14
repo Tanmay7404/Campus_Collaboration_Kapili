@@ -58,27 +58,7 @@ const Explore = () => {
     },[currUser,setongoingData])
     console.log(41);
     console.log(ongoingData);
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch("http://localhost:8080/user/likedProjects/"+currUser, {
-                    method: "GET" ,
-          
-                });   
-                const res = await response.json() 
-                console.log(res);
-                setlikedproj(res);
-                return;
-            }
-            catch(err){
-                console.log(11111111);
-                setlikedproj([]);
-                return;
-            }
-        }
-        fetchData();
-        
-    },[])
+
 
 
 
@@ -424,7 +404,7 @@ const Explore = () => {
       <div id="layer3"></div>
       <ExplorePg1 />
       <ExplorePg2 />
-      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} likedproj={likedproj} setlikedproj={setlikedproj}/>
+      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} />
       {/* <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen}/> */}
     </>
     );

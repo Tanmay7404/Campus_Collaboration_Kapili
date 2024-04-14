@@ -126,18 +126,54 @@ projectRouter.post("/addNewCollaborator/:username/:projectName" , async(req,res)
         res.send("ERROR")
     }
 })
-projectRouter.post("/addLikes" , async(req,res)=>{
-    const projectname = req.body.projectname;
-    let likes = req.body.endorsements;
-    let addedLikes = new ProjectController().addLikes(projectname ,likes);
-    if(addedLikes == 1){
-        res.send("ADDED FEEDBACK");
-    }
-    else {
-        res.send("ERROR")
-    }
-})
+// projectRouter.post("/addLikes" , async(req,res)=>{
+//     const projectname = req.body.projectname;
+//     let likes = req.body.endorsements;
+//     const addedLikes = await new ProjectController().addLikes(projectname ,likes);
+//     if(addedLikes == 1){
+//         res.send("ADDED FEEDBACK");
+//     }
+//     else {
+//         res.send("ERROR")
+//     }
+// })
 
+
+projectRouter.post("/addLikedProject/:username", async (req, res) => {
+    try {
+        
+        const username=req.params.username;             
+        let projectname = req.body.projectname;
+        let likes = req.body.endorsements;
+        const data = await new ProjectController().addLikedProject(username, projectname,likes);
+        if (data === 1) {
+            res.send("Project added to liked projects successfully");
+        } else if (data === 0) {
+            res.send("Failed to add project to liked projects");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+projectRouter.post("/removeLikedProject/:username", async (req, res) => {
+    console.log(req.body.projectname);
+    try {
+        const username=req.params.username;
+        let projectname = req.body.projectname;
+        let likes = req.body.endorsements;
+        const data = await new ProjectController().removeLikedProject(username, projectname,likes);
+        if (data === 1) {
+            res.send("Project removed from liked projects successfully");
+        } else if (data === 0) {
+            res.send("Failed to remove project from liked projects");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 
 

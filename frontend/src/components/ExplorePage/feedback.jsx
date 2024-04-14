@@ -9,8 +9,6 @@ import UserContext from '../../userContext';
 
 const FeedbackComponent = ({ feedbackArray }) => {
   const{currUser}=useContext(UserContext);
-  console.log(currUser);
-  console.log('sss');
   const currentUserIndex = feedbackArray.findIndex(feedback => feedback.reviewer === currUser);
 
   if (currentUserIndex >= 0) {
@@ -18,7 +16,6 @@ const FeedbackComponent = ({ feedbackArray }) => {
     feedbackArray.unshift(currentUserReview);
   }
   
-  console.log(currentUserIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [startY, setStartY] = useState(0);
   const [scrollTop, setScrollTop] = useState(0);

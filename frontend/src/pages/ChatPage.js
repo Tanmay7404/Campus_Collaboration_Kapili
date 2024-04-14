@@ -759,30 +759,30 @@ useEffect(() => {
 
 
             {!global && (
-        <div id="persons">
-          {searchQuery === ''
-            ? people.map((person) => (
-                <div
-                  key={person.id}
-                  className="person"
-                  onClick={() => handlePersonClick(person)}
-                >
-                  <img src={person.profilePic} alt="" className="profilePic" />
-                  {person.name}
-                </div>
-              ))
-            : filteredPeople.map((person) => (
-                <div
-                  key={person.id}
-                  className="person"
-                  onClick={() => handlePersonClick(person)}
-                >
-                  <img src={person.profilePic} alt="" className="profilePic" />
-                  {person.name}
-                </div>
-              ))}
-        </div>
-      )}
+              <div id="persons">
+                {searchQuery === ''
+                  ? people.map((person) => (
+                      <div
+                        key={person.id}
+                        className="person"
+                        onClick={() => handlePersonClick(person)}
+                      >
+                        <img src={person.profilePic} alt="" className="profilePic" />
+                        {person.name}
+                      </div>
+                    ))
+                  : filteredPeople.map((person) => (
+                      <div
+                        key={person.id}
+                        className="person"
+                        onClick={() => handlePersonClick(person)}
+                      >
+                        <img src={person.profilePic} alt="" className="profilePic" />
+                        {person.name}
+                      </div>
+                    ))}
+              </div>
+            )}
 
 
 
@@ -917,94 +917,84 @@ useEffect(() => {
 
                 </div>
               ))}
-               {global&&globalChats?.map((message, index) => (
-                <div
-                  key={index}
-                  className={`front ${message.senderName=== userdata.username ? userdata.username : ''}`}
-                >
-                  {!index || (message.senderName !== globalChats[index-1]?.senderName) ? (
-                    <inf
-                    style={{
-                      textAlign: message.senderName === userdata.username ? 'right' : 'left',
-                      
-                    }}
-
-                    >
-                      <img
-                        src={
-                          message.senderName === userdata.username
-                            ? userdata.profileInfo.profilePicture.url
-                            : globalPeople.find((p) => p.name === message.senderName)?.profilePic
-                        }
-                        className={`profilePic ${message.senderName === userdata.username ? 'me' : ''}`}
-                        alt=""
-                        style={{
-                          float: message.senderName === userdata.username ? 'right' : 'left',
-                        }}
-                      />
-                      
-                      <inf2
-                        style={{
-                          textAlign: message.senderName === userdata.username ? 'right' : 'left',
-                        }}
-
+                {global &&
+                  globalChats?.map((message, index) => (
+                    console.log(message),
+                    // Check if searchQuery is empty or senderName matches searchQuery
+                    (!searchQuery || message.senderName.toLowerCase().includes(searchQuery.toLowerCase())
+              
+                   
+                  
+                  
+                  
+                  ) && (
+                      <div
+                        key={index}
+                        className={`front ${message.senderName === userdata.username ? userdata.username : ''}`}
                       >
-                        <div
-                          id="Name"
-                          style={{
-                            textAlign: message.senderName === userdata.username ? 'right' : 'left',
-                          }}
-                        >
-                          {message.senderName === userdata.username ? 'Me' : globalPeople.find((p) => p.name === message.senderName)?.name}
-                        </div>
-                        <inf3
-                          style={{
-                            textAlign: message.senderName === userdata.username ? 'right' : 'left',
-                          }}
-                        >
-                          <span className="date">{new Date(message.timestamp).toLocaleDateString()}</span>
-                          <span className="line"></span>
-                          <span className="time">{new Date(message.timestamp).toLocaleTimeString()}</span>
-                        </inf3>
-                            
-                      </inf2>
-                      
-                    </inf>
-                  ) : null}
-                  {message.message&&message.messageType!=2&&
-                  <div
-                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
-                    // className="chat"
-                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
-                  >
-                    <p>{ message.message}</p>
-                  </div>}
-                  {message.img&&message.messageType!=2&&
-                  <div
-                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
-                    // className="chat"
-                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
-                  >
-                    <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
-                  </div>}
-                  {message.message&&message.messageType==2&&
-                  <div
-                    className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
-                    // className="chat"
-                    style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
-                  >
-                    <div>
-                                            <button onClick={()=>{}}>Accept</button>
-                                          <button onClick={()=>{}}>Decline</button>
-                                          
-                                          </div>
-                                        <p>{ message.message}</p>
-                                        
+                        {!index || (message.senderName !== globalChats[index - 1]?.senderName) ? (
+                          <inf
+                            style={{
+                              textAlign: message.senderName === userdata.username ? 'right' : 'left',
+                            }}
+                          >
+                            <img
+                              src={
+                                message.senderName === userdata.username
+                                  ? userdata.profileInfo.profilePicture.url
+                                  : globalPeople.find((p) => p.name === message.senderName)?.profilePic
+                              }
+                              className={`profilePic ${message.senderName === userdata.username ? 'me' : ''}`}
+                              alt=""
+                              style={{
+                                float: message.senderName === userdata.username ? 'right' : 'left',
+                              }}
+                            />
+                            <inf2
+                              style={{
+                                textAlign: message.senderName === userdata.username ? 'right' : 'left',
+                              }}
+                            >
+                              <div
+                                id="Name"
+                                style={{
+                                  textAlign: message.senderName === userdata.username ? 'right' : 'left',
+                                }}
+                              >
+                                {message.senderName === userdata.username ? 'Me' : globalPeople.find((p) => p.name === message.senderName)?.name}
+                              </div>
+                              <inf3
+                                style={{
+                                  textAlign: message.senderName === userdata.username ? 'right' : 'left',
+                                }}
+                              >
+                                <span className="date">{new Date(message.timestamp).toLocaleDateString()}</span>
+                                <span className="line"></span>
+                                <span className="time">{new Date(message.timestamp).toLocaleTimeString()}</span>
+                              </inf3>
+                            </inf2>
+                          </inf>
+                        ) : null}
+                        {message.message && (
+                          <div
+                            className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
+                            style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
+                          >
+                            <p>{message.message}</p>
+                          </div>
+                        )}
+                        {message.img && (
+                          <div
+                            className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
+                            style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
+                          >
+                            <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                          </div>
+                        )}
+                      </div>
+                    )
+                  ))}
 
-                  </div>}
-
-                </div>
-              ))}
               
             </div>
             <div id="typingBox" >

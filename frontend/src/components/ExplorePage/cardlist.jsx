@@ -9,7 +9,7 @@ import "./cardlist.css";
 import Coursecard from '../coursecard/coursecard.js';
 
 
-const CardList = ({data,setModalOpen,setongoingData,setcompletedData,likedproj,setlikedproj}) => {
+const CardList = ({data,setModalOpen,setongoingData,setcompletedData}) => {
 
   const [direction, setDirection] = useState(getDirection());
 
@@ -50,7 +50,7 @@ const CardList = ({data,setModalOpen,setongoingData,setcompletedData,likedproj,s
                         <div className="swiper-slide" key={index}>
                             <SwiperSlide>  
                               {(data.type=="Project"? 
-                              <Card details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} likedproj={likedproj} setlikedproj={setlikedproj}/> : 
+                              <Card details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} /> : 
                               <Coursecard course={card} />  )}                      
                             </SwiperSlide>
                         </div>

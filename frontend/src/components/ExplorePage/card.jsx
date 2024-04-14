@@ -14,7 +14,7 @@ import "./card.css";
 import CardExpanded from "./CardExpanded";
 import ReactDOM from 'react-dom';
 
-const Card = ({details,setongoingData,setcompletedData,likedproj,setlikedproj}) =>{
+const Card = ({details,setongoingData,setcompletedData}) =>{
     console.log(typeof Number (details.rating))
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -93,10 +93,10 @@ setModalOpen(true)
                     creator={details.creators}
                     _id={details._id}
                     closeModal={closeModal}
+                    modalOpen={modalOpen}
                     setongoingData={setongoingData}
                     setcompletedData={setcompletedData}
-                    likedproj={likedproj}
-                    setlikedproj={setlikedproj}
+                    likedUsers={details.likedUsers}
                     chatId={details.chat}
                 />
             </div>

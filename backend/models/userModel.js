@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   projects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Project' }],
   coursesCompleted: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
   chats: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Chat' }],  // this chat is renundant 
-  likedProjects: [String],
+
   helpfulCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Courses' }],
 });
 

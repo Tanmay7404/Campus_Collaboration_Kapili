@@ -1,4 +1,4 @@
-import React, { useState,useEffect, useContext } from "react";
+import React, { useState,useEffect, useContext,useRef } from "react";
 import like from "../../assets/images/like.svg";
 import cross from "../../assets/images/cross.svg";
 import star from "../../assets/images/star.svg";
@@ -33,13 +33,12 @@ const CardExpanded = ({
   creator,
   _id,
   closeModal,
+  modalOpen,
   setongoingData,
   setcompletedData,
-  likedproj,
-  setlikedproj,
+  likedUsers,
   chatId
 }) => {
-  console.log(typeof (ratings))
   var [flag,setFlag] = useState(0);
   const[feed,setfeed]=useState(false);
   const {currUser} = useContext(UserContext);
@@ -83,9 +82,8 @@ const CardExpanded = ({
   
 
 useEffect(()=>{
-  console.log(likedproj);
-  setisliked(likedproj.some(project => project === projectname));
-},[likedproj])
+  setisliked(likedUsers.some(use => use === currUser));
+},[likedUsers])
 
   useEffect(() => {
     checkFeedbackForCurrentUser(feedbackArray, currUser);
@@ -106,157 +104,121 @@ useEffect(()=>{
     });
 
   }
+const [likeInProgress, setLikeInProgress] = useState(false);
+const handleLike = () => {
 
-  const handleLike = () => {
-    console.log('1no');
-    if (isliked) {
-      console.log('no')
-      fetch(`http://localhost:8080/user/removeLikedProject/`+currUser, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ projectname: projectname })
-      })
+  if (likeInProgress) {
+    return;
+  }
+  setLikeInProgress(true);
+  if (isliked) {
+    fetch(`http://localhost:8080/projects/removeLikedProject/` + currUser, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ projectname: projectname, endorsements: likes - 1 })
+    })
       .then(response => {
         if (response.ok) {
-          
-          fetch(`http://localhost:8080/projects/addLikes`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ projectname: projectname,endorsements:likes-1 })
-          })
-          .then(response=>{
-            if(response.ok){
-              setlikedproj(prevList => {
-                return prevList.filter(proj => proj !== projectname);
+          if (completed == true) {
+            setongoingData(prevData => {
+              return prevData.map(project => {
+                if (project.name == projectname) {
+                  var lik = project.endorsements;
+                  return {
+                    ...project,
+                    endorsements: lik - 1,
+                    likedUsers: project.likedUsers.filter(use => use != currUser)
+                  };
+                }
+                return project;
               });
-              if(completed==true){
-                setongoingData(prevData=>{
-                  return prevData.map(project=>{
-                    if(project.name==projectname){
-                      var lik=project.endorsements;
-                      return{
-                        ...project,
-                        endorsements:lik-1
-    
-                      };
-                    }
-                    return project;
-                  });
-                });
-              }
-              else{
-                setcompletedData(prevData=>{
-                  return prevData.map(project=>{
-                    if(project.name==projectname){
-                      var lik=project.endorsements;
-                      return{
-                        ...project,
-                        endorsements:lik-1
-    
-                      };
-                    }
-                    return project;
-                  });
-                });
-    
-              }
-            }
-            else { window.alert('Failed to remove project from liked projects');}
-
-          })
-          .catch(error => {
-           console.error('Error:', error);
-          });
-
+            });
+            setisliked(false);
+          } else {
+            setcompletedData(prevData => {
+              return prevData.map(project => {
+                if (project.name == projectname) {
+                  var lik = project.endorsements;
+                  return {
+                    ...project,
+                    endorsements: lik - 1,
+                    likedUsers: project.likedUsers.filter(use => use != currUser)
+                  };
+                }
+                return project;
+              });
+            });
+            setisliked(false);
+          }
         } else {
           window.alert('Failed to remove project from liked projects');
         }
       })
       .catch(error => {
         console.error('Error:', error);
-      });
-    } 
-    else {
-      console.log(userdata.likedProjects)
-      console.log('yes')
-      fetch(`http://localhost:8080/user/addLikedProject/`+currUser, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ projectname: projectname })
       })
+      .finally(() => {
+        setLikeInProgress(false);
+      });
+  } else {
+    fetch(`http://localhost:8080/projects/addLikedProject/` + currUser, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ projectname: projectname, endorsements: likes + 1 })
+    })
       .then(response => {
         if (response.ok) {
-
-          fetch(`http://localhost:8080/projects/addLikes`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ projectname: projectname,endorsements:likes+1 })
-          })
-          .then(response=>{
-            if(response.ok){
-              setlikedproj(prevList=>{
-                return [...prevList,projectname];
+          if (completed == true) {
+            setongoingData(prevData => {
+              return prevData.map(project => {
+                if (project.name == projectname) {
+                  var lik = project.endorsements;
+                  return {
+                    ...project,
+                    endorsements: lik + 1,
+                    likedUsers: project.likedUsers.concat(currUser)
+                  };
+                }
+                return project;
               });
-              if(completed==true){
-                setongoingData(prevData=>{
-                  return prevData.map(project=>{
-                    if(project.name==projectname){
-                      var lik=project.endorsements;
-                      return{
-                        ...project,
-                        endorsements:lik+1
-              
-                      };
-                    }
-                    return project;
-                  });
-                });
-              }
-              else{
-                setcompletedData(prevData=>{
-                  return prevData.map(project=>{
-                    if(project.name==projectname){
-                      var lik=project.endorsements;
-                      return{
-                        ...project,
-                        endorsements:lik+1
-              
-                      };
-                    }
-                    return project;
-                  });
-                });
-              
-              }
-            }
-            else {
-              window.alert('Failed to remove project from liked projects');
-            }
+            });
+            setisliked(true);
 
-          })
-          .catch(error => {
-            console.error('Error:', error);
-          });
+          } 
+          else {
+            setcompletedData(prevData => {
+              return prevData.map(project => {
+                if (project.name == projectname) {
+                  var lik = project.endorsements;
+                  return {
+                    ...project,
+                    endorsements: lik + 1,
+                    likedUsers: project.likedUsers.concat(currUser)
+                  };
+                }
+                return project;
+              });
+            });
+            setisliked(true);
+          }
         } else {
           window.alert('Failed to remove project from liked projects');
         }
       })
       .catch(error => {
         console.error('Error:', error);
+      })
+      .finally(() => {
+        setLikeInProgress(false);
       });
-    }
-  };
-
-  
+  }
+};
   const handleClick = () => {
+    
     if (feedbackData.rating === 0) {
       window.alert('Rating is required');
       return;
@@ -307,7 +269,7 @@ useEffect(()=>{
           return prevData.map(project => {
             if (project.name === projectname) {
               var n=project.feedbacks.length;
-              rate=(project.rating*n+feedbackData.rating)/(n+1);
+             let  rate=(project.rating*n+feedbackData.rating)/(n+1);
               return {
                 ...project,
                 feedbacks: [...project.feedbacks, feed],
@@ -357,27 +319,25 @@ useEffect(()=>{
     shareOptions.style.display = 'none';
   }
   function shareOnWhatsApp() {
-    const projectUrl = encodeURIComponent('localhost');
-    window.open(`https://api.whatsapp.com/send?text=Check out this project: ${projectUrl}`);
-  }
+    const projectUrl = encodeURIComponent(window.location.href);
+    const message = encodeURIComponent('Check out this link!');
+    window.open(`https://api.whatsapp.com/send?text=${message}%0A${projectUrl}`);
+}
+
   function shareOnTelegram() {
-    const projectUrl = encodeURIComponent('YOUR_PROJECT_URL');
+    const projectUrl = encodeURIComponent(window.location.href);
     window.open(`https://t.me/share/url?url=${projectUrl}&text=Check out this project`);
   }
   function shareOnTwitter() {
-    const projectUrl = encodeURIComponent('YOUR_PROJECT_URL');
+    const projectUrl = encodeURIComponent(window.location.href);
     const text = encodeURIComponent("Check out this project: ");
     window.open(`https://twitter.com/intent/tweet?text=${text}${projectUrl}`);
   }
 
-  function shareOnLinkedIn() {
-      const projectUrl = encodeURIComponent('YOUR_PROJECT_URL');
-      const title = encodeURIComponent("Check out this project");
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${projectUrl}&title=${title}`);
-    
-  }
+
+
   function copyLinkToClipboard() {
-    const projectUrl = 'YOUR_PROJECT_URL'; // Replace with the actual URL you want to copy
+    const projectUrl =window.location.href; // Replace with the actual URL you want to copy
     navigator.clipboard.writeText(projectUrl).then(() => {
       alert("Link copied to clipboard. You can now paste it anywhere!");
     }).catch(err => {
@@ -412,12 +372,28 @@ useEffect(()=>{
     setIsDragging(false);
     e.currentTarget.style.userSelect = 'auto';
   };
+
     
+
+
+  let modalRef=useRef();
+  function checkOutsideClick(e){
+
+    if((modalOpen&& modalRef.current &&!modalRef.current.contains(e.target) )
+  ){
+      closeModal();
+    }
+  }
+  useEffect(()=>{
+    document.addEventListener('mousedown',checkOutsideClick);
+  })
   return (
-    <div id="details-main">
-      <img src={cross} id="cross" onClick={closeModal} style={{position:"absolute", top:"50px", right:"50px"}}/>
+    console.log(78),
+    <div id="details-main"  >
+      
       {/* <button onClick={closeModal} style={{ float: 'right', zIndex:"1000", transform:"translateX(-50px)" }}>Close</button> */}
-        <div id="details">
+        <div id="details" ref={modalRef} >
+        <i class="bi bi-x-lg" onClick={closeModal} style={{ fontSize:"25px",position: "absolute", top: "35px", right: "335px", cursor: "pointer", zIndex: "1000" }}></i>
           <div id="banner">
             <img src={modalImage} alt="" id="banner-image" />
             <div id="layer"></div>
@@ -502,7 +478,6 @@ useEffect(()=>{
                   <a href="#" onClick={(e) => { e.preventDefault(); shareOnWhatsApp(); }}><i className="bi bi-whatsapp" style={{ fontSize: '24px',marginRight:'5px' }}></i></a>
                   <a href="#" onClick={(e) => { e.preventDefault(); shareOnTelegram(); }}><i className="bi bi-telegram" style={{ fontSize: '24px' }}></i></a>
                   <a href="#" onClick={(e) => { e.preventDefault(); shareOnTwitter(); }}><i className="bi bi-twitter-x" style={{ fontSize: '24px' }}></i></a>
-                  <a href="#" onClick={(e) => { e.preventDefault(); shareOnLinkedIn(); }}><i className="bi bi-linkedin" style={{ fontSize: '24px' }}></i></a>
                   <a href="#" onClick={(e) => { e.preventDefault(); copyLinkToClipboard(); }}><i className="bi bi-clipboard-check-fill" style={{ fontSize: '24px' }}></i></a>
                 </div>
               </div>
