@@ -150,17 +150,7 @@ const rejectUserCollaborate = async(curr) => {
     setSelectedPerson(person);
       setSearchParams({name:person.name})
 console.log(person)
-    // const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     currUserId:selectedPerson?.name,
-    //      friendId: userdata.username,
-    //   }),
-    // });
-    // const userData = await firstResponse.json();
+  
 
     // const UserResponse = await fetch('http://localhost:8080/getUser/'+userdata.username, {
     //   method: 'GET',

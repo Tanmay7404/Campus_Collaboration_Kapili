@@ -110,8 +110,8 @@ chatRouter.post("/getInTouch", async(req,res)=>{
 
 chatRouter.post("/personalChat", async (req, res) => {
     try {
-        var friendUsername = req.body.friendId;
-        var currUsername = req.body.currUserId;
+        var friendUsername = req.body.friendUsername;
+        var currUsername = req.body.currUsername;
         // Instantiate ChatController
         var CC = new ChatController();
        

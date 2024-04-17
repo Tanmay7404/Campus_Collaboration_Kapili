@@ -59,7 +59,7 @@ const Navbar = (props) => {
           <NavLink to="/explore" className="nav-link">Explore</NavLink>
           {/* <NavLink to="/chat/" className="nav-link">Chats</NavLink> */}
           <NavLink to={`/chat/${currUser}`} className="nav-link">Chats</NavLink>
-          <NavLink to="/profile/username" className="nav-link">Profile</NavLink>
+          <NavLink to={`/profile/${currUser}`} className="nav-link">Profile</NavLink>
         </div>
       </nav>
       <div id="up">

@@ -102,7 +102,7 @@ function App() {
         <Route element ={<Navbar/>}>
           <Route path ="/explore" element = {<Explore/>}/>
           <Route path ="/chat/:username" element = {<ChatPage/>}/>
-          <Route path = "/profile/:username" element = {<Profile/>} />
+          <Route path = "/profile/:userName" element = {<Profile/>} />
           <Route path = "/search/*" element = {<UserCardList/>} />
         </Route>
         <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>

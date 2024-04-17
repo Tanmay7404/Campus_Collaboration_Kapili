@@ -1,6 +1,7 @@
     import React, { useState } from 'react';
     import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
     import './profile.css';
+    import UserdataContext from '../../userdataContext.js';
 
     import Bio from './bio.js';
     import Project from './project.js';
@@ -13,7 +14,14 @@
     import image3 from '../../assets/images/profile2.jpeg';
     import image4 from '../../assets/images/swigy.png';
     import { Button } from 'react-bootstrap';
+    import  {useParams,useNavigate} from 'react-router-dom'
+    import  { useEffect ,useContext} from 'react';
+
     const Profile = () => {
+      const{userdata}=useContext(UserdataContext);
+      const navigate = useNavigate();
+      const {userName} = useParams();
+      // const userName="Simon"
       const handleLogOut = () => {
         window.location.href = 'http://localhost:8080/logout';
       };
@@ -22,9 +30,35 @@
       const handleButtonClick = (buttonId) => {
         setSelectedButton(buttonId);
       };
-
+   useEffect(()=>{
+console.log(userdata)
+console.log(userName)
+   },[])
+      const getInTouch = async() => {
+        try {
+         const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friendUsername: userName,
+         currUsername: userdata.username,
+      }),
+    });
+    const userData = await firstResponse.json();
+          
+        navigate("/chat/"+userdata.username+"?name="+userName)
+          return;
+      }
+      catch(err){
+        console.log(err)
+          console.log("error in get in touch");
+          return;
+      }
+      }; 
       //dynamic variables (for backend)
-      const userName = 'Soumya Savarn';
+     // const userName = 'Soumya Savarn';
       const userEmail = 's.savarn@iitg.ac.in';
       const profilePic = image1;
       const userDepartment = 'DSAI, IITG';
@@ -124,10 +158,14 @@
                             </svg></a>
                   </div>
                   <div id="self5">
-                    <button id="Edit">
+                  { userName!==userdata.username&&( <button id="Edit" onClick={()=>{getInTouch()}}>
+                      <img src="../../assets/images/pencil.png" alt="" id="pencil" />
+                      <p style={{textDecoration: 'none'}} >Get in Touch</p>
+                    </button>)}
+                    { userName===userdata.username&&( <button id="Edit" onClick={()=>{}}>
                       <img src="../../assets/images/pencil.png" alt="" id="pencil" />
                       <p style={{textDecoration: 'none'}} >Edit Your Profile</p>
-                    </button>
+                    </button>)}
                     <h3 onClick={handleLogOut}>Log Out</h3>
                   </div>
                 </div>

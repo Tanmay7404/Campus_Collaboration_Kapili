@@ -10,6 +10,7 @@ import "./CardExpanded.css";
 import TextField from '@mui/material/TextField';
 import UserContext from "../../userContext.jsx";
 import UserdataContext from "../../userdataContext.js";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -44,7 +45,7 @@ const CardExpanded = ({
   const {currUser} = useContext(UserContext);
   const{userdata}=useContext(UserdataContext);
   const[isliked,setisliked]=useState(false);
- 
+ const navigate=useNavigate()
 
   const initialfeedbackData={
     projectname:projectname,
@@ -681,14 +682,14 @@ const handleLike = () => {
 {
   creator.map((image, index) => (
     <>
-      <a href={`/profile/${image.username}`} className="profile-link">
-        <div id="profile">
+      {/* <a href={`/profile/${image.username}`} className="profile-link"> */}
+        <div id="profile" onClick={()=>{navigate("/profile/"+image.username)}}>
           <img src={image.profilePic} id="profile-picture" alt="" />
           <div className="profile-details">
             <span>{image.username}</span>
           </div>
         </div>
-      </a>
+      {/* </a> */}
       {index < creator.length - 1 && <div style={{ borderTop: '.5px solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>}
     </>
   ))
