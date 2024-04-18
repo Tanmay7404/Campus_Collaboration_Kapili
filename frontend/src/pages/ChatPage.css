@@ -232,6 +232,7 @@
 
 
 #chats inf{
+    width: max-content;
     padding: 10px 10px;
     padding-bottom: 0;
     align-items: center;
@@ -267,6 +268,9 @@
 }
 
 .chat p{
+    width: -webkit-max-content;
+border-radius: 7px;
+margin-top: 5px;
     padding: 20px 20px;
     font-weight: 300;
     font-size: 17px;

@@ -817,12 +817,18 @@ useEffect(() => {
                 <div
                   key={index}
                   className={`front ${message.senderName=== userdata.username ? userdata.username : ''}`}
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: message.senderName === userdata.username ? 'end' : 'start',
+                    borderRadius:'7px',
+                  }}
                 >
                   {!index || (message.senderName !== chatList[index-1]?.senderName) ? (
                     <inf
                     style={{
                       textAlign: message.senderName === userdata.username ? 'right' : 'left',
-                      
+                      borderRadius:'7px',
                     }}
 
                     >
@@ -882,7 +888,7 @@ useEffect(() => {
                     // className="chat"
                     style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                   >
-                    <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                    <img src={message.img} alt="Uploaded content" style={{ maxHeight: '300px', borderRadius: '8px' }} />
                   </div>}
                   {message.message&&message.messageType==2&&
                   <div
@@ -921,11 +927,18 @@ useEffect(() => {
                       <div
                         key={index}
                         className={`front ${message.senderName === userdata.username ? userdata.username : ''}`}
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: message.senderName === userdata.username ? 'end' : 'start',
+                          borderRadius: '7px',
+                        }}
                       >
                         {!index || (message.senderName !== globalChats[index - 1]?.senderName) ? (
                           <inf
                             style={{
                               textAlign: message.senderName === userdata.username ? 'right' : 'left',
+                              borderRadius:'7px',
                             }}
                           >
                             <img
@@ -978,7 +991,7 @@ useEffect(() => {
                             className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                             style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                           >
-                            <img src={message.img} alt="Uploaded content" style={{ maxWidth: '100%', borderRadius: '8px' }} />
+                            <img src={message.img} alt="Uploaded content" style={{ maxHeight: '300px', borderRadius: '8px' }} />
                           </div>
                         )}
                       </div>
