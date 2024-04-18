@@ -256,6 +256,7 @@ useEffect(() => {
  
   useEffect(() => {
     const fetchData = async () => {
+    
       if(userdata){
       try {
 
@@ -289,9 +290,9 @@ useEffect(() => {
         console.error('Error fetching user friends:', error);
       }
       return;
-    };
+    };}
     fetchData(); // Call the fetchData function
-    }
+    
   }, [userdata]);
 
   useEffect(()=>{
@@ -335,7 +336,7 @@ useEffect(() => {
     
     fetchGlobalData(); // Call the fetchData function
   
-  }, [global]);
+  }, [global,currUser]);
 //   useEffect(() => {
 //     console.log('connected to localhost')
 //     const newSocket = io('http://localhost:8080'); // Replace with your server URL

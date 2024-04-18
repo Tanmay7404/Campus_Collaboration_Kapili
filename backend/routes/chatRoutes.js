@@ -121,8 +121,12 @@ chatRouter.post("/personalChat", async (req, res) => {
         var friendId= await getObjectId.userNameToId(friendUsername)
 
         // Join users to chat
+        console.log("joining chatIds",chatId,userId)
+        console.log("joining chatIds",chatId,friendId)
+
         await CC.joiningUserToChatId(chatId,userId);
         await CC.joiningUserToChatId(chatId,friendId);
+        console.log("joined chatIds")
 
         // Get all chats of current user
       //  var chats = await CC.getAllChatsOfUser();

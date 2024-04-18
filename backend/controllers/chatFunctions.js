@@ -136,11 +136,13 @@ class ChatController {
                 var user = await User.findById(currUserId);
                 user.chats.push(chatId);
                 chat.participants.push(currUserId);
+                console.log(user.chats)
                 await chat.save();
                 await user.save();
                 return;
             }
         } catch(err){
+            console.log(err)
             throw new Error(err);
         }
     }

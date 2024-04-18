@@ -62,8 +62,8 @@
       }),
     });
     const userData = await firstResponse.json();
-          
-        navigate("/chat/"+userdata.username+"?name="+userName)
+       if(userData){   
+        navigate("/chat/"+userdata.username+"?name="+userName)}
           return;
       }
       catch(err){
