@@ -5,6 +5,7 @@ import clk from "../../assets/images/clock.png"
 import open from"../../assets/images/collab.jpg"
 import comp from "../../assets/images/completed.jpeg"
 import { Tooltip } from 'bootstrap';
+import unstarsss from "../../assets/images/project-planning-header@2x.png";
 
 import { useSearchParams } from "react-router-dom";
 
@@ -133,9 +134,9 @@ setModalOpen(true)
     
             </div>
             <div className="projpic" style={{ position: 'relative' }}>
-    <img src={details.projectImage.url} className="sw-img" alt="" />
+    <img src={details.projectImage.url?details.projectImage.url:unstarsss} className="sw-img" alt="" />
 
-    <div style={{ position: 'absolute', bottom: '10px', right: '15px' }}>
+    <div style={{ position: 'absolute', bottom: '10px', right: '15px',zIndex:1000 }}>
         {difficultyOptions.map((option) => (
             details.level === option.value && (
                 <div
@@ -211,7 +212,10 @@ setModalOpen(true)
                     </div>
 
                     <div id="wait">
-                        <div><div><img src={likeImg} alt=""/></div> <span>{details.endorsements}</span></div>
+                        <div>
+                            <div>
+                                <img src={likeImg} alt=""/>
+                            </div> <span>{details.endorsements}</span></div>
                         <div><div><img src={starImg} alt=""/></div> <span>{Number(details.rating).toFixed(1)}</span></div>
                     </div>
                 </div>

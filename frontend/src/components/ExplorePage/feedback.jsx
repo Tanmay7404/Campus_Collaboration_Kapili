@@ -63,7 +63,10 @@ const FeedbackComponent = ({ feedbackArray }) => {
         
         <div key={index} id={`feed${index + 1}`}>
           <inf>
+          <a href={`/profile/${feedback.reviewer}`} className="profile-link">
             <img src={feedback.img} className="feedback-pic" alt="" />
+            </a>
+           
             <div className="profile-id">
               <div className="profile-name">{feedback.reviewer}</div>
               <form>
@@ -81,6 +84,7 @@ const FeedbackComponent = ({ feedbackArray }) => {
               </form>
             </div>
           </inf>
+         
           <p>{feedback.message.text}</p>
         </div>
       ))}

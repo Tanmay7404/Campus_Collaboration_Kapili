@@ -8,11 +8,12 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Box } from "@mui/material";
 import  { useState, useEffect } from 'react';
 import Axios from 'axios';
+import unstarss from '../assets/images/profile.jpg'
 
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 
-
+import ReactPlayer from 'react-player';
 
 
 
@@ -86,10 +87,10 @@ export default function CreateProjectPage() {
    const initialFormData = {
       title: '',
       name:'',
-      projectImage:'',
+      projectImage:"",
       description: '',
       url:'',
-      imageName:'',
+      imageName:"",
       collaboratorName:[],
       ongoing:false,
       openForCollaboration:false,
@@ -101,7 +102,11 @@ export default function CreateProjectPage() {
     const [formData, setFormData] = useState(initialFormData);
     
 
+    const [playing, setPlaying] = useState(false);
 
+    const handleTogglePlay = () => {
+      setPlaying(!playing);
+    };
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
   const[lastSelected,setlastSelected]=useState('');
 
@@ -209,9 +214,17 @@ useEffect(()=>{console.log(formData)},[formData])
       }
     };
 
+    const imageTypes = /^image\//;
+    const videoTypes = /^video\//;
 
     const uploadImage = (files) => {
-      if(formData.imageName!=" "){
+      if (imageTypes.test(files[0].type)) {
+      console.log(789);
+      console.log(files[0]);
+      console.log(79);
+      if(formData.imageName!=""){
+        console.log(formData.imageName);
+        console.log(78);
         deleteImageFromCloudinary(formData.imageName)
       }
       console.log("execution")
@@ -229,8 +242,9 @@ useEffect(()=>{console.log(formData)},[formData])
           imageName: res.data.public_id,
         });
       });
-    };
-
+    }
+    else console.log("video hai bhai");
+  }
 
     const uploadProjectImages = async (files) => {
       const uploadedImages = [];
@@ -241,9 +255,28 @@ useEffect(()=>{console.log(formData)},[formData])
           const formData1 = new FormData();
           formData1.append("file", files[index]);
           formData1.append("upload_preset", "hv9vnkse");
-          
+           if (videoTypes.test(files[index].type)) {
           try {
-            console.log(index)
+            console.log('video');
+            
+            const res = await Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/video/upload", formData1);
+            console.log("Uploaded image:", res.data);
+            uploadedImages.push({
+              fileName: res.data.public_id,
+              link: res.data.secure_url
+            });
+            
+            // Upload next image recursively
+            await uploadImage(index + 1);
+          } 
+          catch (error) {
+            console.error('Error uploading image:', error);
+          }
+        }
+        else{
+          try {
+            console.log('image');
+            
             const res = await Axios.post("https://api.cloudinary.com/v1_1/dcsdkvzcq/image/upload", formData1);
             console.log("Uploaded image:", res.data);
             uploadedImages.push({
@@ -253,10 +286,14 @@ useEffect(()=>{console.log(formData)},[formData])
             
             // Upload next image recursively
             await uploadImage(index + 1);
-          } catch (error) {
+          } 
+          catch (error) {
             console.error('Error uploading image:', error);
           }
-        } else {
+
+        }
+        } 
+        else {
           // All images have been uploaded, update the form data
           setFormData({
             ...formData,
@@ -612,32 +649,44 @@ onChange={(e)=> setFormData({...formData,description:e.target.value})}
 
 
 
-<div style={{ overflowX: "auto", whiteSpace: "nowrap", paddingTop: '0px', borderRadius: '20px',width: 'calc(100% - 200px)' }} 
- 
->
-  {formData.projectImages.map((image, index) => (
-    <div key={index}  className="imageContainer" onMouseOver={() => handleMouseOver(index)} onMouseOut={handleMouseOut} style={{ display: 'inline-block', position: 'relative', marginRight: 10,cursor:'pointer' }}>
-      <img
-        src={image.url}
-        alt={`Project Image ${index + 1}`}
-        style={{ width: 100, height: 100, borderRadius: '10px' }}
-      />
-      {hoverIndex==index&&  
-      <button
-        onClick={() =>{
-          deleteItem(index);
-          deleteImageFromCloudinary(formData.projectImages[index].filename,"demo",index);
-        }
-        }
-        className="deleteButton"
-      >
-        x
-      </button>
-      }
+<div style={{ overflowX: "auto", whiteSpace: "nowrap", paddingTop: '0px', borderRadius: '20px',width: 'calc(100% - 200px)', maxHeight: '100px', overflowY: 'hidden' }}>
 
+  {formData.projectImages.map((image, index) => (
+    <div key={index} className="imageContainer" onMouseOver={() => handleMouseOver(index)} onMouseOut={handleMouseOut} style={{ display: 'inline-block', position: 'relative', marginRight: 10,cursor:'pointer',verticalAlign:'top' }}>
+      <div style={{ position: 'relative' }}>
+        {!image.link.toLowerCase().includes('video') && (
+          <img
+            src={image.link}
+            alt={`Project Image ${index + 1}`}
+            style={{ width: 100, height: 100, borderRadius: '10px' }}
+          />
+        )}
+        {image.link.toLowerCase().includes('video') && (
+          <ReactPlayer
+            url={image.link}
+            controls={true}
+            loop={true}
+            autoPlay={playing}
+            onClick={handleTogglePlay}
+            height={100}
+            width={100}
+            style={{ maxWidth: '100%', maxHeight: '100%' }}
+          />
+        )}
+        {hoverIndex === index && (
+          <button
+            onClick={() => {
+              deleteItem(index);
+              deleteImageFromCloudinary(formData.projectImages[index].filename, "demo", index);
+            }}
+            className="deleteButton"
+          >
+            x
+          </button>
+        )}
+      </div>
     </div>
   ))}
-
 
 </div>
 

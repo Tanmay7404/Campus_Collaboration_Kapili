@@ -91,14 +91,12 @@ loginRouter.get('/explore',async (req, res) => {
 
         user=await saveDataToDatabase(response);
         if(user.username==null){
-            console.log(1);
             const encodedEmail = encodeURIComponent(user.email);
             const encodedFullName = encodeURIComponent(user.fullname);
             res.redirect(`http://localhost:3000/createProfile/${encodedEmail}/${encodedFullName}`);
             
         }
         else{
-            console.log(2);
             const encodedUsername = encodeURIComponent(user.username);
             res.redirect(`http://localhost:3000/sucesslogin/${encodedUsername}`);
         }

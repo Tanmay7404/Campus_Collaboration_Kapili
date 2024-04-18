@@ -20,7 +20,6 @@ export default function CreateProjectPage({projects}) {
     const [images, setImages] = useState(initialImages);
 
   const addImage = () => {
-    // Placeholder for a new image URL, you may want to get this from user input or another source
     const newImageUrl = "path_to_new_image.jpg";
     setImages([...images, newImageUrl]);
   };

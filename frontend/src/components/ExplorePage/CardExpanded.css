@@ -200,7 +200,7 @@
      height: 100%;
      width:100%;
      object-fit: cover;
-     margin-right: 5px;
+     margin-right: 10px;
   
   }
   
@@ -282,14 +282,40 @@
     padding: 20px 0;
   }
   
-  .feedback-pic{
+  .feedback-pic {
     margin: 10px 20px;
     height: 40px;
     width: 40px;
     object-fit: cover;
     border-radius: 50%;
+    transition: transform 0.3s, opacity 0.3s; /* Add transition for smooth hover effect */
     
+    
+    /* border: 2px solid transparent;  */
   }
+  
+  .feedback-pic:hover {
+    transform: scale(1.5); /* Scale up the image on hover */
+    opacity: 0.8; /* Decrease opacity on hover */ 
+    border-color:brown;
+  }
+  .like{
+    transition: transform 0.3s;
+  }
+  .like:hover {
+    transform: scale(1.3);
+    opacity: 0.8;
+  }
+  
+   .swiper-slide:hover  {
+    transform: scale(1.1);
+     opacity: 0.9; 
+    transition: transform 0.3s;
+    z-index: 1000;
+  } 
+
+  
+  
   
   
   #ratting{
@@ -473,6 +499,8 @@ h1#modalText {
   transform: translateY(10px);
 
 }
+
+
 
 
 

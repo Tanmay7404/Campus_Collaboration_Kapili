@@ -11,9 +11,8 @@ import TextField from '@mui/material/TextField';
 import UserContext from "../../userContext.jsx";
 import UserdataContext from "../../userdataContext.js";
 import { useNavigate } from "react-router-dom";
-
-
-
+import unstarsss from "../../assets/images/project-planning-header@2x.png";
+import pro from "../../assets/images/discord-profile-pictures-jktaycg4bu6l4s89.jpg";
 
 const CardExpanded = ({
   tags,
@@ -40,6 +39,7 @@ const CardExpanded = ({
   likedUsers,
   chatId
 }) => {
+ 
   var [flag,setFlag] = useState(0);
   const[feed,setfeed]=useState(false);
   const {currUser} = useContext(UserContext);
@@ -396,21 +396,21 @@ const handleLike = () => {
         <div id="details" ref={modalRef} >
         <i class="bi bi-x-lg" onClick={closeModal} style={{ fontSize:"25px",position: "absolute", top: "35px", right: "335px", cursor: "pointer", zIndex: "1000" }}></i>
           <div id="banner">
-            <img src={modalImage} alt="" id="banner-image" />
+            <img src={modalImage?modalImage:unstarsss} alt="" id="banner-image" />
             <div id="layer"></div>
             <div id="inf1">
               <h1 id="projectName">{projectname}</h1>
               <h1 id="modalText">{modalText}</h1>
               <div id="inf2" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
   <div style={{ display: 'flex', gap: '10px' }}> {/* Adjusted for proper alignment of children */}
-    <div id="like">
-      
-
-        <i
-        className={`bi ${isliked ? 'bi-heart-fill' : 'bi-heart'} clickable-icon`}
-        style={{ color: 'red', fontSize: '1.4rem' }}
-        onClick={handleLike}
-      ></i> {likes}
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div className="like">  
+        <i className={`bi ${isliked ? 'bi-heart-fill' : 'bi-heart'} clickable-icon`}
+          style={{ color: 'red', fontSize: '1.4rem' }}
+          onClick={handleLike}
+        ></i>
+      </div>   
+      <div style={{marginLeft:'8px'}}>{likes}</div>
     </div>
     <div id="rate">
       <img src={star} alt="" /> {ratings}
@@ -684,7 +684,7 @@ const handleLike = () => {
     <>
       {/* <a href={`/profile/${image.username}`} className="profile-link"> */}
         <div id="profile" onClick={()=>{navigate("/profile/"+image.username)}}>
-          <img src={image.profilePic} id="profile-picture" alt="" />
+          <img src={image.profilePic?image.profilePic:pro} id="profile-picture" alt="" />
           <div className="profile-details">
             <span>{image.username}</span>
           </div>

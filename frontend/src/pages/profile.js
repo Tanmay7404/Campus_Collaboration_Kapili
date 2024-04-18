@@ -10,7 +10,7 @@ import Project from '../components/ProfilePage/project'
 import UserdataContext from '../userdataContext';
 
 const Profile = () => {
-  const{userdata}=useContext(UserdataContex);
+  const{userdata}=useContext(UserdataContext);
   const handleLogOut = () => {
     window.location.href = 'http://localhost:8080/logout';
   };
