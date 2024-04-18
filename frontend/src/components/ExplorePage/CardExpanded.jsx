@@ -8,11 +8,12 @@ import FeedbackComponent from "./feedback.jsx";
 import DemoSwiper from "./DemoSwiper.jsx";
 import "./CardExpanded.css";
 import TextField from '@mui/material/TextField';
-import UserContext from "../../userContext.jsx";
+// import UserContext from "../../userContext.jsx";
 import UserdataContext from "../../userdataContext.js";
 import { useNavigate } from "react-router-dom";
 import unstarsss from "../../assets/images/project-planning-header@2x.png";
 import pro from "../../assets/images/discord-profile-pictures-jktaycg4bu6l4s89.jpg";
+import { useModel } from './../../tsModelContext.js'; // import the useModel hook
 
 const CardExpanded = ({
   tags,
@@ -39,10 +40,23 @@ const CardExpanded = ({
   likedUsers,
   chatId
 }) => {
- 
+ const model=useModel()
   var [flag,setFlag] = useState(0);
   const[feed,setfeed]=useState(false);
-  const {currUser} = useContext(UserContext);
+  // const {currUser} = useContext(UserContext);
+
+  const [currUser,setCurrUser] =useState(null);
+ useEffect(()=>{
+     const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+            
+        //   const foundUser = JSON.parse(loggedInUser);
+          setCurrUser(loggedInUser);
+        } else
+        {
+navigate('/login')
+        }
+ },[])
   const{userdata}=useContext(UserdataContext);
   const[isliked,setisliked]=useState(false);
  const navigate=useNavigate()
@@ -218,7 +232,29 @@ const handleLike = () => {
       });
   }
 };
-  const handleClick = () => {
+
+const checkToxicity = async (currentMessage) => {
+  try {
+    const predictions = await model.classify([currentMessage]);
+    console.log(
+      "toxic",predictions[6].results[0].match);
+      console.log(
+        "sexual",predictions[4].results[0].match);
+        console.log(
+          "threat",predictions[5].results[0].match);
+    if (predictions[6].results[0].match === true ||predictions[4].results[0].match === true ||predictions[5].results[0].match === true) {
+      return 0;
+
+  }
+  return 1;
+
+} catch (error) {
+    console.error('Error:', error);
+    // Handle error
+    return 2;
+  }
+};
+  const handleClick = async() => {
     
     if (feedbackData.rating === 0) {
       window.alert('Rating is required');
@@ -227,8 +263,9 @@ const handleLike = () => {
       window.alert('Text is required');
       return;
     }
-  
-    fetch('http://localhost:8080/projects/addfeedback/' + currUser, {
+  const toxic=await checkToxicity(feedbackData.text)
+if(toxic===1 ||toxic===2){
+  await  fetch('http://localhost:8080/projects/addfeedback/' + currUser, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -282,12 +319,19 @@ const handleLike = () => {
         });
 
 
+
       }
     })
     .catch(error => {
       console.error('Error:', error);
     });
-  };
+  }else
+  {
+    window.alert("Toxic Message Detected")
+  }
+
+
+}
   
 
   const formattedCreateDate = new Date(createdate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric'});

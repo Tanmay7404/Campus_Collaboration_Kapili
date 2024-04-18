@@ -48,10 +48,10 @@ const CardList = ({data,setModalOpen,setongoingData,setcompletedData}) => {
                 {data.list_cards.map((card, index)=> {
                     return(
                         <div className="swiper-slide" key={index}>
-                            <SwiperSlide>  
+                            <SwiperSlide key={index}>  
                               {(data.type=="Project"? 
-                              <Card details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} /> : 
-                              <Coursecard course={card} />  )}                      
+                              <Card key={index} details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} /> : 
+                              <Coursecard key={index} course={card} />  )}                      
                             </SwiperSlide>
                         </div>
                     );

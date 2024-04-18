@@ -21,19 +21,34 @@
       const{userdata}=useContext(UserdataContext);
       const navigate = useNavigate();
       const {userName} = useParams();
+      const [currUser,setCurrUser] =useState(null);
+
+      useEffect(()=>{
+          const loggedInUser = localStorage.getItem("user");
+             if (loggedInUser) {
+                 
+             //   const foundUser = JSON.parse(loggedInUser);
+               setCurrUser(loggedInUser);
+             } else
+             {
+  navigate("/login")
+             }
+      },[])
+
       // const userName="Simon"
+
+
       const handleLogOut = () => {
+        localStorage.clear()
         window.location.href = 'http://localhost:8080/logout';
+
       };
       const [selectedButton, setSelectedButton] = useState('bio');
       
       const handleButtonClick = (buttonId) => {
         setSelectedButton(buttonId);
       };
-   useEffect(()=>{
-console.log(userdata)
-console.log(userName)
-   },[])
+
       const getInTouch = async() => {
         try {
          const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
@@ -158,14 +173,22 @@ console.log(userName)
                             </svg></a>
                   </div>
                   <div id="self5">
-                  { userName!==userdata.username&&( <button id="Edit" onClick={()=>{getInTouch()}}>
-                      <img src="../../assets/images/pencil.png" alt="" id="pencil" />
-                      <p style={{textDecoration: 'none'}} >Get in Touch</p>
-                    </button>)}
-                    { userName===userdata.username&&( <button id="Edit" onClick={()=>{}}>
-                      <img src="../../assets/images/pencil.png" alt="" id="pencil" />
-                      <p style={{textDecoration: 'none'}} >Edit Your Profile</p>
-                    </button>)}
+                  {userdata && (
+  <>
+    {userName !== userdata.username && (
+      <button id="Edit" onClick={getInTouch}>
+        <img src="../../assets/images/pencil.png" alt="" id="pencil" />
+        <p style={{ textDecoration: 'none' }}>Get in Touch</p>
+      </button>
+    )}
+    {userName === userdata.username && (
+      <button id="Edit" onClick={()=>{}}>
+        <img src="../../assets/images/pencil.png" alt="" id="pencil" />
+        <p style={{ textDecoration: 'none' }}>Edit Your Profile</p>
+      </button>
+    )}
+  </>
+)}
                     <h3 onClick={handleLogOut}>Log Out</h3>
                   </div>
                 </div>

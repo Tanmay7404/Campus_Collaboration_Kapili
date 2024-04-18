@@ -7,7 +7,9 @@ import CreateProfilePage from './pages/createProfile';
 import CreateCoursePage from './pages/createCourse';
 import CreateProjectPage from './pages/createProject';
 
-
+import { ModelProvider } from './tsModelContext.js';
+import { UserProvider } from './userContext.jsx';
+import UserdataState from './userdataState.js';
 // import ChatpageCalling from './pages/ChatpageCalling';
 
 
@@ -15,12 +17,12 @@ import CreateProjectPage from './pages/createProject';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
     <App/>
     </BrowserRouter>
 
-  </React.StrictMode>
+  // </React.StrictMode>
   // <CardList/>
   // <ChatpageCalling/>
 );

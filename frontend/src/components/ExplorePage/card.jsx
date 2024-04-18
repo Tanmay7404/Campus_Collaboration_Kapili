@@ -16,7 +16,6 @@ import CardExpanded from "./CardExpanded";
 import ReactDOM from 'react-dom';
 
 const Card = ({details,setongoingData,setcompletedData}) =>{
-    console.log(typeof Number (details.rating))
     const [modalOpen, setModalOpen] = useState(false);
 
     let [searchParams, setSearchParams] = useSearchParams();
@@ -25,7 +24,6 @@ const Card = ({details,setongoingData,setcompletedData}) =>{
    );
    useEffect(()=>
 {
-    console.log("card"+ query)
 if(details.name===query)
 {
 setModalOpen(true)
@@ -52,6 +50,7 @@ setModalOpen(true)
 
     const modalContent = (
         <div style={{
+
             position: 'fixed',
             top: 0,
             left: 0,

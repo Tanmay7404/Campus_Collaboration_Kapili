@@ -1,13 +1,26 @@
 import React, { useState, useEffect, useRef,useContext } from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet,useNavigate } from 'react-router-dom';
 import logoImg from "../../assets/images/logo.png";
 import searchSVG from "../../assets/images/search.svg";
 import './navbar.css';
 import Tag from "./tag.jsx";
-import UserContext from '../../userContext.jsx';
+// import UserContext from '../../userContext.jsx';
 
 const Navbar = (props) => {
-  const{currUser}=useContext(UserContext);
+  const [currUser,setCurrUser] =useState(null);
+
+  const navigate=useNavigate()
+  useEffect(()=>{
+      const loggedInUser = localStorage.getItem("user");
+         if (loggedInUser) {
+             
+         //   const foundUser = JSON.parse(loggedInUser);
+           setCurrUser(loggedInUser);
+         } else
+         {
+navigate('/login')
+         }
+  },[])  
   const [showTag, setShowTag] = useState(false);
   const searchRef = useRef(null);
   const tagRef = useRef(null);

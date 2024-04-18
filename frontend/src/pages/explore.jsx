@@ -8,30 +8,42 @@ import backg from '../assets/images/img1.jpeg';
 import sli1 from '../assets/images/slider-img3.jpeg';
 import sli2 from '../assets/images/slider-img1.png';
 import profile from '../assets/images/profile.jpeg';
-import UserContext from "../userContext.jsx";
+// import UserContext from "../userContext.jsx";
 import profimage from '../assets/images/profile.jpeg'
 import courseimage from '../assets/images/swiggy.png'
 import UserdataContext from '../userdataContext.js';
-
+import { useNavigate } from 'react-router-dom';
 
 const Explore = () => {
-    console.log(5);
     const [ongoingData,setongoingData] = useState([])
     const [completedData,setcompletedData] = useState([])
     const [course,setcourseData] = useState([])
     const[likedproj,setlikedproj] =useState([]);
     // const[userdata,setuserdata]=useState(null);
-
-
-    const {currUser} = useContext(UserContext);
-
     const{userdata}=useContext(UserdataContext);
-    console.log(69);
-    console.log(userdata);
-    console.log(79);
-    console.log(currUser);
+
+      const [currUser,setCurrUser] =useState(null);
+      const navigate=useNavigate()
+
+    useEffect(()=>{
+        const loggedInUser = localStorage.getItem("user");
+           if (loggedInUser) {
+               
+           //   const foundUser = JSON.parse(loggedInUser);
+             setCurrUser(loggedInUser);
+           } else
+           {
+navigate("/login")
+           }
+    },[])
     useEffect(() => {
         async function fetchData() {
+            
+               if (currUser) {
+                   
+               //   const foundUser = JSON.parse(loggedInUser);               }  
+
+
             try {
                 const response = await fetch("http://localhost:8080/projects/ongoingProjects/"+currUser, {
                     method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
@@ -48,17 +60,16 @@ const Explore = () => {
                 return;
             }
             catch(err){
-                console.log(11111111);
                 setongoingData([]);
                 return;
+            }}else{
+
             }
         }
         fetchData();
         
     },[currUser,setongoingData])
-    console.log(41);
-    console.log(ongoingData);
-
+  
 
 
 
@@ -70,6 +81,8 @@ const Explore = () => {
 
     useEffect(() => {
         async function fetchData() {
+            if(currUser){
+
             try {
                 const response = await fetch("http://localhost:8080/projects/completedProjects/"+currUser, {
                     method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
@@ -86,11 +99,10 @@ const Explore = () => {
                 return;
             }
             catch(err){
-                console.log(11111111);
                 setcompletedData([]);
                 return;
             }
-        }
+        }}
         fetchData();
         
     },[currUser,setcompletedData])

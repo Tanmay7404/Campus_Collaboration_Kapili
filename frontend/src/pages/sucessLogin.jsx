@@ -1,8 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { useParams,Navigate } from 'react-router-dom';
-import UserContext from '../userContext';
 const RedirectToOtherPage = () => {
-  const {setCurrUser} = useContext(UserContext);
   const {username} = useParams();
   useEffect(() => {
     // Call your function here
@@ -11,7 +9,9 @@ const RedirectToOtherPage = () => {
 
   const redirectToOtherPage = () => {
     const decodedUsername = decodeURIComponent(username);
-    setCurrUser(decodedUsername);
+    localStorage.setItem('user',decodedUsername)
+ //   setCurrUser(decodedUsername);
+
   };
 
   // Return null to render nothing

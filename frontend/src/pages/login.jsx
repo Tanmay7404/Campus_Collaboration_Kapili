@@ -3,6 +3,9 @@ import "./login.css";
 import bg2 from "../assets/images/bg2.png";
 import logo from "../assets/images/logo.png";
 const Login = () => {
+
+
+  
   const handleLogin = () => {
     window.location.href = "http://localhost:8080/auth_outlook";
   };

@@ -10,20 +10,45 @@ import io from 'socket.io-client';
 import Axios from 'axios';
 import  { useEffect ,useRef,useContext} from 'react';
 import UserdataContext from '../userdataContext';
+import { useModel } from './../tsModelContext'; // import the useModel hook
+import default_img from '../assets/images/discord-profile-pictures-jktaycg4bu6l4s89.jpg';
+
 // import * as tf from '@tensorflow/tfjs'
-import {load } from '@tensorflow-models/toxicity'
-import { useSearchParams } from "react-router-dom";
+
+// import {load } from '@tensorflow-models/toxicity'
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 
 const socket=io('http://localhost:8080')
 const ChatPage = () => {
-  
+  const model = useModel(); // access the model from the context
+  const [currUser,setCurrUser] =useState(null);
+   const navigate=useNavigate()
+  useEffect(()=>{
+      const loggedInUser = localStorage.getItem("user");
+         if (loggedInUser) {
+             
+         //   const foundUser = JSON.parse(loggedInUser);
+           setCurrUser(loggedInUser);
+         } else
+         {
+navigate('/login')
+         }
+  },[])
+
+  useEffect(() => {
+    // Use the model in your component
+    if (model) {
+      console.log("Model loaded:", model);
+      // Make predictions using the model
+    }
+  }, [model]);
   const{userdata}=useContext(UserdataContext);
 
   const [selectedPerson, setSelectedPerson] = useState(null); // Initialize with the first person
   const [currentDate, setCurrentDate] = useState(new Date());
- const [userObjectId,setUserObjectId]=useState(userdata._id)
- const [chatList,  setChatList]=useState([])
+  const [userObjectId, setUserObjectId] = useState(userdata ? userdata._id : null);
+  const [chatList,  setChatList]=useState([])
  const [searchQuery, setSearchQuery] = useState('');
  const [userFriends, setUserFriends] = useState([]);
  const [people, setPeopleData] = useState([]);
@@ -32,7 +57,6 @@ const ChatPage = () => {
  const [globalChats,setGlobalChats]=useState([]);
  const [globalPeople,setGlobalPeople]=useState([]);
  const divRef = useRef(null);
- const model=useRef(null);
  let [searchParams, setSearchParams] = useSearchParams();
  let [query, setQuery] = useState(
   searchParams.get("name")
@@ -51,44 +75,11 @@ const filteredPeople = people.filter((person, index) => {
   } 
 });
 
-
-
-
-
- useEffect(()=>{
-  async function loadModel(){
-    try {
-      const threshold = 0.9;
-      model.current = await load(threshold);
-    } catch (error) {
-      console.error('Error loading model:', error);
-    }
-  }
-  loadModel()
-  },[])
- 
- //const [getAllPeople,]
  useEffect(() => {
    selectedPersonRef.current = selectedPerson;
 
  }, [selectedPerson]);
-// const fetchUserFriends = async () => {
-//   try {
-//     const response = await fetch('http://localhost:8080/user/getuserfriends/'+currentUser.name, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       }
-//       // You can include additional headers or body if needed
-//     });
 
-  
-//     const data = await response.json();
-//     setUserFriends(data);
-//   } catch (error) {
-//     console.error('Error fetching user friends:', error);
-//   }
-// };
 const acceptUserCollaborate = async(curr) => {
   const link = "http://localhost:8080/projects/addNewCollaborator/" + curr.senderName+"/"+curr.name ;
   console.log(link);
@@ -152,23 +143,8 @@ const rejectUserCollaborate = async(curr) => {
 console.log(person)
   
 
-    // const UserResponse = await fetch('http://localhost:8080/getUser/'+userdata.username, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   }
-     
-    // });
+
     setCurrChatId(person.chatId)
-    
-    // const userId = (await UserResponse.json())._id;
-    // const UserResponseasd = await fetch('http://localhost:8080/chats/getTotalChats/'+userdata.username, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   }
-     
-    // });
   if(person.messages.length===0){
     const ChatResponse = await fetch(`http://localhost:8080/chats/getAllMessages/${person.chatId}`, {
       method: 'GET',
@@ -280,7 +256,9 @@ useEffect(() => {
  
   useEffect(() => {
     const fetchData = async () => {
+      if(userdata){
       try {
+
         console.log("fetching")
         const response = await fetch('http://localhost:8080/user/getUserChatList/'+userdata.username, {
           method: 'GET',
@@ -292,10 +270,6 @@ useEffect(() => {
   
         const data = await response.json();
         setPeopleData(data)
-        // console.log(121)
-        // console.log(data)
-        // console.log(121)
-
          setCount(prev=>prev+1)
         for (const peep of data){
           socket.emit("join_room",peep.chatId)
@@ -317,8 +291,8 @@ useEffect(() => {
       return;
     };
     fetchData(); // Call the fetchData function
-  
-  }, []);
+    }
+  }, [userdata]);
 
   useEffect(()=>{
     if(divRef.current){
@@ -535,9 +509,14 @@ const [currentMessageList, setCurrentMessageList] = useState([]);
 
 const checkToxicity = async (currentMessage, newMessage, message_id) => {
   try {
-    const predictions = await model.current.classify([currentMessage]);
-    console.log(predictions[6].results[0].match);
-    if (predictions[6].results.match === true ||predictions[4].results.match === true ||predictions[5].results.match === true) {
+    const predictions = await model.classify([currentMessage]);
+    console.log(
+      "toxic",predictions[6].results[0].match);
+      console.log(
+        "sexual",predictions[4].results[0].match);
+        console.log(
+          "threat",predictions[5].results[0].match);
+    if (predictions[6].results[0].match === true ||predictions[4].results[0].match === true ||predictions[5].results[0].match === true) {
       socket.emit("delete_chat_message", {
         room: currChatId,
         message: newMessage,
@@ -565,10 +544,7 @@ const handleMessageClassification = async () => {
     await checkToxicity(message.currentMessage, message.newMessage, message.message_id);
     setCurrentMessageList(prevList => prevList.filter(msg => msg.message_id !== message.message_id));
 
-    // Remove the message from the list after classification
-    console.log(141)
-    console.log(message)
-    console.log(141)
+ 
 
   }
 };
@@ -672,32 +648,7 @@ useEffect(() => {
           message_id
         }
       ]);
-      // Handle success response for the second fetch
-      
-
-      // const predictions=model.current.classify([currentMessage])
-      // console.log(predictions)
-      // let p=true
-      // if(p===true)
-      // {
-
-      //  socket.emit("delete_chat_message",{room:currChatId,message:newMessage,username:currentUser.name})
-
-      //   var link="http://localhost:8080/chats/deleteMessage/"+currChatId+"/"+message_id
-      //   // Second fetch
-      //   console.log(link)
-      //   const deleteResponse = await fetch(link, {
-      //     method: 'POST',
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify({
-      //       sender:userObjectId ,
-      //       senderName:currentUser.name,
-      //       message: currentMessage,
-      //     }),
-      //   });
-      // }      
+     
 
     } catch (error) {
       console.error('Error:', error);
@@ -751,23 +702,23 @@ useEffect(() => {
             {!global && (
               <div id="persons">
                 {searchQuery === ''
-                  ? people.map((person) => (
+                  ? people.map((person,index) => (
                       <div
-                        key={person.id}
+                        key={index}
                         className="person"
                         onClick={() => handlePersonClick(person)}
                       >
-                        <img src={person.profilePic} alt="" className="profilePic" />
+                        <img src={person.profilePic?person.profilePic:default_img} alt="" className="profilePic" />
                         {person.name}
                       </div>
                     ))
-                  : filteredPeople.map((person) => (
+                  : filteredPeople.map((person,index) => (
                       <div
-                        key={person.id}
+                        key={index}
                         className="person"
                         onClick={() => handlePersonClick(person)}
                       >
-                        <img src={person.profilePic} alt="" className="profilePic" />
+                        <img  key={index} src={person.profilePic?person.profilePic:default_img} alt="" className="profilePic" />
                         {person.name}
                       </div>
                     ))}
@@ -778,7 +729,7 @@ useEffect(() => {
 
           </div>
           <div id="right">
-          {!global&&(
+          {!global&&userdata&&(
             <div id="chatinf">
               <img
                 src={selectedPerson?.profilePic}
@@ -795,7 +746,7 @@ useEffect(() => {
            
             </div>
                )}
-                {global&&(
+                {global&&userdata&&(
                   <div id="chatinf">
                     <img
                       src={selectedPerson?.profilePic}
@@ -936,12 +887,14 @@ useEffect(() => {
                       >
                         {!index || (message.senderName !== globalChats[index - 1]?.senderName) ? (
                           <inf
+                          key={index}
                             style={{
                               textAlign: message.senderName === userdata.username ? 'right' : 'left',
                               borderRadius:'7px',
                             }}
                           >
                             <img
+                             key={index}
                               src={
                                 message.senderName === userdata.username
                                   ? userdata.profileInfo.profilePicture.url
@@ -954,11 +907,13 @@ useEffect(() => {
                               }}
                             />
                             <inf2
+                             key={index}
                               style={{
                                 textAlign: message.senderName === userdata.username ? 'right' : 'left',
                               }}
                             >
                               <div
+                               key={index}
                                 id="Name"
                                 style={{
                                   textAlign: message.senderName === userdata.username ? 'right' : 'left',
@@ -967,6 +922,7 @@ useEffect(() => {
                                 {message.senderName === userdata.username ? 'Me' : globalPeople.find((p) => p.name === message.senderName)?.name}
                               </div>
                               <inf3
+                               key={index}
                                 style={{
                                   textAlign: message.senderName === userdata.username ? 'right' : 'left',
                                 }}
@@ -980,6 +936,7 @@ useEffect(() => {
                         ) : null}
                         {message.message && (
                           <div
+                          key={index}
                             className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                             style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                           >
@@ -988,6 +945,7 @@ useEffect(() => {
                         )}
                         {message.img && (
                           <div
+                          key={index}
                             className={`chat ${message.senderName === userdata.username ? 'me' : ''}`}
                             style={{ textAlign: message.senderName === userdata.username ? 'right' : 'left' }}
                           >

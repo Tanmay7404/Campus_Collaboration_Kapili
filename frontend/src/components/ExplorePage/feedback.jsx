@@ -2,14 +2,37 @@ import React,{useState,useContext,useEffect}from 'react';
 import star from '../../assets/images/star.svg'; // Import your star image
 import unstar from '../../assets/images/unstared.svg'; 
 // Import your unstar image
-import UserContext from '../../userContext';
-
+// import UserContext from '../../userContext';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const FeedbackComponent = ({ feedbackArray }) => {
-  const{currUser}=useContext(UserContext);
-  const currentUserIndex = feedbackArray.findIndex(feedback => feedback.reviewer === currUser);
+  const [currUser,setCurrUser] =useState(null);
+  const navigate=useNavigate()
+  useEffect(()=>{
+    const loggedInUser = localStorage.getItem("user");
+       if (loggedInUser) {
+           
+       //   const foundUser = JSON.parse(loggedInUser);
+         setCurrUser(loggedInUser);
+       } else
+       {
+navigate('/login')
+       }
+},[])
+ useEffect(()=>{
+     const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+            
+        //   const foundUser = JSON.parse(loggedInUser);
+          setCurrUser(loggedInUser);
+        } else
+        {
+navigate('/login')
+        }
+ },[])
+   const currentUserIndex = feedbackArray.findIndex(feedback => feedback.reviewer === currUser);
 
   if (currentUserIndex >= 0) {
     const currentUserReview = feedbackArray.splice(currentUserIndex, 1)[0];

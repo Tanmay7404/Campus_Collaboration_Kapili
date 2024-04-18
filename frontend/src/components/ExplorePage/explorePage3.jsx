@@ -3,7 +3,6 @@ import CardList from './cardlist.jsx';
 import "./explorePage3.css";
 
 const ExplorePg3 = (props) => {
-    console.log(props);
     return (
         <div id ="page3">
             {props.allGroups.map((dataItem, index) => (
