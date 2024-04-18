@@ -9,7 +9,8 @@ const {createRoom} = require("../functions/Chats_Socket/socket.js");
 class ProjectController {
     async addProject(project_details) {
         try {
-            console.log(project_details)
+            console.log("Project_Details");
+            console.log(project_details);
             var project = new Project({
                 title: project_details.title,
                 name : project_details.name,
@@ -34,7 +35,8 @@ class ProjectController {
 
             
             await project.save();
-
+            console.log("Project")
+            console.log(project);
             return project._id;
         } catch (err) {
             throw new Error(err);

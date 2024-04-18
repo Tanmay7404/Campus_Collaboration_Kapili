@@ -137,7 +137,10 @@ gap: 10px;
 
 }
 
-
+.rightcontentPP .profileCard{
+  height: calc((100% - 20px)/2);
+  width: calc((100% - 40px)/5);
+}
 
 
 /* Remove color change on hover and focus for outline buttons */

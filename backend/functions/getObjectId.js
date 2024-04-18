@@ -81,7 +81,7 @@ async function courseNameToIdList(courseNameList) {
 const TagModel = require("../models/tagModels.js");
 
 async function tagNameToId(tag_name) {
-    var tag = await TagModel.findOne({ name: tag_name });
+    var tag = await TagModel.findOne({ name: tag_name.tagname });
     if (tag == null) {
         throw new Error("Tag Not Found");
     }
@@ -90,14 +90,15 @@ async function tagNameToId(tag_name) {
 
 async function tagNameToIdList(tagNameList) {
     var tagIdList = [];
-    const tags = await TagModel.find({ name: { $in: tagNameList } });
-    if (tags.length === tagNameList.length) {
-        tags.forEach(tag => {
-            tagIdList.push(tag._id);
-        });
+    try{
+        await Promise.all(tagNameList.map(async (ele) => {
+            var data = await tagNameToId(ele);
+            tagIdList.push(data);
+        }));
+
         return tagIdList;
-    } else {
-        throw new Error("Tag Not Found");
+    } catch(err){
+        throw new Error(err.message);
     }
 }
 

@@ -110,7 +110,9 @@ const Bio = () => {
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {Object.entries(profiles).map(([id, { name, imageUrl }]) => (
-                <Button style={{textDecoration: 'none'}} ><ProfileCard key={id} name={name} imageUrl={imageUrl} /></Button>
+                <div className="profileCard">
+                  <ProfileCard key={id} name={name} imageUrl={imageUrl} />
+                </div>
             ))}
       </div>
     </div>

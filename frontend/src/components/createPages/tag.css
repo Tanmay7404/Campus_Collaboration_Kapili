@@ -1,16 +1,15 @@
-#filterTags #taglist{
+#skillsAdd #taglist{
     padding-top: 30px;
     /* transform: translateY(800px); */
     position: absolute;
     z-index: 11;
-    top: 74.8px;
+    
     border-radius: 8px;
-    left: 0;
-    right: 80px;
+    
+    
     margin-left: auto;
     margin-right: auto;
-    width: 30vw;
-    height: 500px;
+    height: 200px;
     overflow-y: scroll;
     gap: 40px;
     background: linear-gradient(212.81deg, rgba(0, 0, 0, 0.9) 3.07%, rgba(22, 22, 22, 0.9) 95.64%);
@@ -22,29 +21,48 @@
 
 
 /* Hide scrollbar for Chrome, Safari and Opera */
-#filterTags #taglist::-webkit-scrollbar {
+#skillsAdd #taglist::-webkit-scrollbar {
     display: none;
   }
   
   /* Hide scrollbar for IE, Edge and Firefox */
-#filterTags #taglist {
--ms-overflow-style: none;  /* IE and Edge */
-scrollbar-width: none;  /* Firefox */
-}
+#skillsAdd  #taglist {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
 
-#filterTags .box{
+#skillsAdd .box{
     display: flex;
     flex-direction: column;
     gap: 5px;
     height: auto;
+    width: 100%;
 }
-#filterTags .title{
+
+.fillWidthDiv4 .box1{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+    background-color: #131313;
+    padding:20px;
+    border-radius: 10px 10px 10px 10px;
+}
+.fillWidthDiv4 .content1{
+    display: flex;
+    flex-wrap: wrap;
+    padding:5px;
+    border-radius: 10px 10px 10px 10px;
+    min-height: 40px;
+    background-color:  #3B3B3B;
+}
+
+#skillsAdd .title{
     /* height: 95px; */
     width: 100%;
     color: white;
-    
 }
-#filterTags .content{
+#skillsAdd .content{
     display: flex;
     flex-wrap: wrap;
     width: calc(30vw - 20px) !important;

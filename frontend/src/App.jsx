@@ -33,7 +33,7 @@ import Profile from './components/ProfilePage/profile.js';
 import SucessLogin from "./pages/sucessLogin.jsx"
 import UserCardList from './components/searchuser/usercardlist.js';
 import CreateProjectPage from './pages/createProject.js';
-import ExplorePg1 from './components/ExplorePage/explorePage1.jsx';
+import CreateCoursePage from './pages/createCourse.js';
 
 function App() {
   return (
@@ -52,7 +52,7 @@ function App() {
         </Route>
         <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>
         <Route path = "/createProject" element={<CreateProjectPage/>}/>
-        <Route path = "/createCourse" element={<TestPage/>}/>
+        <Route path = "/createCourse" element={<CreateCoursePage/>}/>
         <Route path = "/editProfile/:username" element={<TestPage/>}/>
         <Route path = "/editProject/:projectname" element={<TestPage/>}/>
         <Route path = "/editCourse/:coursename" element={<TestPage/>}/>

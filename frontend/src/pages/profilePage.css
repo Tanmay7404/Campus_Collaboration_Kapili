@@ -3,30 +3,33 @@
 iframe#webpack-dev-server-client-overlay{ display:none!important }
 
 :root {
-    --button-color: rgb(0, 51, 255); /* Define a CSS variable for button color */
-    --button-border-color: rgb(0, 51, 255); /* Define a CSS variable for button border color */
-  
-  }
+  --button-color: rgb(0, 51, 255); /* Define a CSS variable for button color */
+  --button-border-color: rgb(0, 51, 255); /* Define a CSS variable for button border color */
+
+}
   .createPage {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; 
-    background-color: black; }
+    background-color: black; 
+    overflow-y: scroll;
+    font-size: 16px;
+  }
   
   .contentPP {
-    width: 55%; /* 80% of the width */
-    height: 100%; 
+    width: 55vw; /* 80% of the width */
     background-color: #272727;
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    padding-left: 64px;
+    padding-right: 64px;
     /* Fills the whole height */
   }
  
-  .buttonHover:hover {
-    background-color: white !important; /* Change hover color */
-    color:black !important; 
-  }
+  
   .close-icon {
-margin-left: auto; 
+    margin-left: auto; 
 
 /* Adjust right position as needed */
   }
@@ -35,119 +38,150 @@ margin-left: auto;
   }
   .fillWidthDiv {
     display: flex;
-    flex: 1;
-
-    height: 6%;
-    /* background-color: green; */
-    padding: 10px;
-    /* This makes the div fill the remaining width */
-    
+    width: 100%;
+    gap: 15px;
+ 
   }
+  .fillWidthDiv > div:nth-child(1){
+    flex: 4.5;
+
+  }
+  .fillWidthDiv > div:nth-child(2){
+    flex: 6.5;
+  }
+  
   .fillWidthDiv2{
+    display: flex; 
     height: 6%;
     /* background-color: blue; */
-    padding-left: 64px;
+    
   }
 
   .fillWidthDiv3{
     display: flex;
-  
-    flex:content;
-    height: 15%;
-    /* background-color: red; */
-    padding-left: 64px;
+    width: 70%;
+    height: 100px;
+    gap: 10px;
   }
-  .picture_upload{
-    padding-top: 15px;
 
+  .fillWidthDiv4{
+    display: flex;
+    flex-direction: column;
+    flex:content;
+    gap: 5px;    
   }
-  .profile-image {
-     /* Ensure the image fills the circular div */
-     width: 100px;
-    height: 100px; /* Ensure the image fills the circular div */
-    border-radius: 50%;
+  
+  .fillWidthDiv5{
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    
+  }
+
+  .buttonHover:hover {
+    background-color: rgb(73, 73, 73) !important;
+    color:black !important; 
   }
   .imageContainer{
-display: flex;
-align-items: center;
-margin:0;
-    width:100px;
-    height:100px;
-    /* background-color: aquamarine; */
+    align-items: center;
+    margin:0;
+    flex: 0 0 100px;
+    width: 120px;
+    height: 100px;
+    padding-left: 10px;
+    padding-right: 10px;
+    
+  }
+
+  .imageContainer2{
+    align-items: center;
+    margin:0;
+    flex: 0 0 100px;
+    width: 180px;
+    height: 120px;
+    padding-left: 10px;
+    padding-right: 10px;
+    
   }
   .buttonContainer{
-    display: flex;
+    
     align-items: center;
-    margin-Left:0;
-    margin-right: 0;
-        width:200px;
-        height:100%;
-        /* background-color: aquamarine; */
-      }
+    flex: 1;
+    margin-top: auto;
+    margin-bottom: auto;
+    
+    height:40%;
+    /* min-height: fit-content; */
+    
+  }
+  .heading{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 24px;
+  }
+  .profile_pic_text{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 14px;
+    color:#dbdbdb;
+
+  }
+  .text_input{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 16px;
+    width: fit-content;
+    flex-grow: 0;
+  }
+  .profile-image {
+    
+    border-radius: 50%;
+    width: 100px;
+    height: 100%;
+  }
+
+
+  
+  
+  
 .name{
     display: flex;
     flex: 1;
     
     height: fit-content;
     /* background-color: rgb(247, 0, 255); */
-    padding-left: 64px;
-}
-.space
-{
-    display: flex;
-    flex: 1;
     
-    height: 1%;
-    /* background-color: rgb(255, 0, 85); */
-    padding-left: 64px;
 }
+
 .E-mail{
-    display: flex;
-    flex: 1;
-    height: 4%;
-    
-    /* background-color: rgb(200, 255, 0); */
-    padding-left: 64px;
+  display: flex;
+  flex: auto;
+  width: fit-content;
+  gap: 20px;
+  flex-grow: 0;
+  /* background-color: rgb(200, 255, 0); */
 }
 .email1{
     width:35%;
     height: fit-content;
 }
-.box {
-    background-color: black ;
-    transition: background-color 0.3s ease;
-  }
-  
-  .box:hover {
-    background-color: white ;
-    color:black
-    /* Change to the desired color on hover */
-  }
+
 .email2{
     width:100%;
     height: fit-content;
 
     padding-left: 15px;
-    padding-right: 64px
 }
-.textfield{
+/* .textfield{
     display: flex;
+    flex-direction: column;
     flex: 1;
     height: fit-content;
-    
-
-    padding-left: 64px;
-    padding-right: 64px;
-    
-}
+} */
 
 .textfield1{
   display: flex;
   flex: 1;
-
-  padding-left: 64px;
-  padding-right: 64px;
-  
 }
 
 
@@ -256,8 +290,8 @@ input:checked + .slider:before {
   height: 8%;
   
   /* background-color: rgb(200, 255, 0); */
-  padding-left: 64px;
-  padding-right: 64px;
+  
+ 
 }
 
 .customButton:hover {
@@ -303,21 +337,21 @@ input:checked + .slider:before {
 
 
 
-          .deleteButton {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            visibility: hidden; /* Initially hide the button */
-          }
+.deleteButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: 16px;
+  /* visibility: hidden; Initially hide the button */
+}
 
 .imageContainer:hover .deleteButton {
-  visibility: visible; 
+  visibility: visible; /* Show the button when hovering over the image container */
 }
 
   

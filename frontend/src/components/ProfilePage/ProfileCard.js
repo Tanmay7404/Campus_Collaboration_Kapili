@@ -1,5 +1,6 @@
 // ProfileCard.js
 import React from 'react';
+import profilepic from "../../assets/images/profile.jpg"
 
 function ProfileCard({ name, imageUrl }) {
   const cardStyle = {
@@ -14,7 +15,8 @@ function ProfileCard({ name, imageUrl }) {
   const imageStyle = {
     width: '70%', // Adjust the image size as needed
     height: '70%',
-    borderRadius: '50%',
+    // width: "100%",
+    // height: "100%"
     objectFit: 'cover'
   };
 
@@ -26,11 +28,11 @@ function ProfileCard({ name, imageUrl }) {
   };
 
   return (
-    <div style={cardStyle}>
-      <img src={imageUrl} alt="Profile" style={imageStyle} />
-      <div style={nameStyle}>{name}</div>
+    <div >
+      <img src={profilepic} alt="Profile" style={imageStyle} />
+      {/* <div style={nameStyle}>{name}</div> */}
     </div>
   );
 }
-
+    
 export default ProfileCard;

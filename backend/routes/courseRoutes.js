@@ -18,8 +18,9 @@ courseRouter.post("/addCourse", async (req, res) => {
         console.log(course_details);
         var CC=new CourseController()
         course_id = await CC.addCourse(course_details);
-        let course_title = await Course.findOne({title : req.body.title});
-        console.log(course_title);
+        console.log("COURSEID",course_id);
+        // let course_title = await Course.findOne({title : req.body.title});
+        // console.log(course_title);
         
         //getObjectId.courseNameToId(course_title.title);
         if(req.body.collaboratorName.length>0)

@@ -5,11 +5,13 @@ import './eachtag.css'
 function Eachtag({skill,color, changeTagList, selectedList}) {
   const [selected, changeSelected] = useState(false);
   const divstyle = {
-    border: `2px solid ${color}`,
+    border: `1px solid ${color}`,
+    borderRadius: "5px",
     color: color,
   };
   const selectedStyle ={
     backgroundColor: `${color}`,
+    borderRadius: "5px",
     color: "rgba(0, 0, 0, 0.9)"
   }
   useEffect(()=>{

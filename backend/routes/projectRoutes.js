@@ -35,6 +35,7 @@ projectRouter.post("/addNewProject", async (req,res)=>{
         };
         var PC = new ProjectController();
          project_id = await PC.addProject(project_details);
+         console.log(project_id);
         if(req.body.collaboratorName){
           await PC.addCreators(project_id,req.body.collaboratorName);
         }

@@ -102,10 +102,11 @@ class CourseController {
         console.log("NO COMPLETED COURSES");
     }
 
-    async addTags(course_title , tags){
+    async addTags(course_id , tags){
         try {
-            const course = await Course.findOne({title : course_title});
+            const course = await Course.findById(course_id);
             let tagId = await getObjectId.tagNameToIdList(tags);
+            console.log("tagId",tagId);
             course.tags = course.tags.concat(tagId);
             await course.save();
         } catch (error) {
