@@ -1,7 +1,7 @@
 import React from 'react';
 import './team.css';
 
-import tanmayPic from '../../assets/TeamImage/assets/TeamImage/tanmay.jpg';
+import tanmayPic from '../../assets/TeamImage/tanmay.jpg';
 import simonPic from '../../assets/TeamImage/simon.jpg';
 import soumyaPic from '../../assets/TeamImage/soumya.jpg';
 import wahidPic from '../../assets/TeamImage/wahid.jpg';
