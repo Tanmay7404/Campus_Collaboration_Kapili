@@ -2,6 +2,8 @@ import React from "react";
 import "./login.css";
 import bg2 from "../assets/images/bg2.png";
 import logo from "../assets/images/logo.png";
+import Team from "../components/Log-in/team.js";
+
 const Login = () => {
 
 
@@ -76,6 +78,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <Team/>
     </>
   );
 };

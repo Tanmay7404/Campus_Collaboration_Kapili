@@ -1,0 +1,127 @@
+/* Base color variables for easy theme management */
+:root {
+  --background-dark: #121212;
+  --background-light: #2a2a2a;
+  --text-color: #ccc;
+  --text-highlight: #fff;
+  --hover-background: #f3c611;
+  --icon-color-hover: #0a66c2;
+}
+h2 {
+  color: white; /* Sets the default text color */
+  background-color: black; /* Sets the background color */
+}
+
+h2::first-letter {
+  color: #FF6347; /* Tomato color for the first letter */
+  font-size: 150%; /* Makes the first letter larger */
+}
+h2 {
+  color: white; /* Sets the default text color */
+  background-color: black; /* Sets the background color */
+}
+
+h3::first-letter {
+  color: #f7d205ec; /* Tomato color for the first letter */
+  font-size: 150%; /* Makes the first letter larger */
+}
+
+/* Basic styles for team section */
+.team-section {
+  padding: 20px;
+  text-align: center;
+  background: var(--background-dark);
+  color: var(--text-highlight);
+}
+
+/* Grid layout for team members */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px 0;
+}
+
+/* Styles specific to each team member */
+.team-member {
+  position: relative;
+  overflow: hidden;
+  border-radius: 40%;  /* Adjusted for an oval shape */
+  width: 200px;
+  height: 220px;  /* Increased height for a slightly elongated shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: linear-gradient(145deg, #1e1e1e, var(--background-light));
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+/* Hover effects for team members */
+.team-member:hover {
+  transform: scale(1.05);
+  border-color: var(--hover-background);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+/* Member images */
+.team-member img {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease-in-out;
+  border-radius: 40%;  /* Matched to the border-radius of the container for consistency */
+  position: absolute;
+}
+
+.team-member:hover img {
+  opacity: 0;
+}
+
+/* Text visibility toggling */
+.team-member h3, .team-member p, .team-member .description {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s linear;
+}
+
+.team-member:hover h3, .team-member:hover p, .team-member:hover .description {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s 0s, opacity 0.3s linear;
+}
+
+/* Description styles */
+.team-member .description {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  bottom: 10px;  /* Adjusted position to better fit the text */
+  font-size: 14px;  /* Slightly larger font to accommodate more text */
+  padding: 5px 10px; /* Added padding for better text fit without cutting off */
+  color: var(--text-color);
+  background: rgba(78, 77, 77, 0.5); /* Optional: added background to enhance readability */
+  border-radius: 5px; /* Rounded corners for the description background */
+}
+
+/* LinkedIn icon specific styles */
+.linkedin-icon, .linkedin-icon svg {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  transition: fill 0.2s ease-in-out;
+}
+
+.team-member:hover .linkedin-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: visible;
+}
+a svg{
+  pointer-events: none;
+}
+a.linkedin-icon:hover svg {
+  fill: var(--icon-color-hover);
+}
