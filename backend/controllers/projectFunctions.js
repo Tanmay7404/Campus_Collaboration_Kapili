@@ -4,6 +4,7 @@ const User = require("../models/userModel.js");
 const ChatController = require("./chatFunctions.js");
 const Chat = require("../models/chatModel.js");
 const {createRoom} = require("../functions/Chats_Socket/socket.js");
+const Tag = require("../models/tagModels.js");
 
 
 class ProjectController {
@@ -173,6 +174,17 @@ class ProjectController {
             return 1;
         } catch(err){
             throw new Error(err);
+        }
+    }
+    async getTagInfoById(tagId) {
+        try {
+            const tag = await Tag.findById(tagId);
+            if (!tag) {
+                throw new Error("Tag not found");
+            }
+            return tag;
+        } catch (error) {
+            throw new Error(error);
         }
     }
 

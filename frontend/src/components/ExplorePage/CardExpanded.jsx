@@ -41,6 +41,7 @@ const CardExpanded = ({
   chatId,
   check
 }) => {
+  console.log(check);
  const model=useModel()
   var [flag,setFlag] = useState(0);
   const[feed,setfeed]=useState(false);

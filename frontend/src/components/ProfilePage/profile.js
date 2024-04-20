@@ -116,6 +116,8 @@
 
 
       const [check, setcheck] = useState("profile");
+      console.log('balma');
+      console.log(dataprofile);
 
       return (
             <>

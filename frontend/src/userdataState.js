@@ -5,17 +5,21 @@ import UserContext from "./userContext.jsx";
 const UserdataState = (props) => {
     const [userdata, setuserData] = useState();
     
-    const currUser = localStorage.getItem("user");
+    const [currUser ,setCurrUser]=useState(localStorage.getItem("user"));
+    console.log('pop');
+    console.log(currUser);
+    const [trigger ,setTrigger]=useState(0);
 
-    
+    useEffect(()=>{
+
+setCurrUser(localStorage.getItem("user"))
+
+    },[trigger])
     useEffect(() => {
         async function fetchData() {
-
+console.log(userdata)
 
     if (currUser) {
-        
-    
-            
             console.log("USER data loading ")
             try {
                 const response = await fetch("http://localhost:8080/user/getUser/" + currUser, {
@@ -31,10 +35,10 @@ const UserdataState = (props) => {
         }}
 
         fetchData(); // Call fetchData when the component mounts or currUser changes
-    }, []); // Re-run effect when currUser changes
+    }, [currUser]); // Re-run effect when currUser changes
 
     return (
-        <userdataContext.Provider value={{ userdata, setuserData }}>
+        <userdataContext.Provider value={{ userdata, setuserData,setTrigger }}>
             {props.children}
         </userdataContext.Provider>
     );

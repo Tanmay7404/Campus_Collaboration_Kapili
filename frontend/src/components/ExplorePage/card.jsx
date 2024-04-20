@@ -15,12 +15,12 @@ import "./card.css";
 import CardExpanded from "./CardExpanded";
 import ReactDOM from 'react-dom';
 
-const Card = ({details,setongoingData,setcompletedData}) =>{
+const Card = ({details,setongoingData,setcompletedData,check}) =>{
+    console.log(check)
 
     const [modalOpen, setModalOpen] = useState(false);
 
     let [searchParams, setSearchParams] = useSearchParams();
-    let[check,setcheck]=useState("explore");
     let [query, setQuery] = useState(
      searchParams.get("name")
    );

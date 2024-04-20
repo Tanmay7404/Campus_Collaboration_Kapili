@@ -228,9 +228,18 @@ projectRouter.get("/ongoingProjects/:username", async (req, res) => {
                 profilePic: creator.profilePic
             }));
             // console.log(updatedProjects);
+
+            const tagInfoPromises = project.tags.map(async tagId => {
+                const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                return { name: tagInfo.name, color: tagInfo.color };
+            });
+            const tagsInfo = await Promise.all(tagInfoPromises);
+        
             
-            return { ...project.toObject(), creators: creators };
+            return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
+        console.log(456978797979);
+        console.log(updatedProjects);
         res.send(updatedProjects);
     } catch (error) {
         // Handle errors
@@ -260,7 +269,14 @@ projectRouter.get("/userProjects/:username", async (req, res) => {
             }));
      
             
-            return { ...project.toObject(), creators: creators };
+            const tagInfoPromises = project.tags.map(async tagId => {
+                const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                return { name: tagInfo.name, color: tagInfo.color };
+            });
+            const tagsInfo = await Promise.all(tagInfoPromises);
+        
+            
+            return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
         res.send({updatedProjects:updatedProjects,user:user});
     } catch (error) {
@@ -289,7 +305,15 @@ projectRouter.get("/completedProjects/:username", async (req, res) => {
                     profilePic: creatorUsernames[index].profilePic
                 }));
 
-                return { ...project.toObject(), creators: creators };
+
+               const tagInfoPromises = project.tags.map(async tagId => {
+                const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                return { name: tagInfo.name, color: tagInfo.color };
+            });
+            const tagsInfo = await Promise.all(tagInfoPromises);
+        
+            
+            return { ...project.toObject(), creators: creators,tags:tagsInfo };
             }));
         res.send(updatedProjects);
     } catch (error) {
