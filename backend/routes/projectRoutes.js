@@ -14,7 +14,7 @@ projectRouter.post("/addNewProject", async (req,res)=>{
    
    let project_id;
     try {
-        console.log(req.body)
+        // console.log(req.body)
         var UC=new UserController()
         await UC.checkUsersExistence(req.body.collaboratorName)
         var project_details = {
@@ -96,9 +96,6 @@ projectRouter.put("/editProjects" ,async (req,res)=>{
 projectRouter.post("/addfeedback/:username" , async(req,res)=>{
     const username = req.params.username;
 
-    console.log(req.body);
-    console.log(username);
-    console.log(0);
     let project = req.body.projectname;
     let feedback = {  
         rating : req.body.rating,
@@ -231,11 +228,41 @@ projectRouter.get("/ongoingProjects/:username", async (req, res) => {
                 profilePic: creator.profilePic
             }));
             // console.log(updatedProjects);
-
+            
             return { ...project.toObject(), creators: creators };
         }));
-        // console.log(updatedProjects);
         res.send(updatedProjects);
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+projectRouter.get("/userProjects/:username", async (req, res) => {
+    try {
+        // Find the user based on the request parameter
+        const username = req.params.username;
+        let UC = new UserController();
+        const user = await UC.getUserByUsername(username);
+        const userProjects = user.projects;
+
+        // Find ongoing projects without user's ones
+        let ongoingProjects = await Project.find({     
+            _id: { $in: userProjects } 
+        });
+        console.log(ongoingProjects);
+        const updatedProjects = await Promise.all(ongoingProjects.map(async project => {
+            const creatorUsernames = await UC.userIdToNameAndProfileList(project.creators);
+            const creators = creatorUsernames.map(creator => ({
+                username: creator.username,
+                profilePic: creator.profilePic
+            }));
+     
+            
+            return { ...project.toObject(), creators: creators };
+        }));
+        res.send({updatedProjects:updatedProjects,user:user});
     } catch (error) {
         // Handle errors
         console.error(error);
@@ -256,7 +283,7 @@ projectRouter.get("/completedProjects/:username", async (req, res) => {
             _id: { $nin: userProjects }  });
             const updatedProjects = await Promise.all(completedProjects.map(async project => {
                 const creatorUsernames = await  UC.userIdToNameAndProfileList(project.creators);
-                console.log(creatorUsernames)
+                // console.log(creatorUsernames)
                 const creators = creatorUsernames.map((creator, index) => ({
                     username: creatorUsernames[index].username,
                     profilePic: creatorUsernames[index].profilePic
@@ -264,17 +291,26 @@ projectRouter.get("/completedProjects/:username", async (req, res) => {
 
                 return { ...project.toObject(), creators: creators };
             }));
-        // You may want to sort, filter, or manipulate the data further
-        // based on user preferences or any other criteria
-        
-        // Return the ongoing projects
-        console.log(updatedProjects);
         res.send(updatedProjects);
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
     }
 });
+projectRouter.put("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedProject = await Project.findByIdAndUpdate(id, req.body.project, { new: true });
+        if (!updatedProject) {
+            return res.status(404).send("Project not found");
+        }
+        res.send("UPDATED");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 
 // projectRouter.post("/addfeedbacks" ,async (req,res)=>{
 //     let projectName = req.body.name;

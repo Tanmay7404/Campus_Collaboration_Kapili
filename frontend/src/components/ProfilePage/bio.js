@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import './bio.css';
 import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
 
@@ -6,9 +6,8 @@ import TextField from '@mui/material/TextField';
 import ProfileCard from './ProfileCard';
 import Course from './course';
 import { Button } from 'react-bootstrap';
-
-const Bio = () => {
-  const bio = "Hi I am a passionate developer ready for collab in any ML related projects. dhewiuhfdwuihqdiohidjijedoqejodjoq2pjdopjqdop"
+const Bio = (data) => {
+  const bio = data.dataprofile.profileInfo.bio;
   const style = {
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
@@ -55,44 +54,22 @@ const Bio = () => {
   <div className="rightcontentPP">
     <div className='rightcontent'>
       < div className="E-mail"   >
-        <p style={{color:"white"}} >Bio</p>
+      <i class="bi bi-person-vcard-fill"  style={{fontSize:'1.5rem'}}></i>
+        <p style={{fontSize:'1.5rem'}} >Bio</p>
       </div>
-      <div className="textfield">
-        <TextField 
-          
-          fullWidth 
-          multiline // Enable multiline input
-          rows={2} // Minimum number of rows to display, adjust as needed
-          id="fullWidth" 
-          size="large" 
-          sx={{
-            ...style,
-            // Additional styles here if necessary
-          }}
-          InputProps={{
-            style: {
-              color: 'white', // Text color
-              borderColor: 'white', // Border color (Note: this might not apply directly here and could require custom theming or classes)
-              backgroundColor: '#3B3B3B', // Background color
-              // Removed fixed height to allow dynamic sizing
-            },
-            value: bio,
-            readOnly: true, // Make input field read-only
-          }}
-          InputLabelProps={{ style: { color: 'gray' } }} // Change label color
-        />
-      </div>
+<div>{bio}</div>
     </div>
 
 
     <div className='rightcontent'>
       <div className="E-mail" >
-        <p style={{color:"white"}} >Skills</p>
+      <i class="bi bi-laptop" style={{fontSize:'1.5rem'}}></i>
+        <div style={{fontSize:'1.5rem'}} >Skills</div>
       </div>
 
       <div className="blackbg" style={{height:"fit-content"}}>
 
-        <div style={{ backgroundColor:"#131313",width:"100%",paddingLeft:20,paddingTop:'20px',paddingBottom:'20px', overflowY: "auto",borderRadius: '0 0 10px 10px'}}>
+        <div style={{width:"100%",paddingTop:'20px',paddingBottom:'20px', overflowY: "auto"}}>
           <div id="self4">
             {userSkills.map((skill, index) => (
               <div key={index} className="tags" style={{borderColor:skill.color}}>
@@ -105,7 +82,8 @@ const Bio = () => {
     </div>
     <div className='rightcontent'>
       <div className="E-mail">
-          <p style={{color:"white"}} className="editProfile">Friends</p>
+      <i class="bi bi-person-lines-fill" style={{fontSize:'1.5rem'}}></i>
+          <p style={{fontSize:'1.5rem'}} className="editProfile">Friends</p>
       </div>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>

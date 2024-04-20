@@ -373,9 +373,27 @@ updateMessageForChatId(message.chatId,message.message)
   // socket.on('messages', messages => {
   //     setMessages(messages);
   // });
-  socket.on('checked_spam', message => {
+  socket.on('checked_spam', async(message) => {
     //if not spam then proceed
-    deleteChatGlobalAndUser(message)
+    try{
+    const link = "http://localhost:8080/chats/deleteMessage/" + message.chatId + "/" + message.message._id;
+    console.log(link);
+    await fetch(link, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(),
+    });
+    window.alert("Deleted message due to spam content");
+    deleteChatGlobalAndUser(message);
+    }
+    catch(err){
+      console.log(err);
+      window.alert("Error in deleting message");
+    }
+
+
     
 });
   

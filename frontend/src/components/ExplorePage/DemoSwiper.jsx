@@ -41,7 +41,7 @@ const DemoSwiper = ({additionalImages}) => {
       onResize={() => setDirection(getDirection())}
     >
       {additionalImages.map((image, index) => (
-        console.log(image),
+        // console.log(image),
         
 <div className="swiper-wrapper">
   <SwiperSlide key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>                        

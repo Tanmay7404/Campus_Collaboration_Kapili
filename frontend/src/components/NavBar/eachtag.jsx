@@ -15,7 +15,7 @@ function Eachtag({skill,color, changeTagList, selectedList}) {
     color: "rgba(0, 0, 0, 0.9)"
   }
   useEffect(()=>{
-    console.log(selectedList);
+    // console.log(selectedList);
     if(selectedList.length!=0){
       const tagIndex = selectedList.findIndex(t => t.tagname === skill);
       if (tagIndex !== -1) {

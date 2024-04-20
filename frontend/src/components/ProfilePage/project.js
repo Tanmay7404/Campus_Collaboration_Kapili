@@ -1,13 +1,20 @@
-import React from 'react';
+import React,{useState} from 'react';
 import './profile.css';
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, NavLink } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import Card from '../ExplorePage/card.jsx';
 
-const Project = ({projects}) => {
-    const listproject = projects.map((element) => {
+const Project = ({userprojects,setongoingData,check}) => {
+  console.log(78);
+  console.log(userprojects);
+
+ const [compledtedData, setcompletedData] = useState([]);
+
+  
+    const listproject = userprojects.map((element) => {
         return (
           <div className="project" key={element.id}>
-            <div id="like-div">
+            {/* <div id="like-div">
               <img src="./Images/like.svg" id="like" alt="" />
               <span>{element.likes}</span>
             </div>
@@ -17,7 +24,17 @@ const Project = ({projects}) => {
                         ))}
             </div>
             <img src={element.projectImage} className="www" alt={element.title} />
-            <p>{element.title}</p>
+            <p>{element.title}</p> */}
+            <Card details = {element}  setongoingData={setongoingData} setcompletedData={setcompletedData} check={check} />
+
+
+
+
+
+
+
+
+
           </div>
         );
       });
@@ -30,13 +47,9 @@ const Project = ({projects}) => {
             <div id="projects" >
 
             <div id="upload"> 
-                <div>
-                    <div id="circle">
-                    <Button  style={{textDecoration: 'none'}}><img src="./Images/plus-1512-svgrepo-com.svg" alt="" />
-                    </Button>
-                    </div>
-                    Create
-                </div>
+                 <NavLink to="/createProject" className="nav-link"><i class="bi bi-plus-circle" style={{fontSize:'3rem'}}></i></NavLink>
+                 <div>Create Project </div>
+                
             </div>
 
             {listproject}

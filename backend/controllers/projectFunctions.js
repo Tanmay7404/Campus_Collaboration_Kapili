@@ -73,9 +73,18 @@ class ProjectController {
                 return 0;
             }
             else if(creators.length){
+              
                 var creatorsId = await getObjectId.userNameToIdList(creators);
                 project.creators = project.creators.concat(creatorsId);
-
+ 
+                {creatorsId.map(async (id) => {
+                    var user = await User.findById(id);
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
+                    user.projects.push(project_id);
+                    await user.save();
+                })}
                 var chatCC=new ChatController()
                 var chat=await chatCC.addChat({participants:creatorsId,projectName:project._id})
                 await chatCC.chatIdToUsers(chat,creatorsId)
@@ -94,7 +103,6 @@ class ProjectController {
                     console.log("Chat not initialized");
                 }
                 await project.save();
-
                 return 1;
             }
             

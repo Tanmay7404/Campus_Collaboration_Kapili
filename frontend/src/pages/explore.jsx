@@ -106,6 +106,7 @@ navigate("/login")
         fetchData();
         
     },[currUser,setcompletedData])
+
     
 
 

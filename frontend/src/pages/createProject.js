@@ -79,9 +79,7 @@ export default function CreateProjectPage() {
     };
 
     useEffect(() => {
-      
       if(trigger!==1){
-      console.log(formData)
       fetch('http://localhost:8080/projects/addNewProject', {
         method: 'POST',
         headers: {

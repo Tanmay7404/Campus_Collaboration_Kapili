@@ -2,7 +2,6 @@ import React from "react";
 import './profilePage.css';
 import  { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-
 import Starting from "../components/createPages/starting";
 import ProfilePicAdd from "../components/createPages/ProfilePic";
 import TextInputs from "../components/createPages/textInputs";

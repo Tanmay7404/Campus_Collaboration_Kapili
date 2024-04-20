@@ -72,6 +72,7 @@ courseRouter.get("/popularcourses" ,async (req,res)=>{
     }
     
 })
+
 //WORKING
 // courseRouter.delete("/deleteall" , async (req,res) =>{
 //     try {
@@ -140,4 +141,18 @@ courseRouter.get("/commoncourses" , async (req,res)=>{
         console.log(error);
     }
 })
+courseRouter.put("/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedCourse = await Course.findByIdAndUpdate(id, req.body.course, { new: true });
+        if (!updatedCourse) {
+            return res.status(404).send("Course not found");
+        }
+        res.send("Updated");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 module.exports = courseRouter;

@@ -87,6 +87,7 @@ async checkUsersExistence(usernames)
             const users = await Model.find({ _id: { $in: userIdList } });
     
             // Check if all user IDs were found
+            console.log(userIdList);
             if (users.length === userIdList.length) {
                 // Map user objects to their usernames
                 const userInfoList = users.map(user => ({

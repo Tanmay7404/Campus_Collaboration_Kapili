@@ -38,7 +38,8 @@ const CardExpanded = ({
   setongoingData,
   setcompletedData,
   likedUsers,
-  chatId
+  chatId,
+  check
 }) => {
  const model=useModel()
   var [flag,setFlag] = useState(0);
@@ -49,7 +50,6 @@ const CardExpanded = ({
  useEffect(()=>{
      const loggedInUser = localStorage.getItem("user");
         if (loggedInUser) {
-            
         //   const foundUser = JSON.parse(loggedInUser);
           setCurrUser(loggedInUser);
         } else
@@ -79,11 +79,6 @@ navigate('/login')
     }
   }
 
-
-
-  
-
-
   function checkFeedbackForCurrentUser(feedbackArray, currUser) {
     feedbackArray.forEach((feedback) => {
       if (feedback.reviewer === currUser) {
@@ -91,14 +86,9 @@ navigate('/login')
       }
     });
   }
-
-
-
-  
-
 useEffect(()=>{
-  setisliked(likedUsers.some(use => use === currUser));
-},[likedUsers])
+  setisliked(likedUsers.some(use => use === currUser)); 
+},[currUser])
 
   useEffect(() => {
     checkFeedbackForCurrentUser(feedbackArray, currUser);
@@ -121,6 +111,9 @@ useEffect(()=>{
   }
 const [likeInProgress, setLikeInProgress] = useState(false);
 const handleLike = () => {
+  console.log(1)
+  console.log(isliked);
+  console.log(2);
 
   if (likeInProgress) {
     return;
@@ -136,7 +129,8 @@ const handleLike = () => {
     })
       .then(response => {
         if (response.ok) {
-          if (completed == true) {
+          
+          if (completed == true||check=='profile') {
             setongoingData(prevData => {
               return prevData.map(project => {
                 if (project.name == projectname) {
@@ -187,7 +181,7 @@ const handleLike = () => {
     })
       .then(response => {
         if (response.ok) {
-          if (completed == true) {
+          if (completed == true||check=='profile') {
             setongoingData(prevData => {
               return prevData.map(project => {
                 if (project.name == projectname) {
@@ -284,7 +278,7 @@ if(toxic===1 ||toxic===2){
         }
       };
   
-      if (completed===true) {
+      if (completed===true||check=='profile') {
         // Updating ongoingData with new feedback
         setongoingData(prevData => {
           return prevData.map(project => {

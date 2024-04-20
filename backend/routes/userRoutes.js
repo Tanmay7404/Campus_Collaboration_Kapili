@@ -261,5 +261,18 @@ userRouter.get('/getUserChatList/:username', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+userRouter.put("/:id" , async (req,res)=>{
+    try {
+        let {id} = req.params;
+        let updatedUser = await User.findByIdAndUpdate(id , req.body.user , {new : true});
+        if (!updatedUser) {
+            return res.status(404).send("User not found");
+        }
+        res.send("UPDATED");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal Server Error");
+    }
+})
 
 module.exports = userRouter;

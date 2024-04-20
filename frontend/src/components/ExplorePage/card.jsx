@@ -16,9 +16,11 @@ import CardExpanded from "./CardExpanded";
 import ReactDOM from 'react-dom';
 
 const Card = ({details,setongoingData,setcompletedData}) =>{
+
     const [modalOpen, setModalOpen] = useState(false);
 
     let [searchParams, setSearchParams] = useSearchParams();
+    let[check,setcheck]=useState("explore");
     let [query, setQuery] = useState(
      searchParams.get("name")
    );
@@ -98,6 +100,7 @@ setModalOpen(true)
                     setcompletedData={setcompletedData}
                     likedUsers={details.likedUsers}
                     chatId={details.chat}
+                    check={check}
                 />
             </div>
         </div>
@@ -106,13 +109,6 @@ setModalOpen(true)
         <div id="f">
         <div className="swiper-slide swiper-slide1" onClick={openModal}>
             <img src = {details.projectImage.url} id="sp-profile" alt=""/> 
-            
-            {/* <div >
-                {details.completed && <img src={comp} alt="Image A" id="sp-profile" />}
-                {!details.completed && details.open && <img src={open} alt="Image B" id="sp-profile"/>}
-                {!details.completed && !details.open && <img src={clk} alt="Image C" id="sp-profile"/>}
-            </div> */}
-
             <div style={{ display: 'flex' }} className="profimg">
                 {details.creators.map((image, idx) => (
                     <img id="sp-profile"
@@ -165,28 +161,7 @@ setModalOpen(true)
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{fontSize:'1.5rem'}}>{details.name}</div>
                        
-                            {/* {difficultyOptions.map((option) => (
-                            details.level === option.value && (
-                                <div
-                                key={option.value}
-                                className={`btn m-2 ${details.level === option.value ? 'btn-' + option.color : 'btn-outline-' + option.color}`}
-                                style={{
-                                    borderRadius: '20px',
-                                    borderColor: option.color,
-                                    color: '#fff',
-                                    cursor: 'pointer',
-                                    backgroundColor: option.color,
-                                    padding: '5px 10px', // Decrease padding to reduce button size
-                                    fontSize: '14px',
-                                    
-                                }}
-                                >
-                                {option.label}
-                                </div>
-                            )
-                            ))} */}
-                            <div>
-                                
+                            <div>      
                             <i 
                             className="bi bi-arrow-down-circle icon-hover-effect"
                             data-bs-toggle="tooltip" 
