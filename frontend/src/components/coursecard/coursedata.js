@@ -227,6 +227,16 @@ const coursedata = [
         helpful:10,
         complete:true
     }
+    ,
+    {
+        title: "Deep Learning Specialization",
+        creatorimage: [profimage],
+        courseimage: courseimage,
+        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
+        rating:4,
+        helpful:10,
+        complete:true
+    }
     
     
 

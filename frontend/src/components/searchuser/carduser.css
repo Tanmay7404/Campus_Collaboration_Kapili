@@ -1,11 +1,12 @@
 .user-card {
     width: 315px;
     height: 315px;
-    overflow-y: auto;
+    /* overflow-y: auto;  */
     /* display: flex; */
     align-items: center;
     margin: 10px 10px 10px 10px;
     margin-top: 10px;
+    margin-left: 0px;
     background-color:  #272727;
     ;
   }

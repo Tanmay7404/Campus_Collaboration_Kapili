@@ -9,7 +9,7 @@ const CourseCardList = () => {
     return (
     
       
-        <div className="card-list">
+        <div className="card-listc">
           {coursedata.map((coursedata, index) => (
               <Coursecard key={index} course={coursedata} />
           ))}

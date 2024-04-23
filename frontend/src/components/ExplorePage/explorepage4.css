@@ -1,0 +1,7 @@
+#page4{
+    padding: 150px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+
+}

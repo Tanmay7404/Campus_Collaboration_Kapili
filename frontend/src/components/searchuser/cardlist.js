@@ -5,10 +5,10 @@ import "./cardlist.css"
 import logo from '../../assets/images/logo.svg';
 import search from '../../assets/images/search.svg';
 
-const CardList = () => {
+const CardListu = () => {
   return (
     <div id="wholepage">
-        <div id="navbar">
+        {/* <div id="navbar">
           <nav>
             <img src={logo} id="logo" alt="" />
             <div id="search">
@@ -21,14 +21,14 @@ const CardList = () => {
               <a href="#">Profile</a>
             </div>
           </nav>
-        </div>
+        </div> */}
 
-        <div id="typeButton">
+        {/* <div id="typeButton">
               <button id="personal">Profile</button>
               <button id="global">Project</button>
               <button id="global">Course</button>
 
-        </div>
+        </div> */}
     
         <div className="card-list">
         {sampleUserCardContent.map((userData, index) => (
@@ -39,4 +39,4 @@ const CardList = () => {
   );
 };
 
-export default CardList;
+export default CardListu;
