@@ -7,7 +7,7 @@ import search from '../../assets/images/search.svg';
 
 const CardListu = () => {
   return (
-    <div id="wholepage">
+    <>
         {/* <div id="navbar">
           <nav>
             <img src={logo} id="logo" alt="" />
@@ -35,7 +35,7 @@ const CardListu = () => {
             <UserCard key={index} user={userData} />
         ))}
         </div>
-    </div>
+    </>
   );
 };
 

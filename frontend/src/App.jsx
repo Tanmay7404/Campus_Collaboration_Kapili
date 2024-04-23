@@ -35,6 +35,8 @@ import UserCardList from './components/searchuser/usercardlist.js';
 import CreateProjectPage from './pages/createProject.js';
 import CreateCoursePage from './pages/createCourse.js';
 
+import DisplayContent from './pages/searchUserProjectCourse.js';
+
 function App() {
   return (
     
@@ -48,7 +50,8 @@ function App() {
           <Route path ="/*" element = {<Explore/>}/>
           <Route path ="/chat/:username" element = {<ChatPage/>}/>
           <Route path = "/profile/:userName" element = {<Profile/>} />
-          <Route path = "/search/*" element = {<UserCardList/>} />
+          <Route path = "/search/*" element = {<DisplayContent contentType="project"/>} />
+
         </Route>
         <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>
         <Route path = "/createProject" element={<CreateProjectPage/>}/>

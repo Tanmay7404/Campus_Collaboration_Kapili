@@ -9,7 +9,7 @@ import "./cardlist.css";
 
 
 
-const CardListwithouswiper = ({data,setModalOpen,setongoingData,setcompletedData,likedproj,setlikedproj}) => {
+const CardListwithouswiper = ({data,setModalOpen,setongoingData,setcompletedData}) => {
 
   const [direction, setDirection] = useState(getDirection());
 
@@ -53,7 +53,7 @@ const CardListwithouswiper = ({data,setModalOpen,setongoingData,setcompletedData
                                 
 
 
-                              <Card details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} likedproj={likedproj} setlikedproj={setlikedproj}/> 
+                              <Card details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} check="explore"/> 
                               
                              ) }     
                              </SwiperSlide>                
