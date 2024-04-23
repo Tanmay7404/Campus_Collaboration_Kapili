@@ -99,16 +99,15 @@ useEffect(()=>{
     
 
   },[])
-  const sendCollaborate=async ()=>
-  {
-    console.log("collaborate")
-    const response = await fetch('http://localhost:8080/chats/collaborateProject/'+chatId+"/"+userdata.username, {
+  const sendCollaborate = async () => {
+    console.log("collaborate");
+    await fetch('http://localhost:8080/chats/collaborateProject/' + chatId + "/" + userdata.username, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       }
     });
-
+    window.alert("Message sent successfully!");
   }
 const [likeInProgress, setLikeInProgress] = useState(false);
 const handleLike = () => {
@@ -721,7 +720,6 @@ if(toxic===1 ||toxic===2){
 {
   creator.map((image, index) => (
     <>
-      {/* <a href={`/profile/${image.username}`} className="profile-link"> */}
         <div id="profile" onClick={()=>{navigate("/profile/"+image.username)}}>
           <img src={image.profilePic?image.profilePic:pro} id="profile-picture" alt="" />
           <div className="profile-details">

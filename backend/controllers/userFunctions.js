@@ -87,12 +87,13 @@ async checkUsersExistence(usernames)
             const users = await Model.find({ _id: { $in: userIdList } });
     
             // Check if all user IDs were found
-            console.log(userIdList);
+            // console.log(userIdList);
             if (users.length === userIdList.length) {
                 // Map user objects to their usernames
                 const userInfoList = users.map(user => ({
                     username: user.username,
-           
+                    email:user.email,
+                    department:user.department,
                    profilePic: user.profileInfo.profilePicture.url
                 }));
                 return userInfoList;
@@ -256,6 +257,7 @@ async checkUsersExistence(usernames)
         try {
             const user = await Model.findOne({ username:username });
             return user;
+            
         } catch (error) {
             throw new Error(error);
         }

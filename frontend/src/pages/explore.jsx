@@ -418,7 +418,6 @@ navigate("/login")
       <ExplorePg1 />
       <ExplorePg2 />
       <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} />
-      {/* <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen}/> */}
     </>
     );
   };// 

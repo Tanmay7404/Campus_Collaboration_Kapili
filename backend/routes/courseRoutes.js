@@ -15,10 +15,10 @@ courseRouter.post("/addCourse", async (req, res) => {
         var UC=new UserController()
         await UC.checkUsersExistence(req.body.collaboratorName)
         let course_details = req.body;
-        console.log(course_details);
+        // console.log(course_details);
         var CC=new CourseController()
         course_id = await CC.addCourse(course_details);
-        console.log("COURSEID",course_id);
+        // console.log("COURSEID",course_id);
         // let course_title = await Course.findOne({title : req.body.title});
         // console.log(course_title);
         

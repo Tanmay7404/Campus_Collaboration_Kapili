@@ -11,7 +11,7 @@ cloudinary.config({
 
 
   ImageRouter.get('/deleteImage/:public_id', async (req, res) => {
-    console.log(78);
+    // console.log(78);
     
     const { public_id } = req.params;
   

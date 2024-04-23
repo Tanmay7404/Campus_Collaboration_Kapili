@@ -10,8 +10,8 @@ const Tag = require("../models/tagModels.js");
 class ProjectController {
     async addProject(project_details) {
         try {
-            console.log("Project_Details");
-            console.log(project_details);
+            // console.log("Project_Details");
+            // console.log(project_details);
             var project = new Project({
                 title: project_details.title,
                 name : project_details.name,
@@ -36,8 +36,8 @@ class ProjectController {
 
             
             await project.save();
-            console.log("Project")
-            console.log(project);
+            // console.log("Project")
+            // console.log(project);
             return project._id;
         } catch (err) {
             throw new Error(err);
@@ -90,7 +90,7 @@ class ProjectController {
                 var chat=await chatCC.addChat({participants:creatorsId,projectName:project._id})
                 await chatCC.chatIdToUsers(chat,creatorsId)
                 project.chat=chat
-                console.log("chat: " +chat)
+                // console.log("chat: " +chat)
                 if (chat) {
                     // let newChat = await Chat.findById(chat);
                     // if (newChat) {
@@ -235,7 +235,7 @@ class ProjectController {
         }
     }
     async removeLikedProject(username, projectname,likes) {
-        console.log('final')
+        // console.log('final')
         try {
             const project = await Project.findOne({name:projectname });
             if (!project) return 0;
@@ -243,7 +243,7 @@ class ProjectController {
             project.likedUsers = project.likedUsers.filter(users => users !== username);
             project.endorsements=likes;
             
-            console.log(project)
+            // console.log(project)
             await project.save();
             return 1;
         } catch (error) {

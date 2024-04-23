@@ -86,9 +86,9 @@ navigate('/login')
         
         <div key={index} id={`feed${index + 1}`}>
           <inf>
-          <a href={`/profile/${feedback.reviewer}`} className="profile-link">
+          <div onClick={()=>{navigate("/profile/"+feedback.reviewer)}}>
             <img src={feedback.img} className="feedback-pic" alt="" />
-            </a>
+            </div>
            
             <div className="profile-id">
               <div className="profile-name">{feedback.reviewer}</div>

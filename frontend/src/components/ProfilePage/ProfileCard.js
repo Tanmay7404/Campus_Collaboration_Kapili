@@ -1,8 +1,11 @@
-// ProfileCard.js
 import React from 'react';
-import profilepic from "../../assets/images/profile.jpg"
+import { useNavigate } from "react-router-dom";
+import '../Log-in/team.css';
 
-function ProfileCard({ name, imageUrl }) {
+function ProfileCard({ name, imageUrl,email,department }) {
+  console.log('tama');
+  console.log(name);
+  const navigate=useNavigate()
   const cardStyle = {
     alignItems: 'center',
     border: '1px solid #ccc',
@@ -26,12 +29,16 @@ function ProfileCard({ name, imageUrl }) {
     fontWeight: 'bold',
     color: '#fff'
   };
-
   return (
-    <div >
-      <img src={profilepic} alt="Profile" style={imageStyle} />
-      {/* <div style={nameStyle}>{name}</div> */}
-    </div>
+    // <div>
+    //     <img src={imageUrl} alt="Profile" style={imageStyle} id="" onClick={()=>{navigate("/profile/" + name)}} />
+    // </div>
+    <div  className="team-member">
+    <img src={imageUrl} alt={name} />
+    <h3>{name}</h3>
+    <p>{department}</p>
+    <div className="description">{email}</div>
+  </div>
   );
 }
     

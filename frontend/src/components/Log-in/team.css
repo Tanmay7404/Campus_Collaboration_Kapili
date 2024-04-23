@@ -57,10 +57,25 @@ h3::first-letter {
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
+.profileCard .team-member {
+  position: relative;
+  overflow: hidden;
+  border-radius: 40%;  /* Adjusted for an oval shape */
+  width: 160px;
+  height: 180px;  /* Increased height for a slightly elongated shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: linear-gradient(145deg, #1e1e1e, var(--background-light));
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+
 
 /* Hover effects for team members */
 .team-member:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
   border-color: var(--hover-background);
   box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }

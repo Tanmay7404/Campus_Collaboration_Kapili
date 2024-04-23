@@ -10,7 +10,6 @@ const UserController = require("../controllers/userFunctions.js");
 
 // WORKING
 projectRouter.post("/addNewProject", async (req,res)=>{
-    console.log(req.body.level);
    
    let project_id;
     try {
@@ -35,7 +34,6 @@ projectRouter.post("/addNewProject", async (req,res)=>{
         };
         var PC = new ProjectController();
          project_id = await PC.addProject(project_details);
-         console.log(project_id);
         if(req.body.collaboratorName){
           await PC.addCreators(project_id,req.body.collaboratorName);
         }
@@ -58,7 +56,6 @@ projectRouter.delete("/deleteProjects" ,async (req,res)=>{
         let projectName = req.body.name;
         let project_id = await getObjectId.projectNameToId(projectName);
         let deletedProject = await new ProjectController().delProjects(project_id);
-        console.log(deletedProject);
         res.send(deletedProject);
     } catch (error) {
         console.log(error);
@@ -76,7 +73,6 @@ projectRouter.put("/editProjects" ,async (req,res)=>{
     }
     var PC = new ProjectController();
     let data = await PC.editProjects(projectId , project_details);
-    console.log(data);
     var project_id = await PC.addProject(project_details);
     if(req.body.creators){
         PC.addCreators(project_id,req.body.creators);
@@ -156,7 +152,6 @@ projectRouter.post("/addLikedProject/:username", async (req, res) => {
 });
 
 projectRouter.post("/removeLikedProject/:username", async (req, res) => {
-    console.log(req.body.projectname);
     try {
         const username=req.params.username;
         let projectname = req.body.projectname;
@@ -238,8 +233,6 @@ projectRouter.get("/ongoingProjects/:username", async (req, res) => {
             
             return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
-        console.log(456978797979);
-        console.log(updatedProjects);
         res.send(updatedProjects);
     } catch (error) {
         // Handle errors
@@ -254,21 +247,33 @@ projectRouter.get("/userProjects/:username", async (req, res) => {
         const username = req.params.username;
         let UC = new UserController();
         const user = await UC.getUserByUsername(username);
+
+       const updatedUser=user.skills.map(async skillId => {
+        const skillInfo = await new ProjectController().getTagInfoById(skillId);
+        return { skill: skillInfo.name, color: skillInfo.color}
+       })
+       const userSkills = await Promise.all(updatedUser);
+
+       const updatedFriends=await UC .userIdToNameAndProfileList(user.friends);
+       const friends=updatedFriends.map(friend=>({
+        name:friend.username,
+        imageUrl:friend.profilePic,
+        email:friend.email,
+        department:friend.department,
+       }));
+       
         const userProjects = user.projects;
 
-        // Find ongoing projects without user's ones
         let ongoingProjects = await Project.find({     
             _id: { $in: userProjects } 
         });
-        console.log(ongoingProjects);
         const updatedProjects = await Promise.all(ongoingProjects.map(async project => {
             const creatorUsernames = await UC.userIdToNameAndProfileList(project.creators);
             const creators = creatorUsernames.map(creator => ({
                 username: creator.username,
-                profilePic: creator.profilePic
+                profilePic: creator.profilePic,
             }));
      
-            
             const tagInfoPromises = project.tags.map(async tagId => {
                 const tagInfo = await new ProjectController().getTagInfoById(tagId);
                 return { name: tagInfo.name, color: tagInfo.color };
@@ -278,7 +283,7 @@ projectRouter.get("/userProjects/:username", async (req, res) => {
             
             return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
-        res.send({updatedProjects:updatedProjects,user:user});
+        res.send({updatedProjects:updatedProjects,user: { ...user.toObject(), skills: userSkills,friends:friends }});
     } catch (error) {
         // Handle errors
         console.error(error);

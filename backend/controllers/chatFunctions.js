@@ -136,7 +136,7 @@ class ChatController {
                 var user = await User.findById(currUserId);
                 user.chats.push(chatId);
                 chat.participants.push(currUserId);
-                console.log(user.chats)
+                // console.log(user.chats)
                 await chat.save();
                 await user.save();
                 return;

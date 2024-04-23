@@ -1,7 +1,7 @@
 const UserModel = require("../models/userModel.js");
 
 async function userNameToId(user_name) {
-    console.log("USer here  " +user_name)
+    // console.log("USer here  " +user_name)
     var user = await UserModel.findOne({ username: user_name });
     if (user == null) {
         
@@ -11,7 +11,7 @@ async function userNameToId(user_name) {
 }
 
 async function userNameToIdList(userNameList) {
-    console.log(userNameList)
+    // console.log(userNameList)
     var userIdList = [];
 
     const nonEmptyUsernames = userNameList.filter(username => username.trim() !== '');
@@ -19,7 +19,7 @@ async function userNameToIdList(userNameList) {
     const users = await UserModel.find({ username: { $in: nonEmptyUsernames } });
     if (users.length === nonEmptyUsernames.length) {
         users.forEach(user => {
-            console.log("user   "+user)
+            // console.log("user   "+user)
 
             userIdList.push(user._id);
         });

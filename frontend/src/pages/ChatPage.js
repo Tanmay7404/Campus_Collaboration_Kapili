@@ -750,11 +750,13 @@ useEffect(() => {
           <div id="right">
           {!global&&userdata&&(
             <div id="chatinf">
+              <div onClick={()=>{navigate("/profile/"+selectedPerson?.name  )}}>
               <img
                 src={selectedPerson?.profilePic}
                 className={`profilePic ${selectedPerson?.id === userdata._id ? 'me' : ''}`}
                 alt=""
               />
+              </div>
               <span
                 id="Name"
                 style={{ textAlign: selectedPerson?.id === userdata._id ? 'right' : 'left' }}
@@ -912,6 +914,7 @@ useEffect(() => {
                               borderRadius:'7px',
                             }}
                           >
+                            <div onClick={()=>{navigate("/profile/"+message.senderName)}}>
                             <img
                              key={index}
                               src={
@@ -925,6 +928,7 @@ useEffect(() => {
                                 float: message.senderName === userdata.username ? 'right' : 'left',
                               }}
                             />
+                            </div>
                             <inf2
                              key={index}
                               style={{

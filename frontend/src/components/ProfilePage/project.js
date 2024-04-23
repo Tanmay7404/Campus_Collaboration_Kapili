@@ -5,8 +5,6 @@ import { Button } from 'react-bootstrap';
 import Card from '../ExplorePage/card.jsx';
 
 const Project = ({userprojects,setongoingData,check}) => {
-  console.log(78);
-  console.log(userprojects);
 
  const [compledtedData, setcompletedData] = useState([]);
 

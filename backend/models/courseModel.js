@@ -13,18 +13,20 @@ const courseSchema = new mongoose.Schema({
   enrolledUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: { type: Date, default: Date.now },
   feedbacks: [{
-    reviewer: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    reviewer: String,
+    img:String,
     message: {
       rating: {type: Number, enum:[1,2,3,4,5]},
       text: String,
-      timestamp: { type: Date, default: Date.now }
+      timestamp: { type: Date, default: ()=>new Date(Date.now()).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric'})}
     }
   }],
-  rating: {type: mongoose.Schema.Types.Decimal128},
-  issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }],
-  helpful: Number,
+  rating:{type:Number},
+  // issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }],
+  endorsements: Number,
+  likedUsers: [String],
   chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat' },
-
+  level:String,
 });
 
 const Course = mongoose.model('Course', courseSchema);

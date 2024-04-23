@@ -23,7 +23,6 @@ userRouter.post("/addNewUser", upload.array("images",1), async (req,res)=>{
         // } else {
         //     res.send("Can't add user");
         // }
-        console.log(1222)
         res.send(username)
     } catch (error) {
         console.error(error);
@@ -230,7 +229,6 @@ userRouter.get('/getGlobalChatList/:username', async (req, res) => {
             
 
             const usernameProfile=await new UserController().getUsernameProfile(chatParticipants)
-            console.log(usernameProfile)
         if (usernameProfile) {
             res.json({chatId:id,profiles:usernameProfile});
         } else {
