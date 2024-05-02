@@ -2,8 +2,7 @@ import React from 'react'
 import './tag.css'
 import Eachtag from '../NavBar/eachtag';
 
-function Tag({ onTagClick, tagList, selectedSearch, setSelectedSearch}) {
-    console.log(selectedSearch);
+function Tag({ onTagClick, tagList, searchType, setSearchType}) {
     
     const all_tags = [
       {name: "Programming Language",color: "#68B67E" ,tags: ['Java','Python','JavaScript','C#','PHP','Ruby','C++','Swift','Kotlin','Typescript']},
@@ -22,9 +21,9 @@ function Tag({ onTagClick, tagList, selectedSearch, setSelectedSearch}) {
       <div className="box" key = "Search">
         <div className="title">Search Filters</div>
         <div className="content">
-          <Eachtag skill="Projects" selectedList={[selectedSearch]} color={"#dbdbdb"} changeTagList={()=>setSelectedSearch({tagname: "Projects", color:"white"})} />
-          <Eachtag skill="Courses" selectedList={[selectedSearch]} color={"#dbdbdb"} changeTagList={()=>setSelectedSearch({tagname: "Courses", color:"white"})} />
-          <Eachtag skill="Users" selectedList={[selectedSearch]} color={"#dbdbdb"} changeTagList={()=>setSelectedSearch({tagname: "Users", color:"white"})} />
+          <Eachtag skill="Projects" selectedList={[searchType]} color={"#dbdbdb"} changeTagList={()=>setSearchType({tagname: "Projects", color:"white"})} />
+          <Eachtag skill="Courses" selectedList={[searchType]} color={"#dbdbdb"} changeTagList={()=>setSearchType({tagname: "Courses", color:"white"})} />
+          <Eachtag skill="Users" selectedList={[searchType]} color={"#dbdbdb"} changeTagList={()=>setSearchType({tagname: "Users", color:"white"})} />
         </div>
         <div className="content">
             {

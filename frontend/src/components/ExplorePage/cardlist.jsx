@@ -52,7 +52,8 @@ const CardList = ({data,setModalOpen,setongoingData,setcompletedData}) => {
                             <SwiperSlide key={index}>  
                               {(data.type=="Project"? 
                               <Card key={index} details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} check={check} /> : 
-                              <Coursecard key={index} course={card} />  )}                      
+                              <Coursecard key={index} course={card} />  )
+                              }                      
                             </SwiperSlide>
                         </div>
                     );

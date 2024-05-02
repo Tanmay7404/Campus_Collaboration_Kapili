@@ -88,11 +88,11 @@ courseRouter.get("/popularcourses" ,async (req,res)=>{
 //     }
 // })
 
-courseRouter.post("/:courseid" , async (req,res)=>{
+courseRouter.post("addFeedback/:courseid" , async (req,res)=>{
     try {
         let {courseid} = req.params;
         let {feedback} = req.body;
-        let data = await CourseController().addFeedback(feedback , courseid);
+        let data = await new CourseController().addFeedback(feedback , courseid);
         if(data == 1) {
         console.log("SUCCESS");
         }
@@ -118,7 +118,19 @@ courseRouter.post("/:courseid" , async (req,res)=>{
 //         console.log(error);
 //     }
 // })
+courseRouter.post("/search" , async (req,res)=>{
+    try {
+        console.log("searching",req.body)
+        const searchType = req.body.type;
+        const searchTerm = req.body.title;
+        const searchTags = req.body.tags;
+        let data = await new CourseController().search(searchType , searchTerm, searchTags);
+        res.send(data);
 
+    } catch (error) {
+        console.log(error);
+    }   
+})
 // WORKING
 courseRouter.get("/:username",async (req,res)=>{
     const {username} = req.params;

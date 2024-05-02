@@ -1,4 +1,7 @@
 const Course = require("../models/courseModel.js");
+const Project = require("../models/projectModel.js");
+const Tag = require("../models/tagModels.js");
+
 const User = require("../models/userModel.js");
 const getObjectId = require("../functions/getObjectId.js");
 const Issue = require("../models/issueModel.js");
@@ -168,6 +171,86 @@ class CourseController {
             throw error;
         }
     }
+   
+    async search(searchType , searchTerm , searchTags){
+        try {
+            if (searchType === 'course' || searchType === 'project' || searchType === 'user') {
+                let title2="title";
+                let tagsOrSkills="tags"
+
+                if(searchType==="user") 
+                {
+title2="username"
+tagsOrSkills="Skills"
+                }
+              const titleConditions = searchTerm.split(" ").map(term => ({  [title2]: { $regex: term, $options: 'i' } }));
+              const tagNames = searchTags.map(tag => tag.tagname); // Extract tag names
+              const tags = await Tag.find({ name: { $in: tagNames } });
+              const tag_ids = tags.map(tag =>tag._id); // Extract tag names
+            const tagConditions = {
+                [tagsOrSkills]: {
+                    $elemMatch: {
+                        $in: tag_ids
+                    }
+                }
+            };
+            let   searchQuery
+            if(searchTerm!==""&&tag_ids.length==0){
+                console.log(1)
+              searchQuery = {
+                $or: [
+                  { $and: titleConditions },
+                  { $and: [tagConditions] }
+                ]
+              };}else if(searchTerm!==""&&tag_ids.length!==0)
+              {
+                console.log(2)
+                console.log(searchTerm)
+                console.log(tag_ids)
+
+                searchQuery = {
+                    $and: [
+                      { $and: titleConditions },
+                      { $and: [tagConditions] }
+                    ]}
+                }else {
+                    console.log(3)
+
+                searchQuery = {
+                    $or: [
+                      { $and: [tagConditions] }
+                    ]
+                  }
+              }
+              console.log(titleConditions);
+              console.log(tagConditions);
+
+              if(searchType == "course"){
+                const results = await Course.find(searchQuery);
+                return results;
+              }
+              else if(searchType == "project"){
+                const results = await Project.find(searchQuery);
+                return results;
+              }else
+              {
+                const results = await User.find(searchQuery);
+                const userList = results.map(user => ({
+                    image: user.profileInfo.profilePicture.url, // Assuming profilePicture is an object with image URL
+                    name: user.fullname,
+                    username: user.username,
+                    email: user.email,
+                    link: `http://yourdomain.com/${user.username}`, // Example link, replace with actual logic
+                }));
+                return userList;
+              }
+            }
+              
+              
+        } catch (error) {
+            console.error(error);
+           return "error"}
+        }
 
     async addFeedback(course_title,feedback){
         try {

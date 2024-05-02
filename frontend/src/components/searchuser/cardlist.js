@@ -1,11 +1,46 @@
-import React from "react";
+import React,{ useEffect, useState} from "react";
 import UserCard from "./carduser"; // Assuming carduser.js is in the same directory
 import sampleUserCardContent from "./carduserdata"; // Import your user data array
 import "./cardlist.css"
 import logo from '../../assets/images/logo.svg';
 import search from '../../assets/images/search.svg';
 
-const CardListu = () => {
+const CardListu = ({searchInput,selectedTags,searchTrigger }) => {
+  const [userData,setUserData]=useState([])
+  useEffect(()=>{
+    async function fetchData() {
+   try {
+    console.log("fetching")
+       const response = await fetch("http://localhost:8080/courses/search", {
+           method: "POST", // GET, POST, PUT, DELETE, PATCH, etc.
+           headers: {
+           "Content-Type": "application/json" 
+          //  As sending JSON data to API
+           },
+           body: JSON.stringify({
+            type:"user",
+            title:searchInput,
+            tags:selectedTags
+
+           })   //if data to be given to the backend, uncomment this and the header, with data input in function
+       });
+       
+       const res = await response.json()
+setUserData(res)
+       console.log(res)
+      //  setongoingData(res);
+       return;
+   }
+   catch(err){
+      //  setongoingData([]);
+       return;
+   }
+   
+}
+fetchData();
+  },[searchTrigger])
+
+
   return (
     <>
         {/* <div id="navbar">
@@ -29,9 +64,10 @@ const CardListu = () => {
               <button id="global">Course</button>
 
         </div> */}
-    
+
+     
         <div className="card-list">
-        {sampleUserCardContent.map((userData, index) => (
+        {userData.map((userData, index) => (
             <UserCard key={index} user={userData} />
         ))}
         </div>

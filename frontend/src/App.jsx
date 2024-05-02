@@ -1,7 +1,7 @@
 
 import { Link, Route, Routes} from 'react-router-dom';
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 // import CreateProjectPage from './pages/createProject';
 // import EditCoursePage from './pages/editCourse';
 // import CreateCoursePage from './pages/createCourse';
@@ -38,6 +38,14 @@ import CreateCoursePage from './pages/createCourse.js';
 import DisplayContent from './pages/searchUserProjectCourse.js';
 
 function App() {
+  const [searchType,setSearchType]=useState({tagname: "Projects", color:"white"})
+  const [searchInput, setSearchInput] = useState('');
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [searchTrigger,setSearchTrigger]=useState(0);
+  useEffect(()=>{
+console.log(selectedTags)
+  },[selectedTags])
+  // useEffect(()=>{console.log(searchTrigger)},[searchTrigger])
   return (
     
   //  <UserProvider>
@@ -46,11 +54,11 @@ function App() {
       <Routes>
         <Route path ="/login" element= {<Login/>}/>
         <Route path = "/sucesslogin/:username" element = {<SucessLogin/>}/>
-        <Route element ={<Navbar/>}>
+        <Route element ={<Navbar setSearchType={setSearchType} searchType={searchType} searchInput={searchInput} setSearchInput={setSearchInput } selectedTags={selectedTags} setSelectedTags={setSelectedTags} setSearchTrigger={setSearchTrigger}/>}>
           <Route path ="/*" element = {<Explore/>}/>
           <Route path ="/chat/:username" element = {<ChatPage/>}/>
           <Route path = "/profile/:userName" element = {<Profile/>} />
-          <Route path = "/search/*" element = {<DisplayContent contentType="project"/>} />
+          <Route path = "/search/*" element = {<DisplayContent contentType={searchType.tagname} searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>} />
 
         </Route>
         <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>

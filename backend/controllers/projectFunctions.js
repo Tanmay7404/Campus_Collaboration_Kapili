@@ -44,6 +44,9 @@ class ProjectController {
         }
     }
 
+
+   
+
     async editProjects(projectId, project_details) {
         try {
             const updatedProject = await Project.findByIdAndUpdate(projectId, {

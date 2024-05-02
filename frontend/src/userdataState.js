@@ -6,8 +6,7 @@ const UserdataState = (props) => {
     const [userdata, setuserData] = useState();
     
     const [currUser ,setCurrUser]=useState(localStorage.getItem("user"));
-    console.log('pop');
-    console.log(currUser);
+  
     const [trigger ,setTrigger]=useState(0);
 
     useEffect(()=>{

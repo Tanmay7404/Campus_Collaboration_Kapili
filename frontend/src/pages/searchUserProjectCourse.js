@@ -3,10 +3,10 @@ import CourseCardList from '../components/coursecard/coursecardlist'; // Import 
 // import CardList from '../components/ExplorePage/cardlist';// Import your ProjectCard component
 import CardListu from '../components/searchuser/cardlist';  // Import your UserCard component
 // import Explore from './explore';
-// import Exploreu from './searchuserwithoutswiper';
-import Explore from './explore';
+import Exploreu from './searchuserwithoutswiper';
+// import Explore from './explore';
 
-const DisplayContent = ({ contentType }) => {
+const DisplayContent = ({ contentType,searchInput,selectedTags,searchTrigger }) => {
   return (
     <>
       <div id="layer0"></div>
@@ -14,9 +14,9 @@ const DisplayContent = ({ contentType }) => {
       <div id="layer2"></div>
       <div id="layer3"></div>
       <div id="wholepage"></div>
-      {(contentType === 'user')?<CardListu />:null}
-      {(contentType === 'course')? <CourseCardList />: null}
-      {(contentType === 'project')? <Explore/>: null}
+      {(contentType === 'Users')?<CardListu  searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>:null}
+      {(contentType === 'Courses')? <CourseCardList searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>: null}
+      {(contentType === 'Projects')? <Exploreu searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>: null}
 
   </>
   

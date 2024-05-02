@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef,useContext } from 'react';
-import { Link, NavLink, Outlet,useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet,useNavigate ,useLocation} from 'react-router-dom';
 import logoImg from "../../assets/images/logo.png";
 import searchSVG from "../../assets/images/search.svg";
 import './navbar.css';
 import Tag from "./tag.jsx";
 // import UserContext from '../../userContext.jsx';
 
-const Navbar = (props) => {
+const Navbar = ({setSearchType,searchType,searchInput, setSearchInput,selectedTags, setSelectedTags,setSearchTrigger}) => {
   const [currUser,setCurrUser] =useState(null);
+  const location = useLocation();
 
   const navigate=useNavigate()
   useEffect(()=>{
@@ -24,8 +25,7 @@ navigate('/login')
   const [showTag, setShowTag] = useState(false);
   const searchRef = useRef(null);
   const tagRef = useRef(null);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedSearch, setSelectedSearch] = useState({tagname: "Projects", color:"white"});
+  // const [selectedSearch, setSelectedSearch] = useState({tagname: "Projects", color:"white"});
   
   const toggleTagSelection = (tag) => {
     setSelectedTags((prevTags) => {
@@ -58,14 +58,22 @@ navigate('/login')
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [searchRef, tagRef]);
-
+  const handleInputChange = (event) => {
+    setSearchInput(event.target.value);
+  };
   return (
     <div id="main">
       <nav>
         <img src={logoImg} style={{ height: '35px' }} id="logo" alt="" />
         <div id="search" ref={searchRef} onClick={() => setShowTag(true)}>
-          <input type="text" placeholder="Search" />
-          <img src={searchSVG} alt="" />
+          <input type="text" placeholder="Search"
+          value={searchInput}
+          onChange={handleInputChange} />
+          <img src={searchSVG} alt="" onClick={()=>{
+                         setSearchTrigger(prev=>prev+1)
+                         if(location.pathname!=='/search'){
+             navigate('/search')}
+          }}/>
         </div>
         
         <div id="nav-part2">
@@ -80,7 +88,7 @@ navigate('/login')
           <path d="M7.82054 20.7313C8.21107 21.1218 8.84423 21.1218 9.23476 20.7313L15.8792 14.0868C17.0505 12.9155 17.0508 11.0167 15.88 9.84497L9.3097 3.26958C8.91918 2.87905 8.28601 2.87905 7.89549 3.26958C7.50497 3.6601 7.50497 4.29327 7.89549 4.68379L14.4675 11.2558C14.8581 11.6464 14.8581 12.2795 14.4675 12.67L7.82054 19.317C7.43002 19.7076 7.43002 20.3407 7.82054 20.7313Z" fill="#000000"/>
           </svg>
         </div>
-      {showTag ? <div ref={tagRef} id = "filterTags"><Tag onTagClick = {toggleTagSelection} tagList={selectedTags} setSelectedSearch={setSelectedSearch} selectedSearch={selectedSearch}/></div> : null}
+      {showTag ? <div ref={tagRef} id = "filterTags"><Tag onTagClick = {toggleTagSelection} tagList={selectedTags} setSearchType={setSearchType} searchType={searchType}/></div> : null}
       <Outlet />
     </div>
   );
