@@ -22,7 +22,6 @@ const courseSchema = new mongoose.Schema({
     }
   }],
   rating:{type:Number},
-  // issues: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Issue' }],
   endorsements: Number,
   likedUsers: [String],
   chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat' },

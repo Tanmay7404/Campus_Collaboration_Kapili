@@ -15,8 +15,10 @@ import "./card.css";
 import CardExpanded from "./CardExpanded";
 import ReactDOM from 'react-dom';
 
-const Card = ({details,setongoingData,setcompletedData,check}) =>{
+const Card = ({details,setongoingData,setcompletedData,setcourseData,check}) =>{
     console.log(check)
+    // console.log('lafda')
+    // console.log(details.projectInfo?details.projectInfo.projectLink:details.courseInfo.courseLink)
 
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -80,15 +82,15 @@ setModalOpen(true)
                     tags = {details.tags}
                     likes = {details.endorsements} 
                     ratings = {Number(details.rating).toFixed(1)} 
-                    modalImage = {details.projectImage.url} 
+                    modalImage = {details.projectImage?details.projectImage.url:details.courseImage.url}
                     modalText = {details.title} 
                     projectname={details.name}
-                    additionalImages = {details.projectInfo.demoLinks} 
-                    aboutProjectText = {details.projectInfo.description} 
+                    additionalImages = {details.projectInfo?details.projectInfo.demoLinks:details.courseInfo.demoLinks} 
+                    aboutProjectText = {details.projectInfo?details.projectInfo.description:details.courseInfo.description} 
                     feedbackArray = {details.feedbacks}
                     open={details.openForCollaboration}
                     completed={details.ongoing}
-                    projectlinks={details.projectInfo.projectLink}
+                    projectlinks={details.projectInfo?details.projectInfo.projectLink:details.courseInfo.courseLink}
                     createdate={details.createdAt}
                     finishdate={details.completedAt}
                     level={details.level}
@@ -98,6 +100,7 @@ setModalOpen(true)
                     modalOpen={modalOpen}
                     setongoingData={setongoingData}
                     setcompletedData={setcompletedData}
+                    setcourseData={setcourseData}
                     likedUsers={details.likedUsers}
                     chatId={details.chat}
                     check={check}
@@ -106,11 +109,11 @@ setModalOpen(true)
         </div>
     );  
     return (
+       
         <div id="f">
         <div className="swiper-slide swiper-slide1" onClick={openModal}>
-            <img src = {details.projectImage.url} id="sp-profile" alt=""/> 
             <div style={{ display: 'flex' }} className="profimg">
-                {details.creators.map((image, idx) => (
+                {/* {details.creators.map((image, idx) => (
                     <img id="sp-profile"
                         key={idx}
                         src={image.profilePic}
@@ -123,13 +126,13 @@ setModalOpen(true)
                         }}
                     />
          
-                ))}
+                ))} */}
 
 
     
             </div>
             <div className="projpic" style={{ position: 'relative' }}>
-    <img src={details.projectImage.url?details.projectImage.url:unstarsss} className="sw-img" alt="" />
+    <img src={details.projectImage?details.projectImage.url:details.courseImage.url} className="sw-img" alt="" />
 
     <div style={{ position: 'absolute', bottom: '10px', right: '15px',zIndex:1000 }}>
         {difficultyOptions.map((option) => (
@@ -159,7 +162,7 @@ setModalOpen(true)
             <div className="sw-details">
                 <div className="sw-details-1">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <div style={{fontSize:'1.5rem'}}>{details.name}</div>
+                        <div style={{fontSize:'1.5rem'}}>{details.name?details.name:details.title}</div>
                        
                             <div>      
                             <i 
@@ -172,7 +175,7 @@ setModalOpen(true)
                             
                             </div> 
                     </div>
-                    <p>{details.title}</p>
+                    <p>{details.name?details.title:''}</p>
                 </div>
                 <div className="sw-details-2">
 

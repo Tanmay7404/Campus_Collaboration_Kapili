@@ -13,10 +13,12 @@ import AddUsers from "../components/createPages/addUsers";
 import SubmitButton from "../components/createPages/submit";
 import DemoUpload from "../components/createPages/demoUpload";
 import Difficulty from "../components/createPages/difficulty";
-import profileImage from '../assets/images/profile_pic.jpg';
+import profileImage from '../assets/images/project-planning-header@2x.png';
 
 
 export default function CreateProjectPage() {
+  const navigate = useNavigate();
+
 
   var [values, setValues] = useState([""]); // Initial state with one empty string for collaboratos
   var [values2, setValues2] = useState([{ name: '', link: '' }]);
@@ -27,11 +29,13 @@ export default function CreateProjectPage() {
   var [ongoing,setOngoing] = useState(false);
   var [openForCollaboration,setOpenForCollab] = useState(false);
   var [demolinks,setDemo] = useState([]);
-  var [selectedDifficulty, setSelectedDifficulty] = useState('easy');
+  var [selectedDifficulty, setSelectedDifficulty] = useState('');
   var [url,setURL] = useState(profileImage);
   var [imageName,setImgN] = useState('');
 
-  const navigate=useNavigate()
+
+
+
 
    const formData = {
       title: projectTitle,
@@ -74,49 +78,65 @@ export default function CreateProjectPage() {
         window.alert('Title is required');
         return ;
       }
+      else if(formData.level===''){
+        window.alert('Level is required');
+        return ;
+
+        
+      }
       // Assuming you have an API endpoint to send the data
       setTrigger(prevTrigger => prevTrigger + 1); // Update trigger separately
-    };
+    };  
 
     useEffect(() => {
-      if(trigger!==1){
-      fetch('http://localhost:8080/projects/addNewProject', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      })
-      .then(response => {response.json;console.log(1);})
-      .then(data => {
-        console.log(2);
-        console.log('Success:', data);
-        // Handle success response
-      })
-      .catch((error) => {
-        console.log(3);
-        console.error(error.message);
-        if (error.message.includes('duplicate key error')) {
-          window.alert('Duplicate error occurred. Please enter unique data.');
-        } else {
-          console.log(4);
-          console.error(error);
-          window.alert('er.');
+      if (trigger !== 1) {
+        try {
+          fetch('http://localhost:8080/projects/addNewProject', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          })
+          .then(response => {
+            return response.json(); // Parse response as JSON
+          })
+          .then(data => {
+            console.log(2);
+            if(data.error===undefined){
+              console.log(data)
+              
+              navigate(-1);
+            }
+            else{
+              window.alert('Project name already exists  '); 
+            }
+          })
+          .catch(error => {
+            console.log(3);
+            console.error(error.message);
+            // if (error.message.includes('duplicate key error')) {
+            //   window.alert('Duplicate error occurred. Please enter unique data.');
+            // } else {
+              // console.log(4);
+              // console.error(error);
+              window.alert('Error occurred.');
+            // }
+          })
+        } catch (error) {
+          console.error('Error occurred in sending request:', error);
         }
-        // Handle error
-      
-      });}
-
-    },[trigger])
-
+      }
+    }, [trigger]);
+    
     return (
       <div className="createPage">
     
       <div className="contentPP">
       
-      <Starting text="Create Project"/>
+      <Starting text="Create Project" navigate={navigate} />
         
-      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} />
+      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData}/>
     
       <TextInputs name="Project Name" state={projectName} setState={setPname} fixed={false}/>
 

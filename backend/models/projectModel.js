@@ -28,9 +28,6 @@ const projectSchema = new mongoose.Schema({
   rating: {type:Number},
   likedUsers: [String],
   chat: { type: mongoose.Schema.Types.ObjectId, ref: 'Chat' },
-
-
-
   level:String,
 });
   

@@ -37,6 +37,7 @@ const CardExpanded = ({
   modalOpen,
   setongoingData,
   setcompletedData,
+  setcourseData,
   likedUsers,
   chatId,
   check
@@ -63,7 +64,7 @@ navigate('/login')
  const navigate=useNavigate()
 
   const initialfeedbackData={
-    projectname:projectname,
+    projectname:check==='Course'?modalText:projectname,
     img:userdata.profileInfo.profilePicture.url,
     rating:0,
     text:''
@@ -119,6 +120,7 @@ const handleLike = () => {
     return;
   }
   setLikeInProgress(true);
+  if(check!='Course'){
   if (isliked) {
     fetch(`http://localhost:8080/projects/removeLikedProject/` + currUser, {
       method: 'POST',
@@ -225,6 +227,83 @@ const handleLike = () => {
         setLikeInProgress(false);
       });
   }
+}
+else{
+  if (isliked) {
+    fetch(`http://localhost:8080/courses/removeLikedCourse/` + currUser, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ coursetitle:modalText, endorsements: likes - 1 })
+    })
+      .then(response => {
+        if (response.ok) {  
+            setcourseData(prevData => {
+              return prevData.map(course => {
+                if (course.title == modalText) {
+                  var lik = course.endorsements;
+                  return {
+                    ...course,
+                    endorsements: lik - 1,
+                    likedUsers: course.likedUsers.filter(use => use != currUser)
+                  };
+                }
+                return course;
+              });
+            });
+            setisliked(false);
+          
+        } else {
+          window.alert('Failed to remove project from liked projects');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        setLikeInProgress(false);
+      });
+  } else {
+    fetch(`http://localhost:8080/courses/addLikedCourse/` + currUser, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ coursetitle:modalText, endorsements: likes + 1 })
+    })
+      .then(response => {
+        if (response.ok) {
+            setcourseData(prevData => {
+              return prevData.map(course => {
+                if (course.title == modalText) {
+                  var lik = course.endorsements;
+                  return {
+                    ...course,
+                    endorsements: lik + 1,
+                    likedUsers: course.likedUsers.concat(currUser)
+                  };
+                }
+                return course;
+              });
+            });
+            setisliked(true);
+          
+        } else {
+          window.alert('Failed to remove project from liked projects');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        setLikeInProgress(false);
+      });
+  }
+
+
+
+}
 };
 
 const checkToxicity = async (currentMessage) => {
@@ -259,6 +338,50 @@ const checkToxicity = async (currentMessage) => {
     }
   const toxic=await checkToxicity(feedbackData.text)
 if(toxic===1 ||toxic===2){
+  if(check==='Course'){
+    await  fetch('http://localhost:8080/courses/addfeedback/' + currUser, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(feedbackData)
+    })
+    .then(response => {
+      window.alert('Submitted');
+      const feed = {
+        reviewer: currUser,
+        img: userdata.profileInfo.profilePicture.url,
+        message: {
+          rating: feedbackData.rating,
+          text: feedbackData.text,
+          timestamp: Date.now()
+        }
+      };
+        setcourseData(prevData => {
+          return prevData.map(course => {
+            if (course.title === modalText) {
+              var n=course.feedbacks.length;
+             let  rate=(course.rating*n+feedbackData.rating)/(n+1);
+              return {
+                ...course,
+                feedbacks: [...course.feedbacks, feed],
+                rating:rate.toString()
+              };
+            }
+            return course;
+          });
+        });
+
+
+
+      
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+
+  }
+  else{
   await  fetch('http://localhost:8080/projects/addfeedback/' + currUser, {
       method: 'POST',
       headers: {
@@ -277,7 +400,6 @@ if(toxic===1 ||toxic===2){
           timestamp: Date.now()
         }
       };
-  
       if (completed===true||check=='profile') {
         // Updating ongoingData with new feedback
         setongoingData(prevData => {
@@ -319,7 +441,14 @@ if(toxic===1 ||toxic===2){
     .catch(error => {
       console.error('Error:', error);
     });
-  }else
+  }
+}
+
+
+
+
+  
+  else
   {
     window.alert("Toxic Message Detected")
   }
@@ -491,10 +620,11 @@ if(toxic===1 ||toxic===2){
               <i class="bi bi-calendar-month" style={{fontSize:'40px', marginRight:'25px'} }></i>
               <div>
               <div><span style={{ color: '#7a7777' }}>Created Date:</span> {formattedCreateDate}</div>
-              <div>{!completed&&(
+
+              <div>{!completed&&check!='Course'&&(
             <div><span style={{ color: '#7a7777' }}>Completed Date:</span> {formattedFinishDate}</div>
             )}
-            {completed&&(
+            {completed&&check!='Course'&&(
             <div><span style={{ color: '#7a7777' }}>Completed Date:</span>  Ongoing</div>
             )}
             
@@ -535,9 +665,15 @@ if(toxic===1 ||toxic===2){
 
             <div id="description-tags">
               <div id="description">
-                <div style={{fontSize:'1.3rem'}}>
-                  About this project
-                  </div>
+                {check!='Course'&&(
+                <div style={{fontSize:'1.3rem'}} >
+                  About This Project
+                </div>)}
+                {check==='Course'&&(
+                <div style={{fontSize:'1.3rem'}} >
+                  About This Course
+                </div>)}
+
                 <div id="description-part2">{aboutProjectText}</div>
               </div>
               <div 
@@ -578,10 +714,17 @@ if(toxic===1 ||toxic===2){
 
 
             <div style={{ marginTop: '2rem' }}>
+              {check!='Course'&&(
               <div style={{ fontSize: '1.3rem' }}>
                 <i className="bi bi-link" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i>
                 Project Links
-              </div>
+              </div>)}
+              {check==='Course'&&(
+              <div style={{ fontSize: '1.3rem' }}>
+                <i className="bi bi-link" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i>
+                Course Links
+              </div>)}
+
               {projectlinks.map((item, index) => (
                 <div key={index} style={{ background: 'transparent', fontSize: '1.2rem', marginTop: '0.5rem' }}>
                   <span style={{ marginRight: '0.5rem' }}>&bull;</span>

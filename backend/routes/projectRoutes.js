@@ -40,13 +40,17 @@ projectRouter.post("/addNewProject", async (req,res)=>{
         if(req.body.tags){
          await  PC.addTags(project_id,req.body.tags);
         }
+        // console.log('away');
+        // console.log(project_id);
         res.send(project_id);
     } catch (error) {
-        console.error(error);
+        // console.log('home')
+        // console.error(error);
         if (project_id) {
             await Project.findByIdAndDelete(project_id);
         }
-        res.status(500).send("Internal Server Error :"+error.message);
+        res.status(500).json({ error:  error.message  });
+
     }
 });
 
@@ -229,8 +233,6 @@ projectRouter.get("/ongoingProjects/:username", async (req, res) => {
                 return { name: tagInfo.name, color: tagInfo.color };
             });
             const tagsInfo = await Promise.all(tagInfoPromises);
-        
-            
             return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
         res.send(updatedProjects);

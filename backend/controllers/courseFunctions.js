@@ -15,12 +15,15 @@ class CourseController {
                 title: course_details.title,
                 description: course_details.description,
                 createdAt: course_details.createdAt || Date.now(),    
-                courseImage:{url:course_details.url,filename:course_details.imageName},
+                courseImage:{url:course_details.courseImage.url,filename:course_details.courseImage.fileName},
                 courseInfo: {
                     description: course_details.description,
-                    demoLinks: course_details.links,
-                    courseLink: course_details.courseImages
-                },        
+                    demoLinks: course_details.demoLinks,
+                    courseLink: course_details.courseLink
+                },   
+                creators:[],  
+                endorsements: 0,
+                level:course_details.level,
                 tags: [],
                 enrolledUsers: [], 
                 feedbacks: [],
@@ -104,18 +107,60 @@ class CourseController {
         }
         console.log("NO COMPLETED COURSES");
     }
-
-    async addTags(course_id , tags){
+    async addCreators(course_id, creators) {
         try {
-            const course = await Course.findById(course_id);
-            let tagId = await getObjectId.tagNameToIdList(tags);
-            console.log("tagId",tagId);
-            course.tags = course.tags.concat(tagId);
-            await course.save();
+            var course = await Course.findById(course_id);
+            if (!course) {
+                throw new Error("Course not found");
+            }
+            if(!creators.length) {
+                console.log("creators empty")
+                return 0;
+            }
+            else if(creators.length){
+              
+                var creatorsId = await getObjectId.userNameToIdList(creators);
+                course.creators = course.creators.concat(creatorsId);
+ 
+                {creatorsId.map(async (id) => {
+                    var user = await User.findById(id);
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
+                    user.projects.push(course_id);
+                    await user.save();
+                })}
+                // var chatCC=new ChatController()
+                // var chat=await chatCC.addChat({participants:creatorsId,projectName:project._id})
+                // await chatCC.chatIdToUsers(chat,creatorsId)
+                // course.chat=chat
+                await course.save();
+                return 1;
+            }
+            
         } catch (error) {
-           console.log(error); 
+            throw error;
         }
-        
+    }
+
+    async addTags(course_id,tags){
+        try{
+            var course = await Course.findById(course_id);
+            if (!course) {
+                throw new Error("Project not found");
+            }
+            if(!tags.length){
+                console.log("tags are empty");
+                return;
+            }
+            else if(tags.length){
+                var tagsId = await getObjectId.tagNameToIdList(tags);
+                course.tags = course.tags.concat(tagsId);
+                course.save();
+            }
+        } catch(err){
+            throw new Error(err);
+        }
     }
     async addEnrolledUsers(course_title , users){
         try {
@@ -128,49 +173,63 @@ class CourseController {
         }
         
     }
-    async addCreators(course_id, creators) {
+
+    async addLikedCourse(username, coursetitle,likes) {
         try {
-            var course = await Course.findById(course_id);
-            if (!course) {
-                throw new Error("Project not found");
-            }
-            if(!creators.length) {
-                console.log("creators empty")
-                return 0;
-            }
-            else if(creators.length){
-                var creatorsId = await getObjectId.userNameToIdList(creators);
-                course.creators = course.creators.concat(creatorsId);
-            
-
-               // let chat = course.chat;
-                var chatCC=new ChatController()
-                var chat=await chatCC.addChat({participants:creatorsId,courseName:course._id})
-                await chatCC.chatIdToUsers(chat,creatorsId)
-                course.chat=chat
-
-                console.log("chat: " +chat)
-                if (chat) {
-                    // let newChat = await Chat.findById(chat);
-                    // if (newChat) {
-                    //     newChat.participants.push(...creatorsId);
-                    //     await newChat.save();
-                    //     var x = await new ChatController().addMessage(newChat._id ,{sender: "System", message: " Users Added"});
-                    // } else {
-                    //     console.log("Chat not found");
-                    // }
-                } else {
-                    console.log("Chat not initialized");
-                }
-                await course.save();
-
-                return 1;
-            }
-            
+            const course = await Course.findOne({title:coursetitle });
+            if (!course) return 0;
+            course.likedUsers.push(username);
+            course.endorsements=likes;
+            await course.save();
+            return 1;
         } catch (error) {
-            throw error;
+            console.error(error);
+            return 0;
         }
     }
+    async removeLikedCourse(username, coursetitle,likes) {
+        // console.log('final')
+        try {
+            const course = await Course.findOne({title:coursetitle });
+            if (!course) return 0;
+
+            course.likedUsers = course.likedUsers.filter(users => users !== username);
+            course.endorsements=likes;
+            
+            // console.log(project)
+            await course.save();
+            return 1;
+        } catch (error) {
+            console.error(error);
+            return 0;
+        }
+    }
+
+    async addFeedback(coursetitle, userName , feedback) {
+        try {
+            let user = await User.findOne({username : userName });
+            let course = await Course.findOne({title : coursetitle});
+            if (!user || !course) {
+                throw new Error("User or Project not found");
+            }
+            let data = {
+                reviewer : userName,
+                img:feedback.img,
+                message : {
+                    rating : feedback.rating,
+                    text : feedback.text,
+                }
+            }
+            course.feedbacks.push(data);
+            var n = course.feedbacks.length;
+            course.rating = (course.rating * (n - 1) + data.message.rating) / n;
+            await course.save();
+            return 1;
+        } catch(err){
+            throw new Error(err);
+        }
+    }
+
    
     async search(searchType , searchTerm , searchTags){
         try {
@@ -252,28 +311,7 @@ tagsOrSkills="Skills"
            return "error"}
         }
 
-    async addFeedback(course_title,feedback){
-        try {
-            var userId = await getObjectId.userNameToId(feedback.reviewer);
-            var newFeedback = {
-                reviewer: userId,
-                message: {
-                    rating: feedback.rating,
-                    text: feedback.test,
-                    timestamp: feedback.timestamp
-                }
-            }
-            var course = await Course.findById(course_title);
-            course.feedbacks.push(newFeedback);
-            var n = course.feedbacks.length;
-            course.rating = (course.rating*(n-1) +newFeedback.message.rating)/n;
-            course.save();
-            return 1;
-        } catch (error) {
-            console.log(error);
-        }
-        
-    }
+
     async addIssues(issue_id , course_title ){
         try {
             const issue = await Issue.findById(issue_id);

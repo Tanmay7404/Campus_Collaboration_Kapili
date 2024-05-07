@@ -3,10 +3,11 @@ import Button from 'react-bootstrap/Button';
 import uploadImage from '../../functions/uploadImage';
 import deleteImage from '../../functions/deleteImage';
  // Import your profile image
+ import profileImage from '../../assets/images/project-planning-header@2x.png';
 
 
 
-function ProfilePicAdd({profilepic,setpp,setImgN}) {
+function ProfilePicAdd({profilepic,setpp,setImgN,formData}) {
 
     const imageTypes = /^image\//;
 
@@ -40,6 +41,7 @@ function ProfilePicAdd({profilepic,setpp,setImgN}) {
             </div>
             <div className="buttonContainer" >
                 <Button variant="outline-dark" onClick ={()=>{
+                    console.log(formData);
                     deleteImage(formData.imageName);
                     setpp(profileImage);
                     setImgN(''); 

@@ -21,7 +21,7 @@ export default function CreateCoursePage() {
     var [courseDesc,setCdesc] = useState("");
     var [selectedTags, setSelectedTags] = useState([]);
     var [demolinks,setDemo] = useState([]);
-    var [selectedDifficulty, setSelectedDifficulty] = useState('easy');
+    var [selectedDifficulty, setSelectedDifficulty] = useState('');
     var [url,setURL] = useState(profileImage);
     var [imageName,setImgN] = useState('');
     const navigate=useNavigate()
@@ -64,14 +64,17 @@ export default function CreateCoursePage() {
           window.alert('Title is required');
           return ;
         }
-      // Assuming you have an API endpoint to send the data
+        if(formData.level==''){
+          window.alert('Level is required');
+          return;
+        }
       setTrigger(prevTrigger => prevTrigger + 1); // Update trigger separately
     };
 
     useEffect(() => {
       
       if(trigger!==1){
-      console.log(formData)
+      try{
       fetch('http://localhost:8080/courses/addCourse', {
         method: 'POST',
         headers: {
@@ -79,25 +82,39 @@ export default function CreateCoursePage() {
         },
         body: JSON.stringify(formData)
       })
-      .then(response => {response.json;console.log(1);})
+      .then(response => {
+        console.log(1);
+       return response.json();
+      })
       .then(data => {
-        console.log(2);
-        console.log('Success:', data);
-        // Handle success response
+        console.log(data);
+        if(data.error===undefined){
+          console.log(2);
+          console.log(data)
+          navigate(-1);
+        }
+        else{
+          window.alert('Course Title already exists  '); 
+        }
       })
       .catch((error) => {
         console.log(3);
         console.error(error.message);
-        if (error.message.includes('duplicate key error')) {
-          window.alert('Duplicate error occurred. Please enter unique data.');
-        } else {
-          console.log(4);
-          console.error(error);
-          window.alert('er.');
-        }
+        // if (error.message.includes('duplicate key error')) {
+        //   window.alert('Duplicate error occurred. Please enter unique data.');
+        // } else {
+        //   console.log(4);
+        //   console.error(error);
+        //   window.alert('errror');
+        // }
+        window.alert('Error Occured');
         // Handle error
       
-      });}
+      })
+      } catch (error) {
+        console.error('Error occurred in sending request:', error);
+      }
+      }
 
     },[trigger])
 
@@ -106,9 +123,9 @@ export default function CreateCoursePage() {
     
     <div className="contentPP">
     
-    <Starting text="Create Course"/>
+    <Starting text="Create Course" navigate={navigate}/>
       
-    <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} />
+    <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData}/>
 
     <TextInputs name="Course Title" state={courseTitle} setState={setCtitle} fixed={false}/>
 

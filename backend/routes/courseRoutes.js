@@ -6,6 +6,7 @@ const Course = require("../models/courseModel.js");
 const getObjectId = require("../functions/getObjectId.js");
 const Tag = require("../models/tagModels.js");
 const UserController = require("../controllers/userFunctions.js");
+const ProjectController =require("../controllers/projectFunctions.js")
 
 //WORKING
 courseRouter.post("/addCourse", async (req, res) => {
@@ -14,32 +15,32 @@ courseRouter.post("/addCourse", async (req, res) => {
     try {
         var UC=new UserController()
         await UC.checkUsersExistence(req.body.collaboratorName)
-        let course_details = req.body;
+        let course_details ={
+            title:req.body.title,
+            description: req.body.description,
+            courseLink: req.body.links,
+            demoLinks:req.body.courseImages,
+            level:req.body.level,
+            courseImage: {
+                url: req.body.url, // Set the image URL from the request body
+                filename: req.body.imageName // You might need to get the filename from the request body as well
+              }, 
+        };
         // console.log(course_details);
         var CC=new CourseController()
         course_id = await CC.addCourse(course_details);
-        // console.log("COURSEID",course_id);
-        // let course_title = await Course.findOne({title : req.body.title});
-        // console.log(course_title);
-        
-        //getObjectId.courseNameToId(course_title.title);
-        if(req.body.collaboratorName.length>0)
-        {
-            await CC.addCreators(course_id,req.body.collaboratorName)
-        }
+        if(req.body.collaboratorName){
+            await CC.addCreators(course_id,req.body.collaboratorName);
+          }
         if(req.body.tags){
-        await CC.addTags(course_id ,req.body.tags);}
-        if (course_id) {
-            res.send("Updated");
-        } else {
-            res.send("Can't add course");
+            await  CC.addTags(course_id,req.body.tags); // need to add later
         }
+        res.send(course_id);
     } catch (error) {
-        console.error(error);
         if (course_id) {
             await Course.findByIdAndDelete(course_id);
         }
-        res.status(500).send("Internal Server Error");
+        res.status(500).json({ error:  error.message  });
     }
 });
 // WORKING
@@ -56,6 +57,39 @@ courseRouter.get("/all" , async (req,res) => {
         console.log(error);
     }    
 })
+
+courseRouter.get("/allcourses", async (req, res) => {
+    try {
+        let UC = new UserController();
+        let courses = await Course.find({ 
+            // ongoing: true,
+            // _id: { $nin: userProjects } // Exclude user's projects
+        });
+        const updatedCourses = await Promise.all(courses.map(async course => {
+            const creatorUsernames = await UC.userIdToNameAndProfileList(course.creators);
+            const creators = creatorUsernames.map(creator => ({
+                username: creator.username,
+                profilePic: creator.profilePic
+            }));
+            // console.log(updatedProjects);
+
+            const tagInfoPromises = course.tags.map(async tagId => {
+                const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                return { name: tagInfo.name, color: tagInfo.color };
+            });
+            const tagsInfo = await Promise.all(tagInfoPromises);
+            return { ...course.toObject(), creators: creators,tags:tagsInfo };
+        }));
+        res.send(updatedCourses);
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+
 // WORKING
 courseRouter.get("/popularcourses" ,async (req,res)=>{
     try {
@@ -166,5 +200,62 @@ courseRouter.put("/:id", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
+courseRouter.post("/addLikedCourse/:username", async (req, res) => {
+    try {
+        
+        const username=req.params.username;             
+        let coursetitle = req.body.coursetitle;
+        let likes = req.body.endorsements;
+        const data = await new CourseController().addLikedCourse(username, coursetitle,likes);
+        if (data === 1) {
+            res.send("Project added to liked projects successfully");
+        } else if (data === 0) {
+            res.send("Failed to add project to liked projects");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+courseRouter.post("/removeLikedCourse/:username", async (req, res) => {
+    try {
+        const username=req.params.username;
+        let coursetitle = req.body.coursetitle;
+        let likes = req.body.endorsements;
+        const data = await new CourseController().removeLikedCourse(username, coursetitle,likes);
+        if (data === 1) {
+            res.send("Project removed from liked projects successfully");
+        } else if (data === 0) {
+            res.send("Failed to remove project from liked projects");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+courseRouter.post("/addfeedback/:username" , async(req,res)=>{
+    const username = req.params.username;
+
+    let course = req.body.projectname;
+    console.log(78978987);
+    console.log(course);
+    let feedback = {  
+        rating : req.body.rating,
+        text : req.body.text,  
+        img:req.body.img,             
+    }
+    let addedFeedback = new CourseController().addFeedback(course ,username, feedback);
+    if(addedFeedback == 1){
+        res.send("ADDED FEEDBACK");
+    }
+    else {
+  
+        res.send("ERROR")
+    }
+})
+
+
 
 module.exports = courseRouter;

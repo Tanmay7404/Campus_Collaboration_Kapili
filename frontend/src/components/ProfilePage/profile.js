@@ -85,8 +85,12 @@
                 });
                 
                 const res = await response.json()
+                const sortedProjects = res.updatedProjects.sort((a, b) => {
+                  return new Date(b.createdAt) - new Date(a.createdAt);
+                });
                 setdataprofile(res.user);
-                setdataproject(res.updatedProjects);
+                
+                setdataproject(sortedProjects);
                 console.log('falma')
                 console.log(res)
                 return;

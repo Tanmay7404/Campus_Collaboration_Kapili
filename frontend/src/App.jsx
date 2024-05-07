@@ -59,7 +59,7 @@ console.log(selectedTags)
           <Route path ="/chat/:username" element = {<ChatPage/>}/>
           <Route path = "/profile/:userName" element = {<Profile/>} />
           <Route path = "/search/*" element = {<DisplayContent contentType={searchType.tagname} searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>} />
-
+      
         </Route>
         <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>
         <Route path = "/createProject" element={<CreateProjectPage/>}/>

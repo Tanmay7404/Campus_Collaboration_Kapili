@@ -9,10 +9,10 @@ import "./cardlist.css";
 import Coursecard from '../coursecard/coursecard.js';
 
 
-const CardList = ({data,setModalOpen,setongoingData,setcompletedData}) => {
+const CardList = ({data,setModalOpen,setongoingData,setcompletedData,setcourseData}) => {
 
   const [direction, setDirection] = useState(getDirection());
-  const[check,setCheck]=useState("explore");
+  // const[check,setCheck]=useState("explore");
 
   useEffect(() => {
     const handleResize = () => {
@@ -50,10 +50,10 @@ const CardList = ({data,setModalOpen,setongoingData,setcompletedData}) => {
                     return(
                         <div className="swiper-slide" key={index}>
                             <SwiperSlide key={index}>  
-                              {(data.type=="Project"? 
-                              <Card key={index} details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} check={check} /> : 
-                              <Coursecard key={index} course={card} />  )
-                              }                      
+                              <Card key={index} details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData}  setcourseData={setcourseData} check={data.type} /> : 
+                              
+                            
+                                        
                             </SwiperSlide>
                         </div>
                     );

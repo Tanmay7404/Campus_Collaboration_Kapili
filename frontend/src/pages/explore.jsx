@@ -70,15 +70,6 @@ navigate("/login")
         
     },[currUser,setongoingData])
   
-
-
-
-
-   
-
-
-
-
     useEffect(() => {
         async function fetchData() {
             if(currUser){
@@ -107,11 +98,40 @@ navigate("/login")
         
     },[currUser,setcompletedData])
 
-    
+
+    useEffect(() => {
+        async function fetchData() {
+            
+               if (currUser) {
+                   
+               //   const foundUser = JSON.parse(loggedInUser);               }  
 
 
+            try {
+                const response = await fetch("http://localhost:8080/courses/allcourses", {
+                    method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
+                    // headers: {
+                    // "Content-Type": "application/json",  
+                    // As sending JSON data to API
+                    // },
+                    // body: JSON.stringify(data)   //if data to be given to the backend, uncomment this and the header, with data input in function
+                });
+                
+                const res = await response.json()
+                
+                setcourseData(res);
+                return;
+            }
+            catch(err){
+                setcourseData([]);
+                return;
+            }}else{
 
-
+            }
+        }
+        fetchData();
+        
+    },[currUser,setcourseData])
 
   const data = {
     explore: {
@@ -132,282 +152,11 @@ navigate("/login")
         {
             type: "Course",
             text: "Completed Course",
-            list_cards: [
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage,profimage,profimage,profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" },{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:false
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage:[profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:false
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage:[profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:false
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage:[profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:false
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage:[profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    },
-                    {
-                        title: "Deep Learning Specialization",
-                        creatorimage: [profimage],
-                        courseimage: courseimage,
-                        tags:[{name: 'AI/ML', color:"#4EB0E7"},{name: 'DSA',color:"#4EB0E7" }],
-                        rating:4,
-                        helpful:10,
-                        complete:true
-                    }
-                    
-                    
-                
-                
-                
-                ]
+            list_cards: course
         }
         ]
     },
-        // Add more cards as needed
-    chat :[],
-    profile: {
-        userName : 'Soumya Savarn',
-        userEmail : 's.savarn@iitg.ac.in',
-        profilePic : './Images/profile.jpeg',
-        userDepartment : 'DSAI, IITG',
-        userSkills : ['BlockChain', 'MySQL', 'iOS dev', 'TensorFlow'],
-  
-        projects : [{
-        title: "Nirvanna",
-        likes: 10,
-        contributors: ["./Images/profile.jpeg", "./Images/profile2.jpeg", "./Images/profile3.jpg"],
-        projectImage: "./Images/swigy.png"
-    },{
-      title: "Nirvanna",
-      likes: 10,
-      contributors: ["./Images/profile.jpeg", "./Images/profile2.jpeg"],
-      projectImage: "./Images/swigy.png"
-    },{
-      title: "Nirvanna",
-      likes: 10,
-      contributors: ["./Images/profile.jpeg", "./Images/profile2.jpeg", "./Images/profile3.jpg"],
-      projectImage: "./Images/swigy.png"
-    }],
-  
-    courses :
-     [{
-      title: "C++ Basics",
-      likes: 78,
-      contributors: ["./Images/profile.jpeg"],
-      courseImage: "./Images/swigy.png"
-      },{
-        title: "C++ Basics",
-        likes: 56,
-        contributors: ["./Images/profile.jpeg"],
-        courseImage: "./Images/swigy.png"
-        }]
-    }
   }
-  
     const [modaldata, setModalOpen] = useState(null);
     return (
     <>
@@ -417,7 +166,7 @@ navigate("/login")
       <div id="layer3"></div>
       <ExplorePg1 />
       <ExplorePg2 />
-      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} />
+      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} setcourseData={setcourseData} />
     </>
     );
   };// 
