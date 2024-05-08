@@ -14,7 +14,7 @@ import courseimage from '../assets/images/swiggy.png'
 import UserdataContext from '../userdataContext.js';
 import { useNavigate } from 'react-router-dom';
 
-const Explore_last = ({searchInput,selectedTags,searchTrigger }) => {
+const Explore_last = ({contentType,searchInput,selectedTags,searchTrigger }) => {
     const [ongoingData,setongoingData] = useState([])
     const [completedData,setcompletedData] = useState([])
     const [course,setcourseData] = useState([])
@@ -36,6 +36,8 @@ const Explore_last = ({searchInput,selectedTags,searchTrigger }) => {
 navigate("/login")
            }
     },[])
+
+    {contentType==='Projects'&&(
     useEffect(()=>{
         async function fetchData() {
        try {
@@ -67,45 +69,41 @@ navigate("/login")
     }
     fetchData();
       },[searchTrigger])
-    
+    )}
 
-
-
-   
-
-
-
-
-    useEffect(() => {
-        async function fetchData() {
-            if(currUser){
-
-            try {
-                const response = await fetch("http://localhost:8080/projects/completedProjects/"+currUser, {
-                    method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
-                    // headers: {
-                    // "Content-Type": "application/json",
-                    // As sending JSON data to API
-                    // },
-                    // body: JSON.stringify(data)   //if data to be given to the backend, uncomment this and the header, with data input in function
-                });
-                
-                const res = await response.json()
-                
-               // setcompletedData(res);
-                return;
-            }
-            catch(err){
-                setcompletedData([]);
-                return;
-            }
-        }}
-        fetchData();
-        
-    },[currUser,setcompletedData])
-
-    
-
+    {contentType==='Courses'&&(
+      useEffect(()=>{
+          async function fetchData() {
+         try {
+          console.log("fetching search")
+             const response = await fetch("http://localhost:8080/courses/search", {
+                 method: "POST", // GET, POST, PUT, DELETE, PATCH, etc.
+                 headers: {
+                 "Content-Type": "application/json" 
+                //  As sending JSON data to API
+                 },
+                 body: JSON.stringify({
+                  type:"course",
+                  title:searchInput,
+                  tags:selectedTags
+      
+                 })   //if data to be given to the backend, uncomment this and the header, with data input in function
+             });
+             
+             const res = await response.json()
+             console.log(res)
+              setongoingData(res);
+             return;
+         }
+         catch(err){
+            //  setongoingData([]);
+             return;
+         }
+         
+      }
+      fetchData();
+        },[searchTrigger])
+      )}
 
 
 
@@ -115,63 +113,12 @@ navigate("/login")
         allGroups: [
             {
             type: "Project",
-            text: "Projects",
+            text: contentType,
             list_cards:ongoingData
-
-          
-        },
-        {
-            type: "Project",
-            text: "",
-            list_cards:[]
-           
-        },
-        {
-            type: "Course",
-            text: "",
-          list_cards:[]
         }
         ]
     },
         // Add more cards as needed
-    chat :[],
-    profile: {
-        userName : 'Soumya Savarn',
-        userEmail : 's.savarn@iitg.ac.in',
-        profilePic : './Images/profile.jpeg',
-        userDepartment : 'DSAI, IITG',
-        userSkills : ['BlockChain', 'MySQL', 'iOS dev', 'TensorFlow'],
-  
-        projects : [{
-        title: "Nirvanna",
-        likes: 10,
-        contributors: ["./Images/profile.jpeg", "./Images/profile2.jpeg", "./Images/profile3.jpg"],
-        projectImage: "./Images/swigy.png"
-    },{
-      title: "Nirvanna",
-      likes: 10,
-      contributors: ["./Images/profile.jpeg", "./Images/profile2.jpeg"],
-      projectImage: "./Images/swigy.png"
-    },{
-      title: "Nirvanna",
-      likes: 10,
-      contributors: ["./Images/profile.jpeg", "./Images/profile2.jpeg", "./Images/profile3.jpg"],
-      projectImage: "./Images/swigy.png"
-    }],
-  
-    courses :
-     [{
-      title: "C++ Basics",
-      likes: 78,
-      contributors: ["./Images/profile.jpeg"],
-      courseImage: "./Images/swigy.png"
-      },{
-        title: "C++ Basics",
-        likes: 56,
-        contributors: ["./Images/profile.jpeg"],
-        courseImage: "./Images/swigy.png"
-        }]
-    }
   }
   
     const [modaldata, setModalOpen] = useState(null);
@@ -183,8 +130,14 @@ navigate("/login")
       <div id="layer3"></div>
       {/* <ExplorePg1 />
       <ExplorePg2 /> */}
-      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData} />
-    </>
+      {contentType==='Projects'&&(
+      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setongoingData} setcourseData={setcourseData} />
+      )}
+      {contentType==='Courses'&&(
+      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setongoingData} setcourseData={setcourseData} />
+      )}
+
+      </>
     );
   };// 
   

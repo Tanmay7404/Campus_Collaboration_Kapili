@@ -158,8 +158,51 @@ courseRouter.post("/search" , async (req,res)=>{
         const searchType = req.body.type;
         const searchTerm = req.body.title;
         const searchTags = req.body.tags;
+        let UC = new UserController();
         let data = await new CourseController().search(searchType , searchTerm, searchTags);
-        res.send(data);
+        if(searchType == "course"){
+
+            const updatedCourses = await Promise.all(data.map(async course => {
+                const creatorUsernames = await UC.userIdToNameAndProfileList(course.creators);
+                const creators = creatorUsernames.map(creator => ({
+                    username: creator.username,
+                    profilePic: creator.profilePic
+                }));
+                // console.log(updatedProjects);
+    
+                const tagInfoPromises = course.tags.map(async tagId => {
+                    const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                    return { name: tagInfo.name, color: tagInfo.color };
+                });
+                const tagsInfo = await Promise.all(tagInfoPromises);
+                return { ...course.toObject(), creators: creators,tags:tagsInfo };
+            }));
+            res.send(updatedCourses);
+
+
+        }
+        else if(searchType == "project"){
+            const updatedProjects = await Promise.all(data.map(async project => {
+                const creatorUsernames = await UC.userIdToNameAndProfileList(project.creators);
+                const creators = creatorUsernames.map(creator => ({
+                    username: creator.username,
+                    profilePic: creator.profilePic
+                }));
+                // console.log(updatedProjects);
+    
+                const tagInfoPromises = project.tags.map(async tagId => {
+                    const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                    return { name: tagInfo.name, color: tagInfo.color };
+                });
+                const tagsInfo = await Promise.all(tagInfoPromises);
+                return { ...project.toObject(), creators: creators,tags:tagsInfo };
+            }));
+
+            res.send(updatedProjects);
+        }
+        else{
+            res.send(data);
+        }
 
     } catch (error) {
         console.log(error);

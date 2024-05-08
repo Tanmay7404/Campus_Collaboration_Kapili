@@ -6,7 +6,7 @@ import CardListu from '../components/searchuser/cardlist';  // Import your UserC
 import Exploreu from './searchuserwithoutswiper';
 // import Explore from './explore';
 
-const DisplayContent = ({ contentType,searchInput,selectedTags,searchTrigger }) => {
+const   DisplayContent = ({ contentType,searchInput,selectedTags,searchTrigger }) => {
   return (
     <>
       <div id="layer0"></div>
@@ -15,8 +15,8 @@ const DisplayContent = ({ contentType,searchInput,selectedTags,searchTrigger }) 
       <div id="layer3"></div>
       <div id="wholepage"></div>
       {(contentType === 'Users')?<CardListu  searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>:null}
-      {(contentType === 'Courses')? <CourseCardList searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>: null}
-      {(contentType === 'Projects')? <Exploreu searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>: null}
+      {(contentType === 'Courses')? <Exploreu  contentType={contentType} searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>: null}
+      {(contentType === 'Projects')? <Exploreu  contentType={contentType} searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>: null}
 
   </>
   
