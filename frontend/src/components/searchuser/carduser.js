@@ -6,36 +6,72 @@ import starImg from "../../assets/images/star.svg";
 // import CardExpanded from "./CardExpanded";
 import sampleUserCardContent from "./carduserdata";
 import './carduser.css'
+import { useNavigate } from "react-router-dom";
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user ,currentUserName}) => {
+const navigate=useNavigate()
+    // const handleCardClick = () => {
+    //     // Add logic to open the link when the card is clicked
+    //     window.location.href = user.link;
+    // };
 
-    const handleCardClick = () => {
-        // Add logic to open the link when the card is clicked
-        window.location.href = user.link;
-    };
-
-    const handleAddFriend = (e) => {
+    const handleAddFriend = async(user) => {
         // Add logic to handle adding the user as a friend
-        e.stopPropagation();
-        console.log(`Adding ${user.username} as a friend`);
-    };
+        const link = "http://localhost:8080/user/addFriend" ;
+        console.log(link);
+      const response= await fetch(link, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body:JSON.stringify( {
+            "currentUserName":currentUserName,"friendUserName":user
+          }),
+        });
+         const res = await response.text()
 
-    const handleGetInTouch = (e) => {
-        // Add logic to handle getting in touch with the user
-        e.stopPropagation();
-        console.log(`Getting in touch with ${user.username}`);
+         window.alert( res);
+
     };
+    const getInTouch = async(user) => {
+        try {
+         const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        friendUsername: user,
+         currUsername: currentUserName,
+      }),
+    });
+    const userData = await firstResponse.json();
+       if(userData){   
+        navigate("/chat/"+currentUserName+"?name="+user)}
+          return;
+      }
+      catch(err){
+        console.log(err)
+          console.log("error in get in touch");
+          return;
+      }
+      }; 
+    // const handleGetInTouch = (e) => {
+    //     // Add logic to handle getting in touch with the user
+    //     e.stopPropagation();
+    //     console.log(`Getting in touch with ${user.username}`);
+    // };
 
     return (
         <div>
-            <div className="user-card"  onClick={handleCardClick}>
+            <div className="user-card" >
                 <div id="upperpart">
                     <div id="imgi"> <img src={user.image}  alt="" /></div>
 
                     <div className="user-buttons">
                         
                         <div className="but">
-                            <button onClick={handleGetInTouch} className="button">
+                            <button onClick={()=>{getInTouch(user.username)}} className="button">
                                 
                                 Get in Touch
                             </button>
@@ -44,7 +80,7 @@ const UserCard = ({ user }) => {
                         </div>
 
                         <div className="but">
-                            <button onClick={handleAddFriend} className="button">
+                            <button onClick={()=>{handleAddFriend(user.username)}} className="button">
                             
                                 Add Friend
                             </button>

@@ -31,15 +31,19 @@ userRouter.post("/addNewUser", upload.array("images",1), async (req,res)=>{
 });
 userRouter.post("/addFriend", async (req, res) => {
     try {
-        const { currentUserEmail, friendEmail } = req.body;
+        console.log("Adding friend")
+        const { currentUserName, friendUserName } = req.body;
 
-        const data = await new UserController().addFriend(currentUserEmail, friendEmail);
+        const data = await new UserController().addFriend(currentUserName, friendUserName);
 
         if (data === 1) {
             res.send("Friend added successfully");
         } else if (data === 0) {
-            res.send("Failed to add friend");
-        }
+            res.send("You're already Friends")
+        } else if (data === 2)
+            {
+                res.send("Cant add Friend")
+            }
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");

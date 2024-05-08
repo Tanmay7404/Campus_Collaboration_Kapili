@@ -65,7 +65,7 @@ async checkUsersExistence(usernames)
     
             if (!currentUser) {
                 console.log("Current user not found");
-                return 0; // Return 0 if the current user is not found
+                return 2; // Return 0 if the current user is not found
             }
     
             if (!currentUser.friends.includes(friend._id)) {

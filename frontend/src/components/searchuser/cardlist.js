@@ -1,11 +1,14 @@
-import React,{ useEffect, useState} from "react";
+import React,{ useEffect, useState,useContext} from "react";
 import UserCard from "./carduser"; // Assuming carduser.js is in the same directory
 import sampleUserCardContent from "./carduserdata"; // Import your user data array
 import "./cardlist.css"
 import logo from '../../assets/images/logo.svg';
 import search from '../../assets/images/search.svg';
+import UserdataContext from '../../userdataContext';
 
 const CardListu = ({searchInput,selectedTags,searchTrigger }) => {
+    const{userdata}=useContext(UserdataContext);
+
   const [userData,setUserData]=useState([])
   useEffect(()=>{
     async function fetchData() {
@@ -68,7 +71,7 @@ fetchData();
      
         <div className="card-list">
         {userData.map((userData, index) => (
-            <UserCard key={index} user={userData} />
+            <UserCard key={index} user={userData} currentUserName={userdata.username}/>
         ))}
         </div>
     </>

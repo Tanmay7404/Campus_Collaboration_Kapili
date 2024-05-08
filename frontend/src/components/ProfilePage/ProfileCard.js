@@ -33,7 +33,7 @@ function ProfileCard({ name, imageUrl,email,department }) {
     // <div>
     //     <img src={imageUrl} alt="Profile" style={imageStyle} id="" onClick={()=>{navigate("/profile/" + name)}} />
     // </div>
-    <div  className="team-member">
+    <div  className="team-member" onClick={()=>{navigate('/profile/'+name)}}>
     <img src={imageUrl} alt={name} />
     <h3>{name}</h3>
     <p>{department}</p>

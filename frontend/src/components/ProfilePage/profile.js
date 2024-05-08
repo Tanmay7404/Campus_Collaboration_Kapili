@@ -46,7 +46,29 @@
       const handleButtonClick = (buttonId) => {
         setSelectedButton(buttonId);
       };
-
+      const handleAddFriend = async() => {
+        try{
+        // Add logic to handle adding the user as a friend
+        const link = "http://localhost:8080/user/addFriend" ;
+        console.log(link);
+      const response= await fetch(link, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body:JSON.stringify( {
+            "currentUserName":userdata.username,"friendUserName":userName
+          }),
+        });
+         const res = await response.text()
+  
+         window.alert( res);}
+         catch(e)
+         {
+          window.alert("Error please try again")
+         }
+  
+    };
       const getInTouch = async() => {
         try {
          const firstResponse = await fetch('http://localhost:8080/chats/personalChat', {
@@ -59,6 +81,8 @@
          currUsername: userdata.username,
       }),
     });
+
+  
     const userData = await firstResponse.json();
        if(userData){   
         navigate("/chat/"+userdata.username+"?name="+userName)}
@@ -102,7 +126,7 @@
             }
         }
         fetchData();
-    },[userdata])
+    },[userdata,userName])
     const courses = [
       {
         title: "C++ Basics",
@@ -161,7 +185,11 @@
                   {dataprofile && dataproject && userdata  && (
                     <>
     {userdata.username!=userName &&(
+      <div>
       <div   style={{cursor:'pointer' }}onClick={getInTouch}>Get in Touch</div>
+      <div   style={{cursor:'pointer' }}onClick={handleAddFriend}><b>Add Friend</b></div>
+      </div>
+
     )}
     {userdata.username===userName &&(
       <div style={{cursor:'pointer'}}>Edit Profile</div>
