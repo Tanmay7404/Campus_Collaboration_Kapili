@@ -1,6 +1,6 @@
 .user-card {
     width: 315px;
-    height: 315px;
+    height: 335px;
     /* overflow-y: auto;  */
     /* display: flex; */
     align-items: center;
@@ -48,7 +48,7 @@
     background-color: #111111;
   }
 
-  #downpart{
+  #donpart{
     margin-top: 10px;
     margin-left: 20px;
   }

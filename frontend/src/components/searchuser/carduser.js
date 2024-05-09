@@ -63,7 +63,7 @@ const navigate=useNavigate()
     // };
 
     return (
-        <div>
+        
             <div className="user-card" >
                 <div id="upperpart">
                     <div id="imgi"> <img src={user.image}  alt="" /></div>
@@ -92,17 +92,23 @@ const navigate=useNavigate()
                 </div>
                 
             
-                <div id="downpart">
+                <div id="donpart">
                     <div className="nameu">
-                        <h1>{user.name}</h1>
+                        {/* <h1>{user.name}</h1> */}
+                        <h1>
+                            {user.name.length > 10 ? user.name.substring(0, 10) + '...' : user.name}
+                        </h1>
                     </div>
 
                     <div className="username">
-                        <h3>{user.username}</h3>
+                        <h3>
+                            {user.username.length>14 ? user.username.substring(0,14) + '...' : user.username}
+                        </h3>
                     </div>
 
                     <div className="useremail">
-                        <p>{user.email}</p>
+                    
+                        <p>{user.email.length>30 ? user.email.substring(0,30) + '...' : user.email}</p>
                     </div>
                     
                     
@@ -111,7 +117,7 @@ const navigate=useNavigate()
                 </div>
                 
             </div>
-        </div>
+        
     );
 };
 
