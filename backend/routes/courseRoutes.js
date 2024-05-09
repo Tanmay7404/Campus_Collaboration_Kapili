@@ -152,6 +152,41 @@ courseRouter.post("addFeedback/:courseid" , async (req,res)=>{
 //         console.log(error);
 //     }
 // })
+courseRouter.get("/userCourses/:username", async (req, res) => {
+    try {
+        // Find the user based on the request parameter
+        const username = req.params.username;
+        let UC = new UserController();
+        const user = await UC.getUserByUsername(username);
+        const userCourses = user.courses;
+
+        // Find ongoing projects without user's ones
+        let allCourses = await Course.find({ 
+            _id: { $in: userCourses } // Exclude user's projects
+        });
+
+        const updatedCourses = await Promise.all(allCourses.map(async course => {
+            const creatorUsernames = await UC.userIdToNameAndProfileList(course.creators);
+            const creators = creatorUsernames.map(creator => ({
+                username: creator.username,
+                profilePic: creator.profilePic
+            }));
+            // console.log(updatedProjects);
+
+            const tagInfoPromises = course.tags.map(async tagId => {
+                const tagInfo = await new ProjectController().getTagInfoById(tagId);
+                return { name: tagInfo.name, color: tagInfo.color };
+            });
+            const tagsInfo = await Promise.all(tagInfoPromises);
+            return { ...course.toObject(), creators: creators,tags:tagsInfo };
+        }));
+        res.send(updatedCourses);
+    } catch (error) {
+        // Handle errors
+        console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 courseRouter.post("/search" , async (req,res)=>{
     try {
         console.log("searching",req.body)

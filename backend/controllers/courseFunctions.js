@@ -127,7 +127,7 @@ class CourseController {
                     if (!user) {
                         throw new Error("User not found");
                     }
-                    user.projects.push(course_id);
+                    user.courses.push(course_id);
                     await user.save();
                 })}
                 // var chatCC=new ChatController()

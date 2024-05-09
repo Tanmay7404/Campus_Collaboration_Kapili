@@ -1,44 +1,44 @@
-import React from 'react';
+import React,{useState} from 'react';
 import './profile.css';
-import { Routes, Route, BrowserRouter, Link } from 'react-router-dom';
+import { Routes, Route, BrowserRouter, NavLink } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import Card from '../ExplorePage/card.jsx';
 
-const Course = ({ courses }) => {
-  const listcourse = courses.map((element) => {
-    return (
-      <div className="project" key={element.id}>
-        <div id="like-div">
-          <img src="./Images/like.svg" id="like" alt="" />
-          <span>{element.likes}</span>
-        </div>
-        <div id="contri">
-          {/* Render contributors here */}
-        </div>
-        <img src={element.courseImage} className="www" alt={element.title} />
-        <p>{element.title}</p>
-      </div>
-    );
-  });
-
-  return (
-    <>
-      <div id="projects">
-        <div id="upload">
-          <div>
-            <div id="circle">
-            <Button style={{textDecoration: 'none'}}><img src="./Images/plus-1512-svgrepo-com.svg" alt="" /></Button>
+const  Course = ({usercourses,setongoingData,setcompletedData,setcourseData,check}) => {  
+    const listcourse = usercourses.map((element) => {
+        return (
+          <div className="project" key={element.id}>
+            {/* <div id="like-div">
+              <img src="./Images/like.svg" id="like" alt="" />
+              <span>{element.likes}</span>
             </div>
-            
-            
-            Create
-                    
-            
+            <div id="contri">
+                        {element.contributors.map((contributor, index) => (
+                            <img key={index} src={contributor} alt={`Contributor ${index + 1}`} />
+                        ))}
+            </div>
+            <img src={element.projectImage} className="www" alt={element.title} />
+            <p>{element.title}</p> */}
+            <Card details = {element}  setongoingData={setongoingData} setcompletedData={setcompletedData} setcourseData={setcourseData} check={check} />
           </div>
-        </div>
-        {listcourse}
-      </div>
-    </>
-  );
+        );
+      });  
+    return (
+            <>
+            <div id="projects" >
+
+            <div id="upload"> 
+                 <NavLink to="/createCourse" className="nav-link"><i class="bi bi-plus-circle" style={{fontSize:'3rem'}}></i></NavLink>
+                 <div>Create Course </div>
+                
+            </div>
+
+            {listcourse}
+
+            </div>
+
+            </>
+    );
 };
 
 export default Course;

@@ -30,6 +30,9 @@
       searchParams.get("type")
     );
       const [currUser,setCurrUser] =useState(null);
+      const [compledtedData, setcompletedData] = useState([]);
+      const [ongoingData, setongoingData] = useState([]);
+      const [courseData, setcourseData] = useState([]);
 
       useEffect(()=>{
           const loggedInUser = localStorage.getItem("user");
@@ -113,6 +116,8 @@ if(query2!==null&&query!==null)
       }; 
       const [dataprofile,setdataprofile]=useState(null);
       const [dataproject,setdataproject]=useState(null);
+      const[datacourse,setdatacourse]=useState(null);
+
       useEffect(() => {
         async function fetchData() {
             try {
@@ -130,10 +135,7 @@ if(query2!==null&&query!==null)
                   return new Date(b.createdAt) - new Date(a.createdAt);
                 });
                 setdataprofile(res.user);
-                
                 setdataproject(sortedProjects);
-                console.log('falma')
-                console.log(res)
                 return;
             }
             catch(err){
@@ -144,25 +146,36 @@ if(query2!==null&&query!==null)
         }
         fetchData();
     },[userdata,userName])
-    const courses = [
-      {
-        title: "C++ Basics",
-        likes: 78,
-        contributors: [image1],
-        courseImage: image4
-      },
-      {
-        title: "Ruby on Rails",
-        likes: 56,
-        contributors: [image1],
-        courseImage: image4
-      }
-    ];
 
+    useEffect(() => {
+      async function fetchData() {
+          try {
+              const response = await fetch("http://localhost:8080/courses/userCourses/"+userName, {
+                  method: "GET" // GET, POST, PUT, DELETE, PATCH, etc.
+                  // headers: {
+                  // "Content-Type": "application/json",  
+                  // As sending JSON data to API
+                  // },
+                  // body: JSON.stringify(data)   //if data to be given to the backend, uncomment this and the header, with data input in function
+              });
+              
+              const res = await response.json()
+              const sortedCourses = res.sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+              });
+              setdatacourse(sortedCourses);
+              return;
+          }
+          catch(err){
+            setdatacourse([]);
+              return;
+          }
+      }
+      fetchData();
+  },[userdata,userName])
 
       const [check, setcheck] = useState("profile");
-      console.log('balma');
-      console.log(dataprofile);
+      const [check2, setcheck2] = useState('Course');
 
       return (
             <>
@@ -226,8 +239,8 @@ if(query2!==null&&query!==null)
                 {dataprofile && dataproject && userdata && (
     <>
         {selectedButton === 'bio' && <Bio dataprofile={dataprofile} />}
-        {selectedButton === 'Project' && <Project userprojects={dataproject} setongoingData={setdataproject} check={check} />}
-        {selectedButton === 'Course' && <Course courses={courses} />}
+        {selectedButton === 'Project' && <Project userprojects={dataproject} setongoingData={setdataproject} setcompletedData={setcompletedData} setcourseData={setcourseData} check={check} />}
+        {selectedButton === 'Course' && <Course usercourses={datacourse} setongoingData={setongoingData}  setcompletedData={setcompletedData} setcourseData={setdatacourse}check={check2} />}
     </>
 )}
 

@@ -13,7 +13,7 @@ import AddUsers from "../components/createPages/addUsers";
 import SubmitButton from "../components/createPages/submit";
 import DemoUpload from "../components/createPages/demoUpload";
 import Difficulty from "../components/createPages/difficulty";
-import profileImage from '../assets/images/project-planning-header@2x.png';
+import profileImage from '../assets/images/project_image.jpg';
 
 
 export default function CreateProjectPage() {
@@ -136,11 +136,11 @@ export default function CreateProjectPage() {
       
       <Starting text="Create Project" navigate={navigate} />
         
-      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData}/>
+      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData} type={'project'}/>
     
-      <TextInputs name="Project Name" state={projectName} setState={setPname} fixed={false}/>
+      <TextInputs name="Project Name*" state={projectName} setState={setPname} fixed={false}/>
 
-      <TextInputs name="Project Title" state={projectTitle} setState={setPtitle} fixed={false}/>
+      <TextInputs name="Project Title*" state={projectTitle} setState={setPtitle} fixed={false}/>
 
       <TextInputs name="About The Project" state={projectDesc} setState={setPdesc} fixed={false}/>
       

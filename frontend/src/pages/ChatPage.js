@@ -735,57 +735,54 @@ useEffect(() => {
 
 
             {!global && (
-              <div id="persons">
-               {!friend?(
-               <div className="loader-container">
-                <div className="loader"></div>
-                <h1>Loading...</h1>
-              </div>
-               )
-              :(
-                searchQuery === ''
-                  ? 
-                  
-                  people.map((person,index) => (
-
-
-                      <div
-                        key={index}
-                        className= {selectedPerson?.name==person.name?"personsel":"person"}
-                        onClick={() => handlePersonClick(person)}
-                      >
-                        <img src={person.profilePic?person.profilePic:default_img} alt="" className="profilePic" />
-                        {person.name}
+            <div id="persons">
+              {!friend ? (
+                <div className="loader-container">
+                  <div className="loader"></div>
+                  <h1>Loading...</h1>
+                </div>
+              ) : (
+                searchQuery === '' ? (
+                  <React.Fragment>
+                    {people.length === 0 ? (
+                      <div className="friend-list" >
+                        <h4>Add friends to start chat</h4>
                       </div>
-
-                      
-                    ))
-
-
-
-
-                  : filteredPeople.map((person,index) => (
-                      <div
-                        key={index}
-                        className="person"
-                        onClick={() => handlePersonClick(person)}
-                      >
-                        <img  key={index} src={person.profilePic?person.profilePic:default_img} alt="" className="profilePic" />
-                        {person.name}
-                      </div>
-                    ))
-                  )}
-
-
-
-              </div>
+                    ) : (
+                      people.map((person, index) => (
+                        <div
+                          key={index}
+                          className={selectedPerson?.name === person.name ? "personsel" : "person"}
+                          onClick={() => handlePersonClick(person)}
+                        >
+                          <img src={person.profilePic ? person.profilePic : default_img} alt="" className="profilePic" />
+                          {person.name}
+                        </div>
+                      ))
+                    )}
+                  </React.Fragment>
+                ) : (
+                  filteredPeople.map((person, index) => (
+                    <div
+                      key={index}
+                      className="person"
+                      onClick={() => handlePersonClick(person)}
+                    >
+                      <img key={index} src={person.profilePic ? person.profilePic : default_img} alt="" className="profilePic" />
+                      {person.name}
+                    </div>
+                  ))
+                )
+              )}
+            </div>
             )}
+
 
 
 
           </div>
           <div id="right">
-          {!global&&userdata&&(
+          {!global&&userdata&&cha&&(
             <div id="chatinf">
               <div onClick={()=>{if(selectedPerson.profileType==='User'){
                 navigate("/profile/"+selectedPerson?.name  )}else if(selectedPerson.profileType==='Project')
@@ -1034,6 +1031,7 @@ useEffect(() => {
 
               
             </div>
+            {global&&(
             <div id="typingBox" >
                <textarea type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}onKeyDown={handleKeyPress}/>
               <div id="attach">
@@ -1052,6 +1050,29 @@ useEffect(() => {
 
               </div>  
             </div>
+            )}
+
+            {!global&&cha&&(
+            <div id="typingBox" >
+               <textarea type="text" name="" id="type" placeholder="Type your message..." value={currentMessage} onChange={handleMessage}onKeyDown={handleKeyPress}/>
+              <div id="attach">
+              <div onClick={() => {handleSubmit()}}>
+                  <i className="bi bi-send clickable-icon" style={{ fontSize: '25px', marginBottom: '9px'  }}></i>
+              </div>
+              <div>
+                <input type="file" id="fileInput3" name="fileInput3" hidden  multiple  onChange={(event) => {
+                  uploadChatImages(event.target.files);
+
+                }}/>
+                <label htmlFor="fileInput3" style={{ cursor: 'pointer' }}>
+                  <i className="bi bi-images clickable-icon" style={{ fontSize: '25px', marginBottom: '9px' }}></i>
+                </label>
+              </div>
+
+              </div>  
+            </div>
+            )}
+
           </div>
         </div>
       </div>
@@ -1060,4 +1081,65 @@ useEffect(() => {
 };
 
 export default ChatPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -3,11 +3,14 @@ import Button from 'react-bootstrap/Button';
 import uploadImage from '../../functions/uploadImage';
 import deleteImage from '../../functions/deleteImage';
  // Import your profile image
- import profileImage from '../../assets/images/project-planning-header@2x.png';
+ import profileImage from '../../assets/images/profile_image.jpg';
+ import courseImage  from '../../assets/images/course_image.jpg';
+ import projectImage  from '../../assets/images/project_image.jpg';
 
 
 
-function ProfilePicAdd({profilepic,setpp,setImgN,formData}) {
+
+function ProfilePicAdd({profilepic,setpp,setImgN,formData,type}) {
 
     const imageTypes = /^image\//;
 
@@ -41,9 +44,15 @@ function ProfilePicAdd({profilepic,setpp,setImgN,formData}) {
             </div>
             <div className="buttonContainer" >
                 <Button variant="outline-dark" onClick ={()=>{
-                    console.log(formData);
                     deleteImage(formData.imageName);
-                    setpp(profileImage);
+                    if(type=='profile'){
+                        setpp(profileImage)
+                    }
+                    else if(type=='course'){
+                        setpp(courseImage)
+                    }
+                    else setpp(projectImage)
+                    ;
                     setImgN(''); 
                 }} className="buttonHover"  style={{height:"100%", width:"100%", backgroundColor: "#111111",justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px'}}  >
                     <p  className="profile_pic_text"> Remove Picture </p>

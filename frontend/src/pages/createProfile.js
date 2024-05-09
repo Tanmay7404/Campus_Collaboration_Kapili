@@ -9,7 +9,7 @@ import SelectTags from "../components/createPages/selectTags";
 import Starting from "../components/createPages/starting";
 import TextBox from "../components/createPages/textfield";
 import SubmitButton from "../components/createPages/submit";
-import profileImage from '../assets/images/profile_pic.jpg';
+import profileImage from '../assets/images/profile_image.jpg';
 
 
 export default function CreateProfilePage() {
@@ -99,9 +99,9 @@ export default function CreateProfilePage() {
         
       </div> */}
 
-      <Starting text="Create Profile"/>
+      <Starting text="Create Profile" navigate={navigate}/>
       
-      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} />
+      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData} type={'profile'}/>
       
       <div className="fillWidthDiv">
 
@@ -112,7 +112,7 @@ export default function CreateProfilePage() {
       </div>
 
       <div className="fillWidthDiv">
-        <TextInputs name="Username" state={username} setState={setUS} fixed={false}/>
+        <TextInputs name="Username*" state={username} setState={setUS} fixed={false}/>
 
         <TextInputs name="Department" state={department} setState={setDept} fixed={false}/>
         </div>

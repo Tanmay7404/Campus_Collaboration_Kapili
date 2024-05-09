@@ -10,7 +10,7 @@ import Links from "../components/createPages/links";
 import AddUsers from "../components/createPages/addUsers";
 import SubmitButton from "../components/createPages/submit";
 import DemoUpload from "../components/createPages/demoUpload";
-import profileImage from '../assets/images/profile_pic.jpg';
+import profileImage from '../assets/images/course_image.jpg';
 import Difficulty from "../components/createPages/difficulty";
 
 export default function CreateCoursePage() {
@@ -125,9 +125,9 @@ export default function CreateCoursePage() {
     
     <Starting text="Create Course" navigate={navigate}/>
       
-    <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData}/>
+    <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData} type={'course'}/>
 
-    <TextInputs name="Course Title" state={courseTitle} setState={setCtitle} fixed={false}/>
+    <TextInputs name="Course Title*" state={courseTitle} setState={setCtitle} fixed={false}/>
 
     <TextInputs name="About The Course" state={courseDesc} setState={setCdesc} fixed={false}/>
     

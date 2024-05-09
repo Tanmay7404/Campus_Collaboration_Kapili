@@ -4,9 +4,8 @@ import { Routes, Route, BrowserRouter, NavLink } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import Card from '../ExplorePage/card.jsx';
 
-const Project = ({userprojects,setongoingData,check}) => {
+const  Project = ({userprojects,setongoingData,setcompletedData,setcourseData,check}) => {
 
- const [compledtedData, setcompletedData] = useState([]);
 
   
     const listproject = userprojects.map((element) => {
@@ -23,7 +22,7 @@ const Project = ({userprojects,setongoingData,check}) => {
             </div>
             <img src={element.projectImage} className="www" alt={element.title} />
             <p>{element.title}</p> */}
-            <Card details = {element}  setongoingData={setongoingData} setcompletedData={setcompletedData} check={check} />
+            <Card details = {element}  setongoingData={setongoingData} setcompletedData={setcompletedData} setcourseData={setcourseData} check={check} />
 
 
 

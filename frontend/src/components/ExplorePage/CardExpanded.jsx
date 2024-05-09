@@ -42,7 +42,9 @@ const CardExpanded = ({
   chatId,
   check
 }) => {
+  console.log(5);
   console.log(check);
+  console.log(projectlinks);  
  const model=useModel()
   var [flag,setFlag] = useState(0);
   const[feed,setfeed]=useState(false);
@@ -90,6 +92,7 @@ navigate('/login')
   }
 useEffect(()=>{
   setisliked(likedUsers.some(use => use === currUser)); 
+  console.log(isliked);
 },[currUser])
 
   useEffect(() => {
@@ -724,7 +727,7 @@ if(toxic===1 ||toxic===2){
                 <i className="bi bi-link" style={{ fontSize: '1.5rem', marginRight: '0.5rem' }}></i>
                 Course Links
               </div>)}
-
+              
               {projectlinks.map((item, index) => (
                 <div key={index} style={{ background: 'transparent', fontSize: '1.2rem', marginTop: '0.5rem' }}>
                   <span style={{ marginRight: '0.5rem' }}>&bull;</span>
@@ -733,6 +736,7 @@ if(toxic===1 ||toxic===2){
                   </a>
                 </div>
               ))}
+              
           </div>
 
 

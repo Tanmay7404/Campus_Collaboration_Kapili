@@ -10,11 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 const UserCard = ({ user ,currentUserName}) => {
 const navigate=useNavigate()
-    // const handleCardClick = () => {
-    //     // Add logic to open the link when the card is clicked
-    //     window.location.href = user.link;
-    // };
-
     const handleAddFriend = async(user) => {
         // Add logic to handle adding the user as a friend
         const link = "http://localhost:8080/user/addFriend" ;
@@ -56,34 +51,33 @@ const navigate=useNavigate()
           return;
       }
       }; 
-    // const handleGetInTouch = (e) => {
-    //     // Add logic to handle getting in touch with the user
-    //     e.stopPropagation();
-    //     console.log(`Getting in touch with ${user.username}`);
-    // };
-
     return (
         
             <div className="user-card" >
                 <div id="upperpart">
-                    <div id="imgi"> <img src={user.image}  alt="" /></div>
-
+                    <div id="imgi" onClick={()=>{navigate("/profile/"+user.username)}} > <img src={user.image}  alt="" /></div>
                     <div className="user-buttons">
                         
                         <div className="but">
+                        {user.username!=currentUserName&&(
                             <button onClick={()=>{getInTouch(user.username)}} className="button">
-                                
-                                Get in Touch
+                                Get in Touch    
                             </button>
-
+                        )}
 
                         </div>
-
                         <div className="but">
+                            {user.username!=currentUserName&&(
                             <button onClick={()=>{handleAddFriend(user.username)}} className="button">
-                            
                                 Add Friend
+                            </button>)}
+                        </div>
+                        <div className="but">
+                        {user.username==currentUserName&&(
+                            <button  className="button">
+                                You  
                             </button>
+                        )}
 
                         </div>
                         
