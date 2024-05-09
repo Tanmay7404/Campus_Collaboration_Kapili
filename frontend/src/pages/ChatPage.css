@@ -134,6 +134,42 @@
 .person:hover{
     background-color: #3B3B3B;
 }
+.personsel{
+    cursor: pointer;
+    position: relative;
+    background-color: #3B3B3B;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 0px 20px;
+    font-weight: 200;
+    font-size: 20px;
+}
+.loader-container {
+    position: relative;
+    top: -120px; /* Adjust this value as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  
+  .loader {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
 
 .profilePic{
     height: 40px;
