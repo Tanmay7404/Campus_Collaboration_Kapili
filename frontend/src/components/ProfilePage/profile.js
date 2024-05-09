@@ -15,14 +15,20 @@
     import image3 from '../../assets/images/profile2.jpeg';
     import image4 from '../../assets/images/swigy.png';
     import { Button } from 'react-bootstrap';
-    import  {useParams,useNavigate} from 'react-router-dom'
+    import  {useParams,useNavigate,useSearchParams} from 'react-router-dom'
     import  { useEffect ,useContext} from 'react';
 
     const Profile = () => {
       const{userdata}=useContext(UserdataContext);
       const navigate = useNavigate();
       const {userName} = useParams();
-
+      let [searchParams, setSearchParams] = useSearchParams();
+      let [query, setQuery] = useState(
+       searchParams.get("name")
+     );
+     let [query2, setQuery2] = useState(
+      searchParams.get("type")
+    );
       const [currUser,setCurrUser] =useState(null);
 
       useEffect(()=>{
@@ -42,7 +48,18 @@
 
       };
       const [selectedButton, setSelectedButton] = useState("bio");
-      
+      useEffect(()=>{
+        console.log(121,query2,121)
+if(query2!==null&&query!==null)
+  {
+    setSelectedButton(query2)
+  }else
+  {
+    setSelectedButton("bio")
+
+  }
+
+      },[])
       const handleButtonClick = (buttonId) => {
         setSelectedButton(buttonId);
       };
@@ -203,14 +220,14 @@
               <div id="profileright" style={{width:"600px"}}>
                 <div id="buttons">
                 <Button style={{textDecoration: 'none'}}  className={selectedButton === 'bio' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('bio')}>Bio</Button>
-                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'project' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('project')}>Projects</Button>
-                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'course' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('course')}>Courses</Button> 
+                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'Project' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('Project')}>Projects</Button>
+                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'Course' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('Course')}>Courses</Button> 
                 </div>
                 {dataprofile && dataproject && userdata && (
     <>
         {selectedButton === 'bio' && <Bio dataprofile={dataprofile} />}
-        {selectedButton === 'project' && <Project userprojects={dataproject} setongoingData={setdataproject} check={check} />}
-        {selectedButton === 'course' && <Course courses={courses} />}
+        {selectedButton === 'Project' && <Project userprojects={dataproject} setongoingData={setdataproject} check={check} />}
+        {selectedButton === 'Course' && <Course courses={courses} />}
     </>
 )}
 

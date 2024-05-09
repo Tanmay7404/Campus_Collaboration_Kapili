@@ -28,6 +28,7 @@ const Card = ({details,setongoingData,setcompletedData,setcourseData,check}) =>{
    );
    useEffect(()=>
 {
+    console.log(131,query,131)
 if(details.name===query)
 {
 setModalOpen(true)

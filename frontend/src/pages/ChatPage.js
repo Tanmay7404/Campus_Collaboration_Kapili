@@ -787,7 +787,25 @@ useEffect(() => {
           <div id="right">
           {!global&&userdata&&(
             <div id="chatinf">
-              <div onClick={()=>{navigate("/profile/"+selectedPerson?.name  )}}>
+              <div onClick={()=>{if(selectedPerson.profileType==='User'){
+                navigate("/profile/"+selectedPerson?.name  )}else if(selectedPerson.profileType==='Project')
+            {
+              const encodedName = encodeURIComponent(selectedPerson?.name);
+              const encodedUserName = encodeURIComponent(userdata.username);
+
+              navigate(`/profile/${encodedUserName}?type=Project&name=${encodedName}`);
+
+             // navigate("/profile/"+userdata.username+"?name="+selectedPerson?.name+"&?type=Project"  )
+            }else
+            {
+              const encodedName = encodeURIComponent(selectedPerson?.name);
+              const encodedUserName = encodeURIComponent(userdata.username);
+
+              navigate(`/profile/${encodedUserName}?type=Course&name=${encodedName}`);
+            }
+            
+            
+            }}>
               <img
                 src={selectedPerson?.profilePic}
                 className={`profilePic ${selectedPerson?.id === userdata._id ? 'me' : ''}`}

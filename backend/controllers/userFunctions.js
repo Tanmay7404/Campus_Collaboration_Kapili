@@ -283,7 +283,8 @@ async checkUsersExistence(usernames)
                         profilePic: user.profileInfo.profilePicture.url,
                         messages:[],
                         chatId:userIdT.chatId,
-                        lastMessageTime:userIdT.lastMessageTime
+                        lastMessageTime:userIdT.lastMessageTime,
+                        profileType:userIdT.type
                     };
                     profiles.push(profile);
                 } else {
@@ -296,10 +297,12 @@ async checkUsersExistence(usernames)
                if (project) {
                 const profile = {
                     name: project.name,
-                    profilePic: project.projectImage,
+                    profilePic: project.projectImage.url,
                     messages:[],
                     chatId:userIdT.chatId,
-                    lastMessageTime:userIdT.lastMessageTime
+                    lastMessageTime:userIdT.lastMessageTime,
+                    profileType:userIdT.type
+
 
                 };
                 profiles.push(profile);
@@ -312,10 +315,12 @@ async checkUsersExistence(usernames)
                 if (course) {
                  const profile = {
                      name: course.name,
-                     profilePic: course.projectImage,
+                     profilePic: course.projectImage.url,
                      messages:[],
                      chatId:userIdT.chatId,
-                     lastMessageTime:userIdT.lastMessageTime
+                     lastMessageTime:userIdT.lastMessageTime,
+                     profileType:userIdT.type
+
 
                  };
                  profiles.push(profile);
