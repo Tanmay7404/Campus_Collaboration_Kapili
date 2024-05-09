@@ -10,84 +10,100 @@ const Tag = require("../models/tagModels.js");
 class ProjectController {
     async addProject(project_details) {
         try {
-            // console.log("Project_Details");
-            // console.log(project_details);
-            var project = new Project({
-                title: project_details.title,
-                name : project_details.name,
-                projectImage: {url :project_details.projectImage.url, filename: project_details.projectImage.filename},
-                projectInfo: {
-                    description: project_details.description,
-                    demoLinks: project_details.demoLinks,
-                    projectLink: project_details.projectLink
-                },
-                creators: [], // Assuming creators is an array of user IDs
-                endorsements: 0,
-                level:project_details.level,
-                tags: [], // Assuming tags is an array of strings
-                ongoing: project_details.ongoing || false,
-                openForCollaboration:project_details.openForCollaboration||false,
-                feedbacks: [],
-                rating: 0,
-                issues: []
-            });
-            await project.save();
-            return project._id;
+            if(project_details.id==""){
+                console.log("HELLO");
+                const chat = new Chat({
+                    participants: [], // Assuming participants is an array of user IDs
+                    messages: [],
+                    lastMessage: null,
+                    lastMessageTime: Date.now(),
+                    projectName: null,
+                    courseName: null
+                });   
+                await chat.save();
+                var new_proj = {...project_details,
+                    endorsements: 0,
+                    feedbacks: [],
+                    rating: 0,
+                    likedUsers:[],
+                    chat: chat._id,
+                    completedAt: Date.now(),
+                    creators:[]
+                }
+                if(project_details.ongoing){
+                    new_proj.completedAt = null;
+                }
+                console.log("new_proj",new_proj);
+                var project = new Project(new_proj); 
+                await project.save();
+                chat.projectName = project._id;
+                await chat.save();
+                return project._id;
+            }
+            else{
+                console.log("WHAT");
+                var project = Project.findById(project_details.id);
+                if(!project){
+                    throw new Error("Project Not Found");
+                }
+                if((project.ongoing)&&(!project_details.ongoing)){
+                    project_details = {...project_details, completedAt: Date.now()};
+                }
+                else if(project_details.ongoing){
+                    project_details = {...project_details, completedAt: null};
+                }
+                project = await Project.findByIdAndUpdate(project_details.id,project_details);
+                return project._id;
+            }
         } catch (err) {
             throw new Error(err);
         }
     }
-
-
-   
-
-    async editProjects(projectId, project_details) {
-        try {
-            const updatedProject = await Project.findByIdAndUpdate(projectId, {
-                $set: {
-                    title: project_details.title,
-                    name: project_details.name,
-                    'projectInfo.description': project_details.description,
-                    'projectInfo.imgVideoLinks': { $push: project_details.imageVideolinks },
-                    projectLink: project_details.projectLinks,
-                },
-                $push: { tags: { $each: project_details.tags } }
-            }, { new: true });
     
-            return updatedProject;
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-    
-    async addCreators(project_id, creators) {
+    async addCreators(project_id, creatorsId) {
         try {
             var project = await Project.findById(project_id);
             if (!project) {
                 throw new Error("Project not found");
             }
-            if(!creators.length) {
+            if(!creatorsId.length) {
                 console.log("creators empty")
                 return 0;
             }
-            else if(creators.length){
-              
-                var creatorsId = await getObjectId.userNameToIdList(creators);
-                project.creators = project.creators.concat(creatorsId);
- 
+            else if(creatorsId.length){
+                console.log(1,project.creators);
+                {project.creators.map(async (id) => {
+                    var user = await User.findById(id);
+                    console.log(user.username);
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
+
+                    user.projects = user.projects.filter((e)=> e.toString()!==project_id.toString());
+                    user.chats = user.chats.filter((e)=> e.toString()!==project.chat.toString());
+                    console.log(user.projects);
+                    await user.save();
+                })}
+                console.log(2);
+                project.creators = creatorsId;
+
+                var chat = await Chat.findById(project.chat);
+                if (chat) {
+                    chat.participants = project.creators;
+                } else {
+                    throw new Error ("Chat Not initialised");
+                }
                 {creatorsId.map(async (id) => {
                     var user = await User.findById(id);
                     if (!user) {
                         throw new Error("User not found");
                     }
                     user.projects.push(project_id);
+                    user.chats.push(project.chat);
                     await user.save();
                 })}
-                var chatCC=new ChatController()
-                var chat=await chatCC.addChat({participants:creatorsId,projectName:project._id})
-                await chatCC.chatIdToUsers(chat,creatorsId)
-                project.chat=chat
                 await project.save();
+                await chat.save();
                 return 1;
             }
             
@@ -406,6 +422,19 @@ class ProjectController {
         const project = await Project.findOne({name : project_name});
         project.feedbacks.push(feedback);
         return 1;
+    }
+
+    async getProjectbyName (pname){
+        try{
+            const data = await Project.findOne({name:pname});
+            var cc = await getObjectId.userIdtoNameList(data.creators);
+            var tt = await getObjectId.tagIdtotaglist(data.tags);
+            var dd = { ...data._doc, creators: cc, tags: tt };
+            return dd;
+        }catch(err){
+            console.log(err);
+            throw new Error(err);
+        }
     }
 }
 

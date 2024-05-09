@@ -1,7 +1,7 @@
 import React from "react";
 import './profilePage.css';
 import  { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 import Starting from "../components/createPages/starting";
 import ProfilePicAdd from "../components/createPages/ProfilePic";
@@ -17,8 +17,6 @@ import profileImage from '../assets/images/project_image.jpg';
 
 
 export default function CreateProjectPage() {
-  const navigate = useNavigate();
-
 
   var [values, setValues] = useState([""]); // Initial state with one empty string for collaboratos
   var [values2, setValues2] = useState([{ name: '', link: '' }]);
@@ -29,13 +27,14 @@ export default function CreateProjectPage() {
   var [ongoing,setOngoing] = useState(false);
   var [openForCollaboration,setOpenForCollab] = useState(false);
   var [demolinks,setDemo] = useState([]);
-  var [selectedDifficulty, setSelectedDifficulty] = useState('');
+  var [selectedDifficulty, setSelectedDifficulty] = useState('easy');
   var [url,setURL] = useState(profileImage);
   var [imageName,setImgN] = useState('');
+  var [id,setId] = useState('');
 
+  var {pname} = useParams()
 
-
-
+  const navigate=useNavigate()
 
    const formData = {
       title: projectTitle,
@@ -49,21 +48,56 @@ export default function CreateProjectPage() {
       openForCollaboration:openForCollaboration,
       links:values2,
       projectImages:demolinks,
-      level: selectedDifficulty
+      level: selectedDifficulty,
+      id:id
     };
     
     const [currUser,setCurrUser] =useState(null);
     useEffect(()=>{
       const loggedInUser = localStorage.getItem("user");
-        if (loggedInUser) {
-            
-        //   const foundUser = JSON.parse(loggedInUser);
+      if (!loggedInUser){
+        navigate("/login");
+      } else{
+          if(pname){
+            console.log(pname,"PNAME");
+            // console.log(JSON.stringify(pname));
+            fetch('http://localhost:8080/projects/editProjectData', {
+            method:'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({pname:pname})
+          }).then( async(res) => {
+            if(res.status==500){
+              throw new Error (res.message);
+            }
+            else{
+              
+              var data = await res.json();
+              console.log(data);
+              setValues(data.creators);
+              setValues2(data.projectInfo.projectLink);
+              setPname(data.name);
+              setPtitle(data.title);
+              setPdesc(data.projectInfo.description);
+              setSelectedTags(data.tags);
+              setOngoing(data.ongoing);
+              setOpenForCollab(data.openForCollaboration);
+              setDemo(data.projectInfo.demoLinks);
+              setSelectedDifficulty(data.level);
+              setURL(data.projectImage.url);
+              setImgN(data.projectImage.filename);
+              setId(data._id);
+            }
+          }).catch((error) => {
+            window.alert(error);
+            console.error('Error:', error);
+          });
+        }else{
           setCurrUser(loggedInUser);
           setValues([loggedInUser]);
-        } else
-        {
-          navigate("/login")
         }
+      }       
         
     },[])
    
@@ -81,12 +115,10 @@ export default function CreateProjectPage() {
       else if(formData.level===''){
         window.alert('Level is required');
         return ;
-
-        
       }
       // Assuming you have an API endpoint to send the data
       setTrigger(prevTrigger => prevTrigger + 1); // Update trigger separately
-    };  
+    };
 
     useEffect(() => {
       if (trigger !== 1) {
@@ -128,7 +160,7 @@ export default function CreateProjectPage() {
         }
       }
     }, [trigger]);
-    
+
     return (
       <div className="createPage">
     
@@ -136,7 +168,7 @@ export default function CreateProjectPage() {
       
       <Starting text="Create Project" navigate={navigate} />
         
-      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData} type={'project'}/>
+      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} imgN={imageName} type={'project'}/>
     
       <TextInputs name="Project Name*" state={projectName} setState={setPname} fixed={false}/>
 
@@ -157,7 +189,7 @@ export default function CreateProjectPage() {
 
       <AddUsers values2={values} setValues2={setValues}/>
 
-      <Links values2={values2} setValues2={setValues2}/>
+      <Links values2={values2} setValues2={setValues2} text ="Add Project Links"/>
 
       <SubmitButton text="Create Project" onClick={handleSubmit} />
           

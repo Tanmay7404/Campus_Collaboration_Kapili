@@ -9,33 +9,40 @@ const UserController = require("../controllers/userFunctions.js");
 const ProjectController =require("../controllers/projectFunctions.js")
 
 //WORKING
-courseRouter.post("/addCourse", async (req, res) => {
-    let course_id; // Declare course_id outside the try-catch block
-
+courseRouter.post("/addNewCourse", async (req, res) => {
+    let course_id;
     try {
-        var UC=new UserController()
-        await UC.checkUsersExistence(req.body.collaboratorName)
-        let course_details ={
-            title:req.body.title,
-            description: req.body.description,
-            courseLink: req.body.links,
-            demoLinks:req.body.courseImages,
-            level:req.body.level,
-            courseImage: {
-                url: req.body.url, // Set the image URL from the request body
-                filename: req.body.imageName // You might need to get the filename from the request body as well
-              }, 
-        };
-        // console.log(course_details);
-        var CC=new CourseController()
-        course_id = await CC.addCourse(course_details);
-        if(req.body.collaboratorName){
-            await CC.addCreators(course_id,req.body.collaboratorName);
-          }
-        if(req.body.tags){
-            await  CC.addTags(course_id,req.body.tags); // need to add later
+        // console.log(req.body)
+        var exc = false;
+        try{
+            var users = await getObjectId.userNameToIdList(req.body.collaboratorName);
+        }catch (err){
+            res.status(500).json({error: "User Not Found"});
+            exc = true;
+        }finally{
+            if(!exc){
+                var tags = await getObjectId.tagNameToIdList(req.body.tags);
+                var course_details = {
+                    id: req.body.id,
+                    title: req.body.title,
+                    courseImage: {
+                        url: req.body.url, // Set the image URL from the request body
+                        filename: req.body.imageName // You might need to get the filename from the request body as well
+                    },
+                    courseInfo: {
+                        description: req.body.description,
+                        courseLink: req.body.links,
+                        demoLinks:req.body.courseImages
+                    },
+                    tags: tags,
+                    level:req.body.level,
+                };
+                var CC = new CourseController();
+                course_id = await CC.addCourse(course_details);
+                await CC.addCreators(course_id,users);
+                res.send(course_id);
+            }
         }
-        res.send(course_id);
     } catch (error) {
         if (course_id) {
             await Course.findByIdAndDelete(course_id);
@@ -43,6 +50,19 @@ courseRouter.post("/addCourse", async (req, res) => {
         res.status(500).json({ error:  error.message  });
     }
 });
+
+courseRouter.post("/editCourseData", async(req,res)=>{
+    try{
+        let cname = req.body.cname;
+        var course = await new CourseController().getCoursebyName(cname);
+        res.send(course);
+        
+    } catch (err){
+        res.status(500).send(err.message);
+    }
+})
+
+
 // WORKING
 courseRouter.get("/all" , async (req,res) => {
     try {

@@ -77,7 +77,7 @@ const Bio = (data) => {
           <div id="self4">
             {data.dataprofile.skills.map((skill, index) => (
               <div key={index} className="tags" style={{borderColor:skill.color}}>
-                <p style={{color:skill.color}}> {skill.skill}</p>
+                <p style={{color:skill.color}}> {skill.tagname}</p>
               </div>
             ))}
           </div>

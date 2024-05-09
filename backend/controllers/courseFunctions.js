@@ -11,32 +11,101 @@ const ChatController = require("./chatFunctions.js");
 class CourseController {
     async addCourse(course_details) {
         try {
-            const course = new Course({
-                title: course_details.title,
-                description: course_details.description,
-                createdAt: course_details.createdAt || Date.now(),    
-                courseImage:{url:course_details.courseImage.url,filename:course_details.courseImage.fileName},
-                courseInfo: {
-                    description: course_details.description,
-                    demoLinks: course_details.demoLinks,
-                    courseLink: course_details.courseLink
-                },   
-                creators:[],  
-                endorsements: 0,
-                level:course_details.level,
-                tags: [],
-                enrolledUsers: [], 
-                feedbacks: [],
-                rating: 0,
-                issues: [],
-            });
-            await course.save();
-            return course._id;
+            if(course_details.id==""){
+                console.log("HELLO");
+                const chat = new Chat({
+                    participants: [], // Assuming participants is an array of user IDs
+                    messages: [],
+                    lastMessage: null,
+                    lastMessageTime: Date.now(),
+                    projectName: null,
+                    courseName: null
+                });   
+                await chat.save();
+                var new_course = {...course_details,
+                    enrolledUsers: [],
+                    endorsements: 0,
+                    feedbacks: [],
+                    rating: 0,
+                    likedUsers:[],
+                    chat: chat._id,
+                    creators:[]
+                }
+                console.log("new_course",new_course);
+                var course = new Course(new_course); 
+                await course.save();
+                chat.courseName = course._id;
+                await chat.save();
+                return course._id;
+            }
+            else{
+                console.log("WHAT");
+                var course = Course.findById(course_details.id);
+                if(!course){
+                    throw new Error("Course Not Found");
+                }
+                course = await Course.findByIdAndUpdate(course_details.id,course_details);
+                return course._id;
+            }
         } catch (err) {
-            console.error(err);
-            return 0;
+            throw new Error(err);
         }
     }
+    
+    async addCreators(course_id, creatorsId) {
+        try {
+            var course = await Course.findById(course_id);
+            if (!course) {
+                throw new Error("Course not found");
+            }
+            if(!creatorsId.length) {
+                console.log("creators empty")
+                return 0;
+            }
+            else if(creatorsId.length){
+                console.log(1,course.creators);
+                {course.creators.map(async (id) => {
+                    var user = await User.findById(id);
+                    console.log(user.username);
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
+
+                    user.courses = user.courses.filter((e)=> e.toString()!==course_id.toString());
+                    user.coursesCompleted = user.coursesCompleted.filter((e)=> e.toString()!==course_id.toString());
+                    user.chats = user.chats.filter((e)=> e.toString()!==course.chat.toString());
+                    console.log(user.courses);
+                    await user.save();
+                })}
+                console.log(2);
+                course.creators = creatorsId;
+
+                var chat = await Chat.findById(course.chat);
+                if (chat) {
+                    chat.participants = course.creators;
+                } else {
+                    throw new Error ("Chat Not initialised");
+                }
+                {creatorsId.map(async (id) => {
+                    var user = await User.findById(id);
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
+                    user.courses.push(course_id);
+                    user.coursesCompleted.push(course_id);
+                    user.chats.push(course.chat);
+                    await user.save();
+                })}
+                await course.save();
+                await chat.save();
+                return 1;
+            }
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+
     
     async removeCourse(courseTitle) {
         const course = await Course.findOne(courseTitle);
@@ -106,41 +175,6 @@ class CourseController {
             }
         }
         console.log("NO COMPLETED COURSES");
-    }
-    async addCreators(course_id, creators) {
-        try {
-            var course = await Course.findById(course_id);
-            if (!course) {
-                throw new Error("Course not found");
-            }
-            if(!creators.length) {
-                console.log("creators empty")
-                return 0;
-            }
-            else if(creators.length){
-              
-                var creatorsId = await getObjectId.userNameToIdList(creators);
-                course.creators = course.creators.concat(creatorsId);
- 
-                {creatorsId.map(async (id) => {
-                    var user = await User.findById(id);
-                    if (!user) {
-                        throw new Error("User not found");
-                    }
-                    user.courses.push(course_id);
-                    await user.save();
-                })}
-                // var chatCC=new ChatController()
-                // var chat=await chatCC.addChat({participants:creatorsId,projectName:project._id})
-                // await chatCC.chatIdToUsers(chat,creatorsId)
-                // course.chat=chat
-                await course.save();
-                return 1;
-            }
-            
-        } catch (error) {
-            throw error;
-        }
     }
 
     async addTags(course_id,tags){
@@ -230,7 +264,7 @@ class CourseController {
         }
     }
 
-   
+
     async search(searchType , searchTerm , searchTags){
         try {
             if (searchType === 'course' || searchType === 'project' || searchType === 'user') {
@@ -239,8 +273,8 @@ class CourseController {
 
                 if(searchType==="user") 
                 {
-title2="username"
-tagsOrSkills="Skills"
+                    title2="username"
+                    tagsOrSkills="Skills"
                 }
               const titleConditions = searchTerm.split(" ").map(term => ({  [title2]: { $regex: term, $options: 'i' } }));
               const tagNames = searchTags.map(tag => tag.tagname); // Extract tag names
@@ -311,7 +345,6 @@ tagsOrSkills="Skills"
            return "error"}
         }
 
-
     async addIssues(issue_id , course_title ){
         try {
             const issue = await Issue.findById(issue_id);
@@ -357,6 +390,19 @@ tagsOrSkills="Skills"
             });
             return courseList;
         } catch (err) {
+            throw new Error(err);
+        }
+    }
+
+    async getCoursebyName (cname){
+        try{
+            const data = await Course.findOne({title:cname});
+            var cc = await getObjectId.userIdtoNameList(data.creators);
+            var tt = await getObjectId.tagIdtotaglist(data.tags);
+            var dd = { ...data._doc, creators: cc, tags: tt };
+            return dd;
+        }catch(err){
+            console.log(err);
             throw new Error(err);
         }
     }

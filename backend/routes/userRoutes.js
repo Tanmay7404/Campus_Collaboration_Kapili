@@ -194,6 +194,38 @@ userRouter.get('/getUser/:username', async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 });
+
+userRouter.get('/editUserData/:username', async (req, res) => {
+    try {
+        const username = req.params.username;
+        const user = await new UserController().getUserByUsername(username);
+        if (user) {
+            var data = {  username: user.username,
+                fullname: user.fullname,
+                email: user.email,
+                department: user.department,
+                instagramLink:user.instagramLink,
+                githubLink:user.githubLink,
+                linkedinLink:user.linkedinLink,
+                appleLink:user.appleLink,
+                facebookLink:user.facebookLink,
+                url:user.profileInfo.profilePicture.url,
+                imageName:user.profileInfo.profilePicture.filename,
+                tags:user.skills,
+                bio: user.profileInfo.bio,
+                id: user._id
+            };
+            res.send(data);
+        } else {
+            res.status(500).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
 userRouter.get("/likedProjects/:username", async (req, res) => {
     try {
         // Find the user based on the request parameter

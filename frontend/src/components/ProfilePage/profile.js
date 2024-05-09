@@ -29,19 +29,16 @@
      let [query2, setQuery2] = useState(
       searchParams.get("type")
     );
-      const [currUser,setCurrUser] =useState(null);
+      // const [currUser,setCurrUser] =useState(null);
       const [compledtedData, setcompletedData] = useState([]);
       const [ongoingData, setongoingData] = useState([]);
       const [courseData, setcourseData] = useState([]);
 
       useEffect(()=>{
           const loggedInUser = localStorage.getItem("user");
-             if (loggedInUser) {
-               setCurrUser(loggedInUser);
-             } else
-             {
-  navigate("/login")
-             }
+            if (!loggedInUser) {
+              navigate("/login")
+            }
       },[])
 
 
@@ -217,7 +214,7 @@ if(query2!==null&&query!==null)
     {userdata.username!=userName &&(
       <div>
       <div   style={{cursor:'pointer' }}onClick={getInTouch}>Get in Touch</div>
-      <div   style={{cursor:'pointer' }}onClick={handleAddFriend}><b>Add Friend</b></div>
+      <Link to = {"/editProfile"} style={{cursor:'pointer', color: 'inherit', textDecoration: 'inherit', backgroundColor:"black"}}><b>Edit Profile</b> </Link>
       </div>
 
     )}

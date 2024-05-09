@@ -1,35 +1,39 @@
 const Project = require("../models/projectModel");
 const Model = require("../models/userModel");
 const Course = require("../models/courseModel");
+const {tagIdtotaglist,tagNameToIdList} = require ("../functions/getObjectId");
 
 class UserController {
     
     async addNewUser(user_details){
         try {
-            const { username, fullname, email, bio, githubLink, instagramLink, linkedinLink,appleLink,facebookLink,url,imageName } = user_details;
-
-            const user = new Model({
-               username: username,
-               fullname: fullname,
-                email:email,
-                friends: [],
-                profileInfo: {
-                  bio:  bio,
-                    profilePicture: { url: url, filename: imageName }
-                },
-                githubLink: githubLink,
-                  instagramLink:  instagramLink,
-                  appleLink:appleLink,
-                  facebookLink:facebookLink,
-                   linkedinLink: linkedinLink,
-                department: user_details.department,
-                skills: [],
-                projects: [],
-                coursesCompleted: [],
-                chats: []
-            });
-
-            await user.save();
+            const { username, fullname, email, bio, githubLink, instagramLink, department, linkedinLink,appleLink,facebookLink,tags,url,imageName,id, } = user_details;
+            var data = {
+                username: username,
+                fullname: fullname,
+                    email:email,
+                    profileInfo: {
+                    bio:  bio,
+                        profilePicture: { url: url, filename: imageName }
+                    },
+                    githubLink: githubLink,
+                    instagramLink:  instagramLink,
+                    appleLink:appleLink,
+                    facebookLink:facebookLink,
+                    linkedinLink: linkedinLink,
+                    department: department,
+                    skills:[]
+                };
+            data.skills = await tagNameToIdList(tags);
+            
+            if(id==''){
+                data = {...data,projects:[],coursesCompleted:[],chats:[],friends:[]};
+                var user = new Model(data);
+                await user.save();
+            }
+            else{
+                var user = await Model.findByIdAndUpdate(id,data);
+            }
             return user.username;
         } catch (error) {
             throw new Error(error);
@@ -253,11 +257,14 @@ async checkUsersExistence(usernames)
         }
     }
 
+    
+
     async getUserByUsername(username) {
         try {
             const user = await Model.findOne({ username:username });
-            return user;
-            
+            var q = await tagIdtotaglist(user._doc.skills);
+            var data = {...user._doc,skills:q};
+            return data;
         } catch (error) {
             throw new Error(error);
         }

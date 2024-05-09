@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import './profilePage.css';
 import  { useState} from 'react';
 import  {useParams,useNavigate} from 'react-router-dom'
@@ -14,6 +14,9 @@ import profileImage from '../assets/images/profile_image.jpg';
 
 export default function CreateProfilePage() {
 
+  const {param1,param2} = useParams();
+
+  var [edit,setEdit] = useState(false);
   var [username,setUS] = useState("");
   var [department,setDept] = useState("");
   var [bio,setBio] = useState("");
@@ -25,12 +28,14 @@ export default function CreateProfilePage() {
   var [selectedTags, setSelectedTags] = useState([]);
   var [url,setURL] = useState(profileImage);
   var [imageName,setImgN] = useState('');
-
+  var [email,setEmail] = useState("");
+  var [fullname,setFN] = useState("");
+  var[id,setId] = useState('');
   
   const navigate = useNavigate();
-  const {email,fullname} = useParams();
   
-  const formData ={
+  
+  var formData ={
     username: username,
     fullname: fullname,
     email: email,
@@ -44,6 +49,7 @@ export default function CreateProfilePage() {
     imageName:imageName,
     tags:selectedTags,
     bio: bio,
+    id: id
     // profilePictureUrl: "",
     // profilePictureFilename: "",
     // skills: [],
@@ -52,39 +58,102 @@ export default function CreateProfilePage() {
   };
 
 
+  useEffect(()=>{
+    console.log(formData);
+  },[formData]);
+  
+  useEffect(()=>{
+    async function getuserData(){
+      console.log(param2,param1);
+      if(!param2){
+        const loggedInUser = localStorage.getItem("user");
+        if (!loggedInUser) 
+        {
+            navigate("/login")
+        }
+        setEdit(true);
+        setUS(loggedInUser);
+        fetch('http://localhost:8080/user/editUserData/'+loggedInUser, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then( async(res) => {
+          if(res.status==500){
+            throw new Error (res.message);
+          }
+          else{
+            var data = await res.json();
+            setId(data.id);
+            setUS(data.username);
+            setDept(data.department);
+            setBio(data.bio);
+            setLink(data.linkedinLink);
+            setInsta(data.instagramLink);
+            setGit(data.githubLink);
+            setFace(data.facebookLink);
+            setApple(data.appleLink);
+            setFN(data.fullname);
+            setEmail(data.email);
+            setURL (data.url);
+            setImgN(data.imageName);
+            setSelectedTags(data.tags);
+          }
+        }).catch((error) => {
+          console.error('Error:', error);
+        
+        });
+  
+      }
+      else{
+        setEmail(param1);
+        setFN(param2);
+      }
+    }
+    getuserData();
+  },[]);
 
 
 
   
   const handleSubmit = () => {
-    // Assuming you have an API endpoint to send the data
-    if(formData.username==='')
-    {
-      window.alert('username cannot be empty ' );
-      return
-    }
     
-    console.log(formData)
-    fetch('http://localhost:8080/user/addNewUser', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(response => {
-      if(response.status==500){
-        window.alert('UserName Already Exists. Choose a new one' );
-      }
-      else{
-        navigate("/sucesslogin/"+formData.username)
+    // Assuming you have an API endpoint to send the data
+      if(formData.username==='')
+      {
+        window.alert('username cannot be empty ' );
+        return
       }
       
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-      // Handle error
-    });
+      console.log(formData)
+      fetch('http://localhost:8080/user/addNewUser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        if(response.status==500){
+          window.alert('UserName Already Exists. Choose a new one' );
+        }
+        else{
+          console.log(edit);
+          if(edit){
+            navigate("/profile/"+username);
+          }
+          else{
+            navigate("/sucesslogin/"+formData.username)
+          }
+          
+        }
+        
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Handle error
+      });
+    
   };  
       // const handleAddSkill = (skill) => {
       //   const newSkills = [...formData.skills, formData.skill];
@@ -92,16 +161,16 @@ export default function CreateProfilePage() {
       // };
 
   return (
-  <div class="createPage">
+  <div className="createPage">
   
-    <div class="contentPP" >
+    <div className="contentPP" >
       {/* <div className="fillWidthDiv">
         
       </div> */}
 
       <Starting text="Create Profile" navigate={navigate}/>
       
-      <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} formData={formData} type={'profile'}/>
+      <ProfilePicAdd profilepic={url} setpp={setURL} imgN = {imageName}setImgN={setImgN} type={'profile'} />
       
       <div className="fillWidthDiv">
 
@@ -112,7 +181,7 @@ export default function CreateProfilePage() {
       </div>
 
       <div className="fillWidthDiv">
-        <TextInputs name="Username*" state={username} setState={setUS} fixed={false}/>
+        <TextInputs name="Username" state={username} setState={setUS} fixed={false}/>
 
         <TextInputs name="Department" state={department} setState={setDept} fixed={false}/>
         </div>

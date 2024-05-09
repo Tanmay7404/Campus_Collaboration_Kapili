@@ -8,7 +8,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import AddMoreButton from "./addMoreButton";
 
 
-export default function Links ({values2,setValues2}){
+export default function Links ({values2,setValues2, text}){
     
     const addTextField2 = () => {
         // console.log(values2);
@@ -36,7 +36,7 @@ export default function Links ({values2,setValues2}){
     
     <div className="fillWidthDiv4">
         <div className="E-mail" >
-            <p className="text_input" >Add Project Links</p>
+            <p className="text_input" >{text}</p>
         </div>
 
         {values2.map((value, index) => (

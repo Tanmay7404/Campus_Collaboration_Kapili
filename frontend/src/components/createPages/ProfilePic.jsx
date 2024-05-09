@@ -9,8 +9,7 @@ import deleteImage from '../../functions/deleteImage';
 
 
 
-
-function ProfilePicAdd({profilepic,setpp,setImgN,formData,type}) {
+function ProfilePicAdd({profilepic,setpp,setImgN,imgN,type}) {
 
     const imageTypes = /^image\//;
 
@@ -44,16 +43,17 @@ function ProfilePicAdd({profilepic,setpp,setImgN,formData,type}) {
             </div>
             <div className="buttonContainer" >
                 <Button variant="outline-dark" onClick ={()=>{
-                    deleteImage(formData.imageName);
+                    deleteImage(imgN);
                     if(type=='profile'){
-                        setpp(profileImage)
+                        setpp(profileImage);
                     }
                     else if(type=='course'){
-                        setpp(courseImage)
+                        setpp(courseImage);
                     }
-                    else setpp(projectImage)
-                    ;
-                    setImgN(''); 
+                    else{
+                        setpp(projectImage);
+                    }
+                    setImgN = "";
                 }} className="buttonHover"  style={{height:"100%", width:"100%", backgroundColor: "#111111",justifyContent:'center',justifyItems:'center',alignItems: 'center' ,borderRadius:'10px'}}  >
                     <p  className="profile_pic_text"> Remove Picture </p>
                 </Button>

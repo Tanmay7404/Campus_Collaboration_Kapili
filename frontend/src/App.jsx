@@ -59,14 +59,13 @@ console.log(selectedTags)
           <Route path ="/chat/:username" element = {<ChatPage/>}/>
           <Route path = "/profile/:userName" element = {<Profile/>} />
           <Route path = "/search/*" element = {<DisplayContent contentType={searchType.tagname} searchInput={searchInput} selectedTags={selectedTags} searchTrigger={searchTrigger}/>} />
-      
         </Route>
-        <Route path = "/createProfile/:email/:fullname" element={<CreateProfilePage/>}/>
+        <Route path = "/createProfile/:param1/:param2" element={<CreateProfilePage/>}/>
         <Route path = "/createProject" element={<CreateProjectPage/>}/>
         <Route path = "/createCourse" element={<CreateCoursePage/>}/>
-        <Route path = "/editProfile/:username" element={<TestPage/>}/>
-        <Route path = "/editProject/:projectname" element={<TestPage/>}/>
-        <Route path = "/editCourse/:coursename" element={<TestPage/>}/>
+        <Route path = "/editProfile" element={<CreateProfilePage/>}/>
+        <Route path = "/editProject/:pname" element={<CreateProjectPage/>}/>
+        <Route path = "/editCourse/:cname" element={<CreateCoursePage/>}/>
       </Routes>
       </ModelProvider>
       </UserdataState>

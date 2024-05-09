@@ -30,6 +30,20 @@ async function userNameToIdList(userNameList) {
     }
 }
 
+async function userIdtoNameList (usersId){
+    var userNameList = [];
+    const users = await UserModel.find({_id: { $in: usersId}});
+    if(users.length === usersId.length){
+        users.forEach((user)=>{
+            userNameList.push(user.username);
+        });
+        return userNameList;
+    }else{
+        throw new Error ("User Not Found");
+    }
+
+}
+
 const ProjectModel = require("../models/projectModel.js");
 
 async function projectNameToId(project_name){
@@ -102,4 +116,17 @@ async function tagNameToIdList(tagNameList) {
     }
 }
 
-module.exports = {userNameToId,userNameToIdList,projectNameToId,projectNameToIdList,courseNameToId,courseNameToIdList,tagNameToId,tagNameToIdList}
+async function tagIdtotaglist(tagIdList) {
+    const tags = await TagModel.find({ _id:  { $in: tagIdList } });
+
+    if (tags.length === tagIdList.length) {
+        var tagNew = tags.map((ele)=>{
+            return {tagname: ele.name, color: ele.color};
+        })
+        return tagNew;
+    } else {
+        throw new Error("Tags Not Found");
+    }
+}
+
+module.exports = {userNameToId,userNameToIdList,projectNameToId,projectNameToIdList,courseNameToId,courseNameToIdList,tagNameToId,tagNameToIdList,tagIdtotaglist,userIdtoNameList}

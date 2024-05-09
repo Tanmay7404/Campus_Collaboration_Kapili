@@ -13,46 +13,58 @@ projectRouter.post("/addNewProject", async (req,res)=>{
    
    let project_id;
     try {
-        // console.log(req.body)
-        var UC=new UserController()
-        await UC.checkUsersExistence(req.body.collaboratorName)
-        var project_details = {
-            title: req.body.title,
-            name : req.body.name,
-            description: req.body.description,
-            projectLink: req.body.links,
-            demoLinks:req.body.projectImages,
-            ongoing: req.body.ongoing,
-            level:req.body.level,   
-            projectImage: {
-                url: req.body.url, // Set the image URL from the request body
-                filename: req.body.imageName // You might need to get the filename from the request body as well
-              },
-              openForCollaboration:req.body.openForCollaboration,
-                  
-
-        };
-        var PC = new ProjectController();
-         project_id = await PC.addProject(project_details);
-        if(req.body.collaboratorName){
-          await PC.addCreators(project_id,req.body.collaboratorName);
+        var exc = false;
+        try{
+            var users = await getObjectId.userNameToIdList(req.body.collaboratorName);
+        }catch (err){
+            res.status(500).send("User Not Found");
+            exc = true;
+        }finally{
+            if(!exc){
+            var tags = await getObjectId.tagNameToIdList(req.body.tags);
+            var project_details = {
+                id: req.body.id,
+                title: req.body.title,
+                name : req.body.name,
+                projectImage: {
+                    url: req.body.url, // Set the image URL from the request body
+                    filename: req.body.imageName // You might need to get the filename from the request body as well
+                },
+                projectInfo: {
+                    description: req.body.description,
+                    projectLink: req.body.links,
+                    demoLinks:req.body.projectImages
+                },
+                tags: tags,
+                openForCollaboration:req.body.openForCollaboration,
+                ongoing: req.body.ongoing,
+                level:req.body.level,
+            };
+            var PC = new ProjectController();
+            project_id = await PC.addProject(project_details);
+            await PC.addCreators(project_id,users);
+            res.send(project_id);
         }
-        if(req.body.tags){
-         await  PC.addTags(project_id,req.body.tags);
         }
-        // console.log('away');
-        // console.log(project_id);
-        res.send(project_id);
     } catch (error) {
-        // console.log('home')
-        // console.error(error);
+        console.error(error);
         if (project_id) {
             await Project.findByIdAndDelete(project_id);
         }
-        res.status(500).json({ error:  error.message  });
-
+        res.status(500).send("Internal Server Error :"+error.message);
     }
 });
+
+projectRouter.post("/editProjectData", async(req,res)=>{
+    try{
+        let pname = req.body.pname;
+        var project = await new ProjectController().getProjectbyName(pname);
+        res.send(project);
+        
+    } catch (err){
+        res.status(500).send(err.message);
+    }
+})
 
 // WORKING
 projectRouter.delete("/deleteProjects" ,async (req,res)=>{
@@ -64,33 +76,6 @@ projectRouter.delete("/deleteProjects" ,async (req,res)=>{
     } catch (error) {
         console.log(error);
     }
-})
-
-projectRouter.put("/editProjects" ,async (req,res)=>{
-    try {
-        let projectId = req.body.id;
-        let project_details = {
-        title: req.body.title,
-        name : req.body.name,
-        description: req.body.description,
-        projectlinks: req.body.projectlinks,
-    }
-    var PC = new ProjectController();
-    let data = await PC.editProjects(projectId , project_details);
-    var project_id = await PC.addProject(project_details);
-    if(req.body.creators){
-        PC.addCreators(project_id,req.body.creators);
-    }
-    if(req.body.tags){
-        PC.addTags(project_id,req.body.tags);
-    }
-    if(req.body.ongoing){
-        PC.changeCompleted(project_id , project_details.ongoing);
-    }
-    } catch (error) {
-        console.log(error);
-    }
-    
 })
 
 projectRouter.post("/addfeedback/:username" , async(req,res)=>{
@@ -233,6 +218,8 @@ projectRouter.get("/ongoingProjects/:username", async (req, res) => {
                 return { name: tagInfo.name, color: tagInfo.color };
             });
             const tagsInfo = await Promise.all(tagInfoPromises);
+        
+            
             return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
         res.send(updatedProjects);
@@ -250,11 +237,7 @@ projectRouter.get("/userProjects/:username", async (req, res) => {
         let UC = new UserController();
         const user = await UC.getUserByUsername(username);
 
-       const updatedUser=user.skills.map(async skillId => {
-        const skillInfo = await new ProjectController().getTagInfoById(skillId);
-        return { skill: skillInfo.name, color: skillInfo.color}
-       })
-       const userSkills = await Promise.all(updatedUser);
+       
 
        const updatedFriends=await UC .userIdToNameAndProfileList(user.friends);
        const friends=updatedFriends.map(friend=>({
@@ -285,7 +268,7 @@ projectRouter.get("/userProjects/:username", async (req, res) => {
             
             return { ...project.toObject(), creators: creators,tags:tagsInfo };
         }));
-        res.send({updatedProjects:updatedProjects,user: { ...user.toObject(), skills: userSkills,friends:friends }});
+        res.send({updatedProjects:updatedProjects,user: { ...user,friends:friends }});
     } catch (error) {
         // Handle errors
         console.error(error);
