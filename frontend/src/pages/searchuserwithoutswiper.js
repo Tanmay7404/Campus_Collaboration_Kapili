@@ -120,6 +120,18 @@ navigate("/login")
     },
         // Add more cards as needed
   }
+  const data2 = {
+    explore2: {
+        allGroups2: [
+            {
+            type: "Course",
+            text: contentType,
+            list_cards:ongoingData
+        }
+        ]
+    },
+        // Add more cards as needed
+  }
   
     const [modaldata, setModalOpen] = useState(null);
     return (
@@ -134,7 +146,7 @@ navigate("/login")
       <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setongoingData} setcourseData={setcourseData} />
       )}
       {contentType==='Courses'&&(
-      <ExplorePg3 allGroups={data.explore.allGroups} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setongoingData} setcourseData={setcourseData} />
+      <ExplorePg3 allGroups={data2.explore2.allGroups2} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setongoingData} setcourseData={setongoingData} />
       )}
 
       </>
