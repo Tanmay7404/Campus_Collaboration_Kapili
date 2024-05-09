@@ -95,20 +95,20 @@ const navigate=useNavigate()
                 <div id="donpart">
                     <div className="nameu">
                         {/* <h1>{user.name}</h1> */}
-                        <h1>
-                            {user.name.length > 10 ? user.name.substring(0, 10) + '...' : user.name}
-                        </h1>
+                   <h1>
+                            {user.name.length > 10 ? <marquee > {user.name} </marquee>: user.name}
+                        </h1>   
                     </div>
 
                     <div className="username">
                         <h3>
-                            {user.username.length>14 ? user.username.substring(0,14) + '...' : user.username}
+                            {user.username.length>14 ? <marquee > {user.usernamename} </marquee> : user.username}
                         </h3>
                     </div>
 
                     <div className="useremail">
                     
-                        <p>{user.email.length>30 ? user.email.substring(0,30) + '...' : user.email}</p>
+                        <p>{user.email.length>30 ? <marquee > {user.email} </marquee> : user.email}</p>
                     </div>
                     
                     
