@@ -111,8 +111,8 @@ setModalOpen(true)
     );  
     return (
        
-        <div id="f">
-        <div className="swiper-slide swiper-slide1" onClick={openModal}>
+        <div id="f" className="" style={{ margin: "0px 0px", overflow: 'visible', display: 'flex',flexDirection: 'column' }} onClick={openModal}>
+       
             <div style={{ display: 'flex' }} className="profimg">
                 {/* {details.creators.map((image, idx) => (
                     <img id="sp-profile"
@@ -186,19 +186,19 @@ setModalOpen(true)
                         <a href="#" id={tag.name} className="tags1" key={idx} style={{ borderColor: tag.color, color: tag.color }}>{tag.name}</a>
                     );
                     })}
-                    {details.tags.length > 3 && <span>   . . . </span>}
+                    {details.tags.length > 3 && <span>  </span>}
                     </div>
 
                     <div id="wait">
                         <div>
-                            <div>
+                            <div style={{width:'16px'}}>
                                 <img src={likeImg} alt=""/>
                             </div> <span>{details.endorsements}</span></div>
-                        <div><div><img src={starImg} alt=""/></div> <span>{Number(details.rating).toFixed(1)}</span></div>
+                        <div><div style={{width:'16px'}}><img src={starImg} alt=""/></div> <span>{Number(details.rating).toFixed(1)}</span></div>
                     </div>
                 </div>
             </div>
-        </div>
+        
         {modalOpen && ReactDOM.createPortal(
             modalContent,
             document.getElementById('modal-root')

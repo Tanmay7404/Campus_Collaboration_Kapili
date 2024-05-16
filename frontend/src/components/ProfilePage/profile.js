@@ -227,11 +227,11 @@ if(query2!==null&&query!==null)
                   </div>
                 </div>
               </div>
-              <div id="profileright" style={{width:"600px"}}>
+              <div id="profileright" style={{width:"600px",height: '-webkit-max-content',maxHeight: '-webkit-fill-available'}}>
                 <div id="buttons">
-                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'bio' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('bio')}>Bio</Button>
-                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'Project' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('Project')}>Projects</Button>
-                <Button style={{textDecoration: 'none'}}  className={selectedButton === 'Course' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('Course')}>Courses</Button> 
+                <Button style={{textDecoration: 'none' ,marginRight:'10px'}}  className={selectedButton === 'bio' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('bio')}>Bio</Button>
+                <Button style={{textDecoration: 'none',marginRight:'10px'}}  className={selectedButton === 'Project' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('Project')}>Projects</Button>
+                <Button style={{textDecoration: 'none',marginRight:'10px'}}  className={selectedButton === 'Course' ? 'now-selected' : 'not-selected'} onClick={() => handleButtonClick('Course')}>Courses</Button> 
                 </div>
                 {dataprofile && dataproject && userdata && (
     <>

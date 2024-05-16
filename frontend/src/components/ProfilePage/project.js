@@ -10,7 +10,7 @@ const  Project = ({userprojects,setongoingData,setcompletedData,setcourseData,ch
   
     const listproject = userprojects.map((element) => {
         return (
-          <div className="project" key={element.id}>
+          <div className="project" key={element.id} >
             {/* <div id="like-div">
               <img src="./Images/like.svg" id="like" alt="" />
               <span>{element.likes}</span>
@@ -43,7 +43,7 @@ const  Project = ({userprojects,setongoingData,setcompletedData,setcourseData,ch
             
             <div id="projects" >
 
-            <div id="upload"> 
+            <div id="upload" style={{height:'auto'}}> 
                  <NavLink to="/createProject" className="nav-link"><i class="bi bi-plus-circle" style={{fontSize:'3rem'}}></i></NavLink>
                  <div>Create Project </div>
                 

@@ -25,9 +25,9 @@ const  Course = ({usercourses,setongoingData,setcompletedData,setcourseData,chec
       });  
     return (
             <>
-            <div id="projects" >
+            <div id="projects">
 
-            <div id="upload"> 
+            <div id="upload" style={{height:'auto'}}> 
                  <NavLink to="/createCourse" className="nav-link"><i class="bi bi-plus-circle" style={{fontSize:'3rem'}}></i></NavLink>
                  <div>Create Course </div>
                 

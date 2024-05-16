@@ -33,8 +33,8 @@ const CardList = ({data,setModalOpen,setongoingData,setcompletedData,setcourseDa
   return (
     <>
         <h1 className="project-heading">{data.text}</h1>
-        <div className="swiper swiper1 mySwiper">
-            <div className="swiper-wrapper">
+        <div className="swiper swiper1 mySwiper" style={{padding:"0px 0px"}}>
+            <div className="swiper-wrapper" style={{gap:"40px", overflow:"visible"}}>
                 <Swiper
                     modules={[Navigation]}
                     slidesPerView={3}
@@ -48,7 +48,7 @@ const CardList = ({data,setModalOpen,setongoingData,setcompletedData,setcourseDa
                 
                 {data.list_cards.map((card, index)=> {
                     return(
-                        <div className="swiper-slide" key={index}>
+                        <div className="swiper-slide" id="wahid" key={index}>
                             <SwiperSlide key={index}>  
                               <Card key={index} details = {card} setModalOpen = {setModalOpen} setongoingData={setongoingData} setcompletedData={setcompletedData}  setcourseData={setcourseData} check={data.type} /> : 
                               

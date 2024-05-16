@@ -5,3 +5,9 @@
     gap: 70px;
 
 }
+.swiper-wrapper{
+    
+}
+.swiper-slide{
+    scale: 0.8 !important;
+}

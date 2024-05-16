@@ -220,9 +220,11 @@ scrollbar-width: none;  /* Firefox */
 #projects{
     flex: auto;
     position: relative;
-    
+    display: flex;
+    flex-wrap: wrap;
     overflow-y: scroll;
-    
+    gap: 40px;
+    /* justify-content: space-between; */
     
 }
 
@@ -266,11 +268,12 @@ scrollbar-width: none;  /* Firefox */
 
 
 .project{
-    height: calc((100% - 20px)/2);
-    width: calc((100% - 40px)/3);
+    /* height: calc((100% - 20px)/2); */
+    width: calc((100% - 120px)/3);
     box-shadow: 0px 4px 4px 0px #00000040;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
+    
 }
 
 .www{
