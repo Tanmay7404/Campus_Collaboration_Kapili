@@ -27,7 +27,7 @@ const teamMembers = [
   { name: 'Soumya Savarn', title: 'Frontend', code: 3, description: 'Amusement and algorithms.', linkedin: 'https://www.linkedin.com/in/soumya-savarn-3483b2165/', github: "https://github.com/soumyasavarn" },
   { name: 'Wahid', title: 'Frontend', code: 4, description: 'Weaving style into the fabric of the web', linkedin: 'https://www.linkedin.com/in/syed-wahid-alam-73b04824b/', github: "https://github.com/Wahid-1416" },
   { name: 'Priyanshu Pratyay', title: 'Frontend', code: 5, description: 'Tech enthusiast adept at crafting engaging digital experiences.', linkedin: 'https://www.linkedin.com/in/priyanshu-pratyay-860818252/', github: "https://github.com/PPratyay/" },
-  { name: 'Sushant Kumar', title: 'Backend', code: 6, description: 'HI I am Sushant. I like to code.', linkedin: 'https://www.linkedin.com/in/sushant-kumar-5b7060251/?originalSubdomain=in', github: "https://github.com/LegendsDen/" },
+  { name: 'Sushant Kumar', title: 'Full Stack', code: 6, description: 'HI I am Sushant. I love to code.', linkedin: 'https://www.linkedin.com/in/sushant-kumar-5b7060251/?originalSubdomain=in', github: "https://github.com/LegendsDen/" },
   { name: 'Rishi Tirpude', title: 'Backend', code: 7, description: 'I handle everything from Request to Response.', linkedin: "https://www.linkedin.com/in/rishi-tirpude-774247250/", github: "https://github.com/RishiTirpude19" },
   { name: 'Piyush Gautam', title: 'Designer', code: 8, description: 'Just experimenting with new things!', linkedin: 'https://www.linkedin.com/in/piyushgautam2312', github: "" },
 ];
