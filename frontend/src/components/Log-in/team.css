@@ -71,6 +71,15 @@
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 }
+.profileCard .team-member img {
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease-in-out;
+  object-fit: cover;
+  border-radius: 40%;  /* Matched to the border-radius of the container for consistency */
+  position: absolute;
+}
+
 
 
 /* Hover effects for team members */
@@ -85,6 +94,7 @@
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease-in-out;
+  object-fit: cover;
   border-radius: 40%;  /* Matched to the border-radius of the container for consistency */
   position: absolute;
 }

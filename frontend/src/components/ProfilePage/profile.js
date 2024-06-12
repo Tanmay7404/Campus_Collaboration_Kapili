@@ -22,6 +22,7 @@
       const{userdata}=useContext(UserdataContext);
       const navigate = useNavigate();
       const {userName} = useParams();
+      
       let [searchParams, setSearchParams] = useSearchParams();
       let [query, setQuery] = useState(
        searchParams.get("name")
@@ -29,7 +30,9 @@
      let [query2, setQuery2] = useState(
       searchParams.get("type")
     );
-      // const [currUser,setCurrUser] =useState(null);
+    const [dataprofile,setdataprofile]=useState(null);
+    const [dataproject,setdataproject]=useState(null);
+    const[datacourse,setdatacourse]=useState(null);
       const [compledtedData, setcompletedData] = useState([]);
       const [ongoingData, setongoingData] = useState([]);
       const [courseData, setcourseData] = useState([]);
@@ -111,9 +114,7 @@ if(query2!==null&&query!==null)
           return;
       }
       }; 
-      const [dataprofile,setdataprofile]=useState(null);
-      const [dataproject,setdataproject]=useState(null);
-      const[datacourse,setdatacourse]=useState(null);
+
 
       useEffect(() => {
         async function fetchData() {
@@ -143,6 +144,9 @@ if(query2!==null&&query!==null)
         }
         fetchData();
     },[userdata,userName])
+    console.log(69);
+    console.log(userName );
+    console.log(userdata)
 
     useEffect(() => {
       async function fetchData() {
@@ -214,12 +218,13 @@ if(query2!==null&&query!==null)
     {userdata.username!=userName &&(
       <div>
       <div   style={{cursor:'pointer' }}onClick={getInTouch}>Get in Touch</div>
-      <Link to = {"/editProfile"} style={{cursor:'pointer', color: 'inherit', textDecoration: 'inherit', backgroundColor:"black"}}><b>Edit Profile</b> </Link>
+      <div   style={{cursor:'pointer' }}onClick={handleAddFriend}>Add Friend</div>
       </div>
-
     )}
     {userdata.username===userName &&(
-      <div style={{cursor:'pointer'}}>Edit Profile</div>
+       <Link to = {"/editProfile"} style={{cursor:'pointer', color: 'inherit', textDecoration: 'inherit'}}><b>Edit Profile</b> </Link>
+
+      // <div style={{cursor:'pointer'}}>Edit Profile</div>
     )}
     </>
 )}
@@ -236,8 +241,8 @@ if(query2!==null&&query!==null)
                 {dataprofile && dataproject && userdata && (
     <>
         {selectedButton === 'bio' && <Bio dataprofile={dataprofile} />}
-        {selectedButton === 'Project' && <Project userprojects={dataproject} setongoingData={setdataproject} setcompletedData={setcompletedData} setcourseData={setcourseData} check={check} />}
-        {selectedButton === 'Course' && <Course usercourses={datacourse} setongoingData={setongoingData}  setcompletedData={setcompletedData} setcourseData={setdatacourse}check={check2} />}
+        {selectedButton === 'Project' && <Project userprojects={dataproject} setongoingData={setdataproject} setcompletedData={setcompletedData} setcourseData={setcourseData}  check={check} user={userdata.username} person={userName}/>}
+        {selectedButton === 'Course' && <Course usercourses={datacourse} setongoingData={setongoingData}  setcompletedData={setcompletedData} setcourseData={setdatacourse}check={check2} user={userdata.username} person={userName} />}
     </>
 )}
 

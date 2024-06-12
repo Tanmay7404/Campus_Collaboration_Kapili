@@ -177,6 +177,10 @@
     object-fit: cover;
     border: 2px solid white;
     border-radius: 50%;
+    transition: transform 0.3s, opacity 0.3s;
+}
+.profilePic:hover{
+    transform: scale(1.2);
 }
 #person-3{
     background-color: #3B3B3B;

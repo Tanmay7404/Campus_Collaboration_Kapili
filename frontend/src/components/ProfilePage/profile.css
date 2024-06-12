@@ -373,3 +373,10 @@ scrollbar-width: none;  /* Firefox */
 #upload>div:hover>#circle>svg>g>g>g{
     fill: #fff;
 }
+
+.no-message {
+    font-size: 1.5rem;
+    margin-top: 150px;
+    margin-left: 350px;
+  }
+  

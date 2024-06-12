@@ -18,35 +18,7 @@ const Bio = (data) => {
       }
     }
   }
-  // const userSkills = [
-  //   { skill: 'BlockChain', color: '#FF5733' },
-  //   { skill: 'MySQL', color: '#33FF57' },
-  //   { skill: 'iOS dev', color: '#5733FF' },
-  //   { skill: 'TensorFlow', color: '#FF33D6' },
-  //   { skill: 'Node JS', color: '#33D6FF' },
-  //   { skill: 'BlockChain', color: '#FF5733' },
-  //   { skill: 'MySQL', color: '#33FF57' },
-  //   { skill: 'iOS dev', color: '#5733FF' },
-  //   { skill: 'TensorFlow', color: '#FF33D6' },
-  //   { skill: 'Node JS', color: '#33D6FF' },
-  //   { skill: 'BlockChain', color: '#FF5733' },
-  //   { skill: 'MySQL', color: '#33FF57' },
-  //   { skill: 'iOS dev', color: '#5733FF' },
-  //   { skill: 'TensorFlow', color: '#FF33D6' },
-  //   { skill: 'Node JS', color: '#33D6FF' },
-  // ];  
-  // const profiles = {
-  //   1: { name: "Sushant", imageUrl: "https://via.placeholder.com/150" },
-  //   2: { name: "Wahid", imageUrl: "https://via.placeholder.com/150" },
-  //   3: { name: "Tanmay", imageUrl: "https://via.placeholder.com/150" },
-  //   4: { name: "Simon", imageUrl: "https://via.placeholder.com/150" },
-  //   5: { name: "Simon", imageUrl: "https://via.placeholder.com/150" },
-  //   6: { name: "Simon", imageUrl: "https://via.placeholder.com/150" },
 
-
-
-  //   // Add more profiles as needed
-  // };
   return (
   <>
      
@@ -93,7 +65,6 @@ const Bio = (data) => {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px' }}>
             {data.dataprofile.friends.map(( friend,index ) => (
                 <div className="profileCard">
-              
                   <ProfileCard key={index} name={friend.name} imageUrl={friend.imageUrl}  email={friend.email} department={friend.department}/>
                 </div>
             ))}
