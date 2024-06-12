@@ -1,7 +1,7 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
-
-export default function TextBox ({fixed,state,onChange}){
+import { useState } from 'react';
+export default function TextBox ({fixed,state,onChange,tp}){
     const style = {
         "& .MuiOutlinedInput-root": {
             "&.Mui-focused fieldset": {
@@ -9,7 +9,8 @@ export default function TextBox ({fixed,state,onChange}){
             }
         },
     }
-  
+   // const [inputState, setInputState] = useState(state);
+    console.log(431,state,121)
     const fixedstyle = {
         "& .MuiOutlinedInput-root": {
             "&.Mui-focused fieldset": {
@@ -30,7 +31,8 @@ export default function TextBox ({fixed,state,onChange}){
                 // Background color
                 },
                 placeholder:"Type here",
-                readOnly: fixed?true:null
+                readOnly: fixed?true:null,
+                multiline:tp === 'bio' ? true : false
             }} // Change text color
             InputLabelProps={{ style: { color: 'gray' } }} // Change label color
             

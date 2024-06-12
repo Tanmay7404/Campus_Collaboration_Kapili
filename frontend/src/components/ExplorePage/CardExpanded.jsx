@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import unstarsss from "../../assets/images/project-planning-header@2x.png";
 import pro from "../../assets/images/discord-profile-pictures-jktaycg4bu6l4s89.jpg";
 import { useModel } from './../../tsModelContext.js'; // import the useModel hook
-
+import { Button } from "react-bootstrap";
 const CardExpanded = ({
   tags,
   likes,
@@ -881,7 +881,14 @@ if(toxic===1 ||toxic===2){
               </div>
               </div>
               <div style={{ borderTop: '.5px  solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>
-           
+              {creator.some(creator => creator.username === userdata.username) && (
+  <>
+    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <Button variant="outline-light" onClick={()=>{
+        navigate("/editProject/"+projectname)
+      }}>Edit Project</Button>
+    </div>
+  </>)}
           </div>
         </div>
     </div>

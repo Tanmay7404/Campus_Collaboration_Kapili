@@ -166,7 +166,7 @@ export default function CreateProjectPage() {
     
       <div className="contentPP">
       
-      <Starting text="Create Project" navigate={navigate} />
+      <Starting text={pname !== undefined ? 'Edit Project' : 'Create Project'} navigate={navigate} />
         
       <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} imgN={imageName} type={'project'}/>
     
@@ -191,7 +191,7 @@ export default function CreateProjectPage() {
 
       <Links values2={values2} setValues2={setValues2} text ="Add Project Links"/>
 
-      <SubmitButton text="Create Project" onClick={handleSubmit} />
+      <SubmitButton text={pname !== undefined ? 'Edit Project' : 'Create Project'} onClick={handleSubmit} />
           
     </div>
     </div>

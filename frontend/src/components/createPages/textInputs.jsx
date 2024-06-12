@@ -2,7 +2,7 @@ import React from "react";
 import TextBox from "./textfield";
 
 
-export default function TextInputs ({name,state,setState, fixed}){
+export default function TextInputs ({name,state,setState, fixed,tp}){
     
     return (
         <div className="fillWidthDiv4">
@@ -10,7 +10,7 @@ export default function TextInputs ({name,state,setState, fixed}){
                 <p className="text_input" >{name}</p>
             </div>
             
-            <TextBox fixed={fixed} state={state} onChange={setState} />
+            <TextBox fixed={fixed} state={state} onChange={setState} tp={tp} />
             
         </div>
     )
