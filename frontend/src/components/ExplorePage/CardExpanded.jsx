@@ -881,7 +881,7 @@ if(toxic===1 ||toxic===2){
               </div>
               </div>
               <div style={{ borderTop: '.5px  solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>
-              {creator.some(creator => creator.username === userdata.username) && (
+              {creator.some(creator => creator.username === userdata.username) &&check!=='Course'&& (
   <>
     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <Button variant="outline-light" onClick={()=>{
