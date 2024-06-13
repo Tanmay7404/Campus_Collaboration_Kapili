@@ -261,7 +261,9 @@ async checkUsersExistence(usernames)
 
     async getUserByUsername(username) {
         try {
+            console.log(13221,username,121)
             const user = await Model.findOne({ username:username });
+            
             var q = await tagIdtotaglist(user._doc.skills);
             var data = {...user._doc,skills:q};
             return data;

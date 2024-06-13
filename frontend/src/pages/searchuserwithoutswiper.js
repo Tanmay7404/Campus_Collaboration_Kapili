@@ -37,73 +37,36 @@ navigate("/login")
            }
     },[])
 
-    {contentType==='Projects'&&(
-    useEffect(()=>{
-        async function fetchData() {
-       try {
-        console.log("fetching search")
-           const response = await fetch("http://localhost:8080/courses/search", {
-               method: "POST", // GET, POST, PUT, DELETE, PATCH, etc.
-               headers: {
-               "Content-Type": "application/json" 
-              //  As sending JSON data to API
-               },
-               body: JSON.stringify({
-                type:"project",
-                title:searchInput,
-                tags:selectedTags
-    
-               })   //if data to be given to the backend, uncomment this and the header, with data input in function
-           });
-           
-           const res = await response.json()
-           console.log(res)
-            setongoingData(res);
-           return;
-       }
-       catch(err){
-          //  setongoingData([]);
-           return;
-       }
-       
-    }
-    fetchData();
-      },[searchTrigger])
-    )}
+    useEffect(() => {
+      async function fetchData(type) {
+          try {
+              console.log("fetching search");
+              const response = await fetch("http://localhost:8080/courses/search", {
+                  method: "POST",
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  body: JSON.stringify({
+                      type: type,
+                      title: searchInput,
+                      tags: selectedTags
+                  })
+              });
 
-    {contentType==='Courses'&&(
-      useEffect(()=>{
-          async function fetchData() {
-         try {
-          console.log("fetching search")
-             const response = await fetch("http://localhost:8080/courses/search", {
-                 method: "POST", // GET, POST, PUT, DELETE, PATCH, etc.
-                 headers: {
-                 "Content-Type": "application/json" 
-                //  As sending JSON data to API
-                 },
-                 body: JSON.stringify({
-                  type:"course",
-                  title:searchInput,
-                  tags:selectedTags
-      
-                 })   //if data to be given to the backend, uncomment this and the header, with data input in function
-             });
-             
-             const res = await response.json()
-             console.log(res)
+              const res = await response.json();
+              console.log(res);
               setongoingData(res);
-             return;
-         }
-         catch(err){
-            //  setongoingData([]);
-             return;
-         }
-         
+          } catch (err) {
+              console.error(err);
+          }
       }
-      fetchData();
-        },[searchTrigger])
-      )}
+
+      if (contentType === 'Projects') {
+          fetchData('project');
+      } else if (contentType === 'Courses') {
+          fetchData('course');
+      }
+  }, [searchTrigger, contentType, searchInput, selectedTags]);
 
 
 
