@@ -159,8 +159,10 @@ export default function CreateCoursePage() {
   <div className="createPage">
     
     <div className="contentPP">
-    
-      <Starting text="Create Course" navigate={navigate}/>
+    {cname!==undefined&&(<Starting text="Edit Course" navigate={navigate}/>)}
+    {cname===undefined&&(<Starting text="Create Course" navigate={navigate}/>)}
+
+      
         
       <ProfilePicAdd profilepic={url} setpp={setURL} setImgN={setImgN} imgN={imageName} type={'course'}/>
 
@@ -178,8 +180,9 @@ export default function CreateCoursePage() {
 
       <Links values2={values2} setValues2={setValues2} text ="Add Course Links"/>
 
-      <SubmitButton text="Create Course" onClick={handleSubmit} />
-        
+      {cname!==undefined&&(  <SubmitButton text="Edit Course" onClick={handleSubmit} />)}
+      {cname===undefined&&(  <SubmitButton text="Create Course" onClick={handleSubmit} />)}
+
     </div>
   </div>
   );

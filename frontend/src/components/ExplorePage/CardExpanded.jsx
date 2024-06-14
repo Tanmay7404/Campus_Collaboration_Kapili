@@ -881,12 +881,18 @@ if(toxic===1 ||toxic===2){
               </div>
               </div>
               <div style={{ borderTop: '.5px  solid #736d6d', marginTop: '1rem', marginBottom: '1rem' }}></div>
-              {creator.some(creator => creator.username === userdata.username) &&check!=='Course'&& (
-  <>
+              {creator.some(creator => creator.username === userdata.username) && (
+ 
+ <>
     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
       <Button variant="outline-light" onClick={()=>{
-        navigate("/editProject/"+projectname)
-      }}>Edit Project</Button>
+        if(check==='Course')
+          {
+            navigate("/editCourse/"+modalText)
+
+          }else{
+        navigate("/editProject/"+projectname)}
+      }}>Edit {check==="Course"?"Course":"Project"}</Button>
     </div>
   </>)}
           </div>
