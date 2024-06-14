@@ -174,7 +174,7 @@ export default function CreateProjectPage() {
 
       <TextInputs name="Project Title*" state={projectTitle} setState={setPtitle} fixed={false}/>
 
-      <TextInputs name="About The Project" state={projectDesc} setState={setPdesc} fixed={false}/>
+      <TextInputs name="About The Project" state={projectDesc} setState={setPdesc} fixed={false} tp={"multiline"}/>
       
       <SelectTags text = "Project Tags" selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
 

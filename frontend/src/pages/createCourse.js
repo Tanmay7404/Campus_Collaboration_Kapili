@@ -168,7 +168,7 @@ export default function CreateCoursePage() {
 
       <TextInputs name="Course Title*" state={courseTitle} setState={setCtitle} fixed={false}/>
 
-      <TextInputs name="About The Course" state={courseDesc} setState={setCdesc} fixed={false}/>
+      <TextInputs name="About The Course" state={courseDesc} setState={setCdesc} fixed={false}  tp={"multiline"}/>
       
       <SelectTags text = "Course Tags" selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
 

@@ -32,7 +32,7 @@ export default function TextBox ({fixed,state,onChange,tp}){
                 },
                 placeholder:"Type here",
                 readOnly: fixed?true:null,
-                multiline:tp === 'bio' ? true : false
+                multiline:tp === 'multiline' ? true : false
             }} // Change text color
             InputLabelProps={{ style: { color: 'gray' } }} // Change label color
             

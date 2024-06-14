@@ -186,7 +186,7 @@ export default function CreateProfilePage() {
         <TextInputs name="Department" state={department} setState={setDept} fixed={false}/>
         </div>
 
-      <TextInputs name="Bio" state={bio} setState={setBio}  fixed={false} tp={"bio"}/>
+      <TextInputs name="Bio" state={bio} setState={setBio}  fixed={false} tp={"multiline"}/>
       
       <SelectTags text = "Selected Skills" selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
      

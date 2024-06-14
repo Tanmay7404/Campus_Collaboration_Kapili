@@ -28,8 +28,8 @@ const Card = ({details,setongoingData,setcompletedData,setcourseData,check}) =>{
    );
    useEffect(()=>
 {
-    console.log(131,query,131)
-if(details.name===query)
+console.log(161,query,1661)
+if(details.name===query||details.title===query)
 {
 setModalOpen(true)
 }
@@ -47,9 +47,16 @@ setModalOpen(true)
       ];
 
     const openModal = () => {setModalOpen(true)
-    setSearchParams({name:details.name})
+        console.log(901,details,901)
+        if(details.name!=undefined){
+    setSearchParams({name:details.name})}else
+    {
+        setSearchParams({name:details.title})
+    }
     };
     const closeModal = () => {setModalOpen(false);
+        console.log(90,details,90)
+
     setSearchParams({name:null})
     }
 
@@ -111,7 +118,10 @@ setModalOpen(true)
     );  
     return (
        
-        <div id="f" className="" style={{ margin: "0px 0px", overflow: 'visible', display: 'flex',flexDirection: 'column' }} onClick={openModal}>
+        <div id="f" className="" style={{ margin: "0px 0px", overflow: 'visible', display: 'flex',flexDirection: 'column' }} onClick={()=>{openModal()
+console.log(535,here,535)
+
+        }}>
        
             <div style={{ display: 'flex' }} className="profimg">
                 {/* {details.creators.map((image, idx) => (
