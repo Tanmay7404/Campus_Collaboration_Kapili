@@ -10,7 +10,6 @@ const UserController = require("../controllers/userFunctions.js");
 
 // WORKING
 projectRouter.post("/addNewProject", async (req,res)=>{
-   
    let project_id;
     try {
         var exc = false;
@@ -41,17 +40,21 @@ projectRouter.post("/addNewProject", async (req,res)=>{
                 level:req.body.level,
             };
             var PC = new ProjectController();
-            project_id = await PC.addProject(project_details);
+            try {
+                project_id = await PC.addProject(project_details);
+            } catch (error) {
+
+                return res.status(400).json({ error: error.message });
+            }
             await PC.addCreators(project_id,users);
             res.send(project_id);
-        }
+            }
         }
     } catch (error) {
-        console.error(error);
         if (project_id) {
             await Project.findByIdAndDelete(project_id);
         }
-        res.status(500).send("Internal Server Error :"+error.message);
+        res.status(500).send(error.message);
     }
 });
 

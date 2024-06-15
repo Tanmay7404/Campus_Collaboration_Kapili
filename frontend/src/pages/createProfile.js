@@ -181,7 +181,7 @@ export default function CreateProfilePage() {
       </div>
 
       <div className="fillWidthDiv">
-        <TextInputs name="Username" state={username} setState={setUS} fixed={false}/>
+        <TextInputs name="Username*" state={username} setState={setUS} fixed={false}/>
 
         <TextInputs name="Department" state={department} setState={setDept} fixed={false}/>
         </div>

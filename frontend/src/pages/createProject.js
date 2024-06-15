@@ -104,6 +104,7 @@ export default function CreateProjectPage() {
     useEffect(()=>{console.log(formData)},[formData]) 
     const [trigger,setTrigger]=useState(1)
     const handleSubmit = () => {
+
       if(formData.name===''){
         window.alert('Name is required');
         return;
@@ -134,25 +135,16 @@ export default function CreateProjectPage() {
             return response.json(); // Parse response as JSON
           })
           .then(data => {
-            console.log(2);
-            if(data.error===undefined){
-              console.log(data)
-              
+            
+            if(data.error===undefined){            
               navigate(-1);
             }
             else{
-              window.alert('Project name already exists  '); 
+              window.alert('Project name already exists'); 
             }
           })
           .catch(error => {
-            console.log(3);
-            console.error(error.message);
-            // if (error.message.includes('duplicate key error')) {
-            //   window.alert('Duplicate error occurred. Please enter unique data.');
-            // } else {
-              // console.log(4);
-              // console.error(error);
-              window.alert('Error occurred.');
+              window.alert(error);
             // }
           })
         } catch (error) {

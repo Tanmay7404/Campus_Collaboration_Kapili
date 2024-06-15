@@ -119,8 +119,6 @@ setModalOpen(true)
     return (
        
         <div id="f" className="" style={{ margin: "0px 0px", overflow: 'visible', display: 'flex',flexDirection: 'column' }} onClick={()=>{openModal()
-console.log(535,here,535)
-
         }}>
        
             <div style={{ display: 'flex' }} className="profimg">
