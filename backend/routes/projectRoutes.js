@@ -107,7 +107,11 @@ projectRouter.post("/addNewCollaborator/:username/:projectName" , async(req,res)
  
     if(addedUser == 1){
         res.send("ADDED addedUser");
-    }
+    }else if(addedUser==0)
+        {
+            res.send("User already added");
+
+        }
     else {
         res.send("ERROR")
     }

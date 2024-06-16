@@ -260,7 +260,7 @@ userRouter.get('/getUserChatPage/:username', async (req, res) => {
 userRouter.get('/getGlobalChatList/:username', async (req, res) => {
     try {
         const userId=req.params.username
-        const id="65f40b3453c7721fd9f231dc"
+        const id="666f48d76073b188dd38d1c5"
             const chatParticipants=await new ChatController().getGlobalChatParticipants(id,userId);
             
 

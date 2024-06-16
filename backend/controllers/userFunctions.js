@@ -90,8 +90,10 @@ async checkUsersExistence(usernames)
             // Find users with matching IDs
             const users = await Model.find({ _id: { $in: userIdList } });
     
-            // Check if all user IDs were found
-            // console.log(userIdList);
+            // // Check if all user IDs were found
+            // console.log(515,userIdList.length);
+            // console.log(515,users.length);
+
             if (users.length === userIdList.length) {
                 // Map user objects to their usernames
                 const userInfoList = users.map(user => ({
@@ -319,12 +321,18 @@ async checkUsersExistence(usernames)
                 console.log(`Project not found`);
             }
             }else 
+
             {
+               
+
                 const course=await Course.findById(userIdT.participants)
+                console.log(course)
+
                 if (course) {
+                    
                  const profile = {
-                     name: course.name,
-                     profilePic: course.projectImage.url,
+                     name: course.title,
+                     profilePic: course.courseImage.url,
                      messages:[],
                      chatId:userIdT.chatId,
                      lastMessageTime:userIdT.lastMessageTime,

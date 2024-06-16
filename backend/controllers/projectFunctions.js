@@ -195,11 +195,17 @@ class ProjectController {
             if (!user || !project) {
                 throw new Error("User or Project not found");
             }
-           
-            project.creators.push(user);
-        
-            await project.save();
-            return 1;
+            if (!project.creators.some(creator => creator.equals(user._id))) {
+                project.creators.push(user);
+                user.projects.push(project._id);
+                user.chats.push(project.chat)
+                await project.save();
+                await user.save();
+
+                return 1;
+            } else {
+                return 0; // Return 0 if the user is already a collaborator
+            }
         } catch(err){
             throw new Error(err);
         }

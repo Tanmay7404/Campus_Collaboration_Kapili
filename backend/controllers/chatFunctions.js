@@ -196,8 +196,17 @@ class ChatController {
            
                 
                 const chat = await Chat.findById(chatId);
+                const user = await User.findOne({ username: currentUserId });
+
+                console.log(chat)
+                console.log(currentUserId   )
                 if (chat) {
+
                     // Filter out the current user from the participants list
+                    if (!chat.participants.some(participant => participant.equals(user._id))) {
+                        chat.participants.push(user._id);
+                        await chat.save();
+                    }
                     if(chat.projectName==null&&chat.courseName==null){
                     const participantsExcludingCurrentUser = chat.participants.filter(participant => !participant.equals(currentUserId));
                     chatList.push({participants:participantsExcludingCurrentUser,type:'User',lastMessageTime:chat.lastMessageTime});
