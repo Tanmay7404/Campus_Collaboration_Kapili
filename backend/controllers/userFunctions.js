@@ -338,7 +338,6 @@ async checkUsersExistence(usernames)
                      lastMessageTime:userIdT.lastMessageTime,
                      profileType:userIdT.type
 
-
                  };
                  profiles.push(profile);
              } else {

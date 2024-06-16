@@ -636,7 +636,7 @@ if(toxic===1 ||toxic===2){
             </div>
               <div id="linker"> 
               <div>
-                  {open && completed&& ( 
+                  {open && completed&&(!creator.some(creator=>creator.username===userdata.username))&& ( 
                     <div style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => {sendCollaborate()}}>
                       <i className="bi bi-person-plus-fill clickable-icon" style={{ fontSize: '30px' }}></i>
                       <div>Collaborate</div>

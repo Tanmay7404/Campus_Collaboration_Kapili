@@ -140,14 +140,21 @@ export default function CreateProjectPage() {
               navigate(-1);
             }
             else{
-              window.alert('Project name already exists'); 
+              console.log(data)
+              console.log(4)
+              if (data.error.includes('duplicate key')) {
+                window.alert('Project name already exists');
+              }
+              else window.alert('Collaborator does not exist'); 
             }
           })
           .catch(error => {
+            console.log(error)
               window.alert(error);
             // }
           })
         } catch (error) {
+          
           console.error('Error occurred in sending request:', error);
         }
       }

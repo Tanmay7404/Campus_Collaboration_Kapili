@@ -15,8 +15,9 @@ projectRouter.post("/addNewProject", async (req,res)=>{
         var exc = false;
         try{
             var users = await getObjectId.userNameToIdList(req.body.collaboratorName);
-        }catch (err){
-            res.status(500).send("User Not Found");
+        }catch (error){
+            console.log(error.message)
+            res.status(500).json({error:error.message});
             exc = true;
         }finally{
             if(!exc){

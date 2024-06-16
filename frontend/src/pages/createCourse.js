@@ -131,6 +131,7 @@ export default function CreateCoursePage() {
             navigate(-1);
           }
           else{
+            console.log(897)
             window.alert('Course Title already exists  '); 
           }
         })
