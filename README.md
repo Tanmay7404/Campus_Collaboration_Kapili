@@ -14,6 +14,7 @@ objectives, technologies used, and outcomes. Include multimedia support for
 images, videos, and documents to provide a comprehensive view of the
 projects.
 
+Toxicity classifier has been implemented as well to ensure a safe environment for communication among users. The model used for this has been imported from TensorFlow's pretrained Model -[Toxicity Classification](https://github.com/tensorflow/tfjs-models/tree/master/toxicity)
 ## User Research Insights
 
 <img src="./img/graph2.jpeg" alt="login page" height ="300" width="400">
